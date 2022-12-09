@@ -8,15 +8,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-//캐릭터 선택과 아이디를 입력받는창
-public class GamePanel extends JPanel {
-    private GameFrame parent;//부모를 변수로 저장
+//규칙을 설명해주는 패널
+public class RulePanel extends JPanel {
+	private GameFrame parent;//부모를 변수로 저장
     private ImageIcon icon = new ImageIcon("back.png");
     
-    public GamePanel(GameFrame parent) {
+    public RulePanel(GameFrame parent) {
         this.parent = parent;//받은 부모를 전역변수로 저장한다
         setLayout(null); //배치 관리자 제거
-        this.setBackground(Color.gray);
+        this.setBackground(Color.white);
         setSize(1500,900);
         //setBounds(0, 0, 1500,900);
         //2. 규칙 설명 버튼
@@ -35,3 +35,4 @@ public class GamePanel extends JPanel {
         setVisible(true);
     }
 }
+
