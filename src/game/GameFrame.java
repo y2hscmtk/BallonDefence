@@ -4,14 +4,17 @@ import javax.swing.*;
 import java.awt.*;
 
 //여러 패널을 돌려가며 사용자에게 게임을 조작할수 있는 프레임을 제공
+//실질적인 조작은 패널에서 시행함
 public class GameFrame extends JFrame {
+	//사용자의 버튼 클릭에 따라 패널을 갈아끼며 다양한 상황을 볼수 있음
     public static final int BEGINNING_PANEL = 0; //시작 패널
-    public static final int GAME_PANEL = 1; //게임 패널
+    public static final int SELECT_PANEL = 1; //게임 패널
     public static final int RULE_PANEL = 2; //룰 설명 패널
     public static final int EDIT_PANEL = 3; //룰 설명 패널
     public static final int RANKING_PANEL = 4; //랭킹 보기 패널
     
-    private GamePanel gamePanel;
+    //swapPanel함수를 통해 패널을 갈아낄수 있도록 하기 위함
+    private SelectPanel selectPanel;
     private BeginningPanel beginningPanel;
     private WordEditPanel wordEditPanel;
     private RankingPanel rankingPanel;
@@ -19,7 +22,7 @@ public class GameFrame extends JFrame {
     
     public GameFrame() {
     	//패널 생성 => 자기 자신을 생성자로 넘겨줘서 부모를 설정해줌
-        gamePanel = new GamePanel(this);
+    	selectPanel = new SelectPanel(this);
         beginningPanel = new BeginningPanel(this);
         wordEditPanel = new WordEditPanel(this);
         rankingPanel = new RankingPanel(this);
@@ -38,24 +41,24 @@ public class GameFrame extends JFrame {
         setVisible(true);
     }
     
-    //현재 윈도우를 변경하는 코드
+    //사용자의 버튼 클릭에 따라 컨텐트펜을 다르게 붙여가며 화면을 변화시킨다.
     public void swapPanel(int type){
         //입력받은 변수로 보여줄 윈도우 타입을 설정한다
         switch (type){
             case BEGINNING_PANEL:
-                setContentPane(beginningPanel);//현재 저장되어 있는 beginningPanel로 현재 컨텐트팬 설정
+                setContentPane(beginningPanel);
                 break;
             case RULE_PANEL:
-                setContentPane(rulePanel);//현재 저장되어 있는 gamePanel으로 현재 컨텐트팬 설정
+                setContentPane(rulePanel);
                 break;
-            case GAME_PANEL:
-                setContentPane(gamePanel);//현재 저장되어 있는 gamePanel으로 현재 컨텐트팬 설정
+            case SELECT_PANEL:
+                setContentPane(selectPanel);
                 break;
             case EDIT_PANEL:
-                setContentPane(wordEditPanel);//현재 저장되어 있는 gamePanel으로 현재 컨텐트팬 설정
+                setContentPane(wordEditPanel);
                 break;
             case RANKING_PANEL:
-                setContentPane(rankingPanel);//현재 저장되어 있는 gamePanel으로 현재 컨텐트팬 설정
+                setContentPane(rankingPanel);
                 break;
         }
     }
