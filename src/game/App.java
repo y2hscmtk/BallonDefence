@@ -1,6 +1,6 @@
 package game;
 
-//타자 입력 게임 만들기
+//풍선 디펜스 게임 시작창~
 public class App {
 	public static void main(String[] args) {
     // TODO Auto-generated method stub
