@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 public class GameFrame extends JFrame {
+	//수정함
    //이미지 로딩 => 경로명만 주어지면 이미지를 로드함
 	private ImageIcon normalIcon = new ImageIcon("normal.png");//상대경로
 	private ImageIcon overIcon = new ImageIcon("over.png");//상대경로
