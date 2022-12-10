@@ -18,9 +18,9 @@ import javax.swing.JTextField;
 public class SelectPanel extends JPanel {
     private GameFrame parent;//부모를 변수로 저장
     
-    private ImageIcon sangsangBugiIcon = new ImageIcon("sangsangbugi.png"); 
-    private ImageIcon hansungNyanIicon = new ImageIcon("hansungNyang-i.png"); 
-    private ImageIcon kkukkukkakkaIcon = new ImageIcon("kkukkukkakka.png"); 
+    private ImageIcon sangsangBugiIcon = new ImageIcon("sangsangbugi.png");  //상상부기 아이콘
+    private ImageIcon hansungNyanIicon = new ImageIcon("hansungNyang-i.png"); //한성냥이 아이콘
+    private ImageIcon kkukkukkakkaIcon = new ImageIcon("kkukkukkakka.png"); //꾸꾸&까까 아이콘
     
     private ImageIcon bgImageicon = new ImageIcon("selectBackgroundImage.png");
     private Image selectBackgroundImage = bgImageicon.getImage();
@@ -101,14 +101,7 @@ public class SelectPanel extends JPanel {
         hansungNyanILabel.setLocation(610, 270);
         hansungNyanILabel.addMouseListener(new CharacterSelectEvent(1));
         add(hansungNyanILabel);
-//        	@Override
-//        	public void mouseClicked(MouseEvent e) {
-//        		GamePanel game = new GamePanel(0); //상상부기(코드0)로 게임 생성
-//        		parent.setContentPane(game);//부모의 컨텐트팬을 변경하도록 함수 호출
-//        		//parent.swapPanel(GameFrame.BEGINNING_PANE
-//        	}
-//        });
-        
+
 
         //꾸꾸까가 이미지버튼
         JLabel kkukkuKkakkaLabel = new JLabel(kkukkukkakkaIcon);
@@ -116,30 +109,24 @@ public class SelectPanel extends JPanel {
         kkukkuKkakkaLabel.setLocation(910, 270);
         kkukkuKkakkaLabel.addMouseListener(new CharacterSelectEvent(2)); 
         add(kkukkuKkakkaLabel);
+
+        //캐릭터를 선택하면 바로 넘어가게 할것인가, 버튼을 눌러 게임을 진행할것인가 고려
+//        JButton startButton = new JButton("게임시작"); 
+//        startButton.setSize(100,100);
+//        startButton.setLocation(800,800);
+//        startButton.addMouseListener(new MouseAdapter() {
+//        	//버튼을 클릭했을때 사용자가 캐릭터와 아이디를 입력했는지 확인하고,
+//        	//입력하지 않았다면 경고창을 띄우고
+//        	//입력하였다면 입력정보를 바탕으로 게임을 생성한다.
 //        	@Override
 //        	public void mouseClicked(MouseEvent e) {
-//        		//parent.swapPanel(GameFrame.BEGINNING_PANEL);//부모의 컨텐트팬을 변경하도록 함수 호출
+//        		//게임 패널 생성후 해당 패널로 갈아끼우기
+//        		
+//        		
+////        		parent.setContentPane(new );
 //        	}
 //        });
-//        
-
-        
-        JButton startButton = new JButton("게임시작"); 
-        startButton.setSize(100,100);
-        startButton.setLocation(800,800);
-        startButton.addMouseListener(new MouseAdapter() {
-        	//버튼을 클릭했을때 사용자가 캐릭터와 아이디를 입력했는지 확인하고,
-        	//입력하지 않았다면 경고창을 띄우고
-        	//입력하였다면 입력정보를 바탕으로 게임을 생성한다.
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		//게임 패널 생성후 해당 패널로 갈아끼우기
-        		
-        		
-//        		parent.setContentPane(new );
-        	}
-        });
-        add(startButton);
+//        add(startButton);
         
         
         setVisible(true);

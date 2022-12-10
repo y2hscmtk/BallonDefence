@@ -1,97 +1,288 @@
 package game;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
 
-//°ÔÀÓÀ» ÁøÇàÇÏ´Â °ø°£
-//Ç³¼±¿¡ ´Ş¸° ´Ü¾îµéÀÌ ·£´ıÇÏ°Ô ÇÏ´Ã¿¡¼­ ¶³¾îÁö°í
-//¾Ë¸ÂÀº ÅØ½ºÆ®¸¦ ÀÔ·ÂÇÏ¸é ÇØ´ç Ç³¼±ÀÌ ÅÍÁø´Ù.
 
-//¿À¸¥ÂÊ¿¡´Â »ç¿ëÀÚ°¡ ¼±ÅÃÇÑ Ä³¸¯ÅÍÀÇ ÀÌ¹ÌÁö¿Í
-//Á¡¼ö, Ä³¸¯ÅÍÀÇ Ã¼·Â, »ç¿ëÁßÀÎ ¹«±â¸¦ º¸¿©ÁÖ´Â ÆĞ³ÎÀ» ¶ç¿ì°í
-//¿ŞÂÊ¿¡´Â °ÔÀÓÀ» ÁøÇàÇÏ´Â ÆĞ³ÎÀ» ¶ç¿î´Ù.
+//ê²Œì„ì„ ì§„í–‰í•˜ëŠ” ê³µê°„
+//í’ì„ ì— ë‹¬ë¦° ë‹¨ì–´ë“¤ì´ ëœë¤í•˜ê²Œ í•˜ëŠ˜ì—ì„œ ë–¨ì–´ì§€ê³ 
+//ì•Œë§ì€ í…ìŠ¤íŠ¸ë¥¼ ì…ë ¥í•˜ë©´ í•´ë‹¹ í’ì„ ì´ í„°ì§„ë‹¤.
+
+//ì˜¤ë¥¸ìª½ì—ëŠ” ì‚¬ìš©ìê°€ ì„ íƒí•œ ìºë¦­í„°ì˜ ì´ë¯¸ì§€ì™€
+//ì ìˆ˜, ìºë¦­í„°ì˜ ì²´ë ¥, ì‚¬ìš©ì¤‘ì¸ ë¬´ê¸°ë¥¼ ë³´ì—¬ì£¼ëŠ” íŒ¨ë„ì„ ë„ìš°ê³ 
+//ì™¼ìª½ì—ëŠ” ê²Œì„ì„ ì§„í–‰í•˜ëŠ” íŒ¨ë„ì„ ë„ìš´ë‹¤.
+
+//í…ìŠ¤íŠ¸ë¥¼ ì…ë ¥ë°›ì•„ ì˜¬ë°”ë¥¸ ë‹¨ì–´ì¸ì§€ í™•ì¸í•˜ëŠ” ë©”ì†Œë“œ
+//í…ìŠ¤íŠ¸ì°½ì„ ê´€ë¦¬í•œë‹¤.
+class ControlPanel extends JPanel {
+	private GamePanel gamePanel;
+	private JTextField input = new JTextField(15); //ë‹¨ì–´ì„ ì…ë ¥ë°›ì„ ê³µê°„ ì„¤ì •
+	
+	public ControlPanel(GamePanel gamePanel) {
+		this.gamePanel = gamePanel;
+		this.setLayout(new FlowLayout());
+		this.setBackground(Color.LIGHT_GRAY);
+		add(input);
+		
+		input.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JTextField tf = (JTextField)e.getSource();
+				String text = tf.getText(); //í…ìŠ¤íŠ¸ì— ì…ë ¥ëœ ë‹¨ì–´ê°€ ë¬´ì—‡ì¸ì§€ ê°€ì ¸ì˜´
+				if(text.equals("exit")) //exitì…ë ¥ì‹œ ì¢…ë£Œ
+					System.exit(0); //í”„ë¡œê·¸ë¨ ì¢…ë£Œ
+				
+				if(!gamePanel.isGameOn()) //ì—‘ì…˜ ë¬´ì‹œ
+					return;
+					
+				boolean match = gamePanel.matchWord(text); //ì…ë ¥í•œ ë‹¨ì–´ê°€ ì˜¬ë°”ë¥¸ ë‹¨ì–´ì¸ì§€ í™•ì¸
+				
+				if(match) {
+					gamePanel.stopGame(); //ë‹¨ì–´ê°€ ì¼ì¹˜í•œë‹¤ë©´ 
+					gamePanel.startGame(); //
+				}
+				tf.setText(""); //í…ìŠ¤íŠ¸ ìƒìì— ì íŒ ê¸€ì ì§€ìš°ê¸°				
+			}
+		});
+	}
+}
+
+
+//ê²Œì„ì´ ì§„í–‰ë˜ëŠ” ê³µê°„
 public class GamePanel extends JPanel{
-	//¹è°æ ÀÌ¹ÌÁö
-	private ImageIcon bgImageicon = new ImageIcon("gamePanelBackgroundImage.png");
-    private Image gamePanelBackgroundImage = bgImageicon.getImage();
-    //Ä³¸¯ÅÍ ÀÌ¹ÌÁö(¿ìÃø »ó´Ü¿¡ ºÙÀÏ)
+	//Container contentPane; //ì»¨í…íŠ¸íœì„ ë‹¤ë£¨ê¸° ìœ„í•´
+	
+	private GameRunningPanel gameRunningPanel = new GameRunningPanel();
+    
+    //ìš°ì¸¡ ìƒë‹¨ì— í‘œì‹œë  ìºë¦­í„°ì˜ ì´ë¯¸ì§€
     private ImageIcon sangsangBugi = new ImageIcon("character0.png");
     private ImageIcon hansungNyangI = new ImageIcon("character1.png");
     private ImageIcon kkukkuKkakka = new ImageIcon("character2.png");
-    private ImageIcon selectedCharacter = null; //¼±ÅÃµÈ ÀÌ¹ÌÁö¸¦ °¡¸®Å°µµ·Ï
+    private ImageIcon selectedCharacter = null; //ì„ íƒëœ ì´ë¯¸ì§€ë¥¼ ê°€ë¦¬í‚¤ë„ë¡
     
-	//Ä³¸¯ÅÍ Æ¯¼º, ¹«±â Æ¯¼º, Ç³¼± ¼Óµµ
-	private int characterType; //»ç¿ëÀÚ°¡ ¼±ÅÃÇÑ Ä³¸¯ÅÍ°¡ ¹«¾ùÀÎÁö¸¦ ÀúÀå
-	private int characterHealth;//Ä³¸¯ÅÍÀÇ Ã¼·Â
-	private int weaponType; //Ä³¸¯ÅÍÀÇ ¹«±â, »ç¿ëÀÚ°¡ »ç¿ëÁßÀÎ ¹«±â°¡ ¹«¾ùÀÎÁö º¸ÀÌµµ·Ï	
-	private int weaponPower = 1; // ¹«±âÀÇ µ¥¹ÌÁö, ±âº» ¹«±âÀÇ ´É·ÂÄ¡´Â 1
-	//Ç³¼±ÀÌ ¶³¾îÁö´Â ¼Óµµ => Ä³¸¯ÅÍ Æ¯¼º¿¡ µû¶ó ´Ş¶óÁü
-	private int ballonSpeed = 10;//½Ã°£´ç 10px¾¿ ³»·Á°¡´Â°ÍÀÌ ±âº»¼Óµµ
-	//²Ù²Ù±î±î°¡ ¼±ÅÃµÉ°æ¿ì¿¡ true·Î º¯°æ
-	private boolean luckyChance = false; //²Ù²Ù²¿²¿ÀÇ Æ¯¼º, true¶ó¸é ÀÏÁ¤È®·ü·Î Ç³¼±À» ÇÏ³ª ´õ ÅÍÆ®¸²
+	//ìºë¦­í„° íŠ¹ì„±, ë¬´ê¸° íŠ¹ì„±, í’ì„  ì†ë„
+	private int characterType; //ì‚¬ìš©ìê°€ ì„ íƒí•œ ìºë¦­í„°ê°€ ë¬´ì—‡ì¸ì§€ë¥¼ ì €ì¥
+	private int characterHealth;//ìºë¦­í„°ì˜ ì²´ë ¥
+	private int weaponType; //ìºë¦­í„°ì˜ ë¬´ê¸°, ì‚¬ìš©ìê°€ ì‚¬ìš©ì¤‘ì¸ ë¬´ê¸°ê°€ ë¬´ì—‡ì¸ì§€ ë³´ì´ë„ë¡	
+	private int weaponPower = 1; // ë¬´ê¸°ì˜ ë°ë¯¸ì§€, ê¸°ë³¸ ë¬´ê¸°ì˜ ëŠ¥ë ¥ì¹˜ëŠ” 1
+	//í’ì„ ì´ ë–¨ì–´ì§€ëŠ” ì†ë„ => ìºë¦­í„° íŠ¹ì„±ì— ë”°ë¼ ë‹¬ë¼ì§
+	private int ballonSpeed = 100;//ë”œë ˆì´ ë˜ëŠ” ì‹œê°„(ë°€ë¦¬ì´ˆë‹¨ìœ„) => 200ë°€ë¦¬ì´ˆ
+	//ê¾¸ê¾¸ê¹Œê¹Œê°€ ì„ íƒë ê²½ìš°ì— trueë¡œ ë³€ê²½
+	private boolean luckyChance = false; //ê¾¸ê¾¸ê¼¬ê¼¬ì˜ íŠ¹ì„±, trueë¼ë©´ ì¼ì •í™•ë¥ ë¡œ í’ì„ ì„ í•˜ë‚˜ ë” í„°íŠ¸ë¦¼
 	
-	//Ç³¼±ÀÌ ¶³¾îÁö´Â ½º·¹µå
 	
-	//ÇÑ ¶ó¿îµå°¡ ³¡³ª¸é ±âÁ¸ÀÇ Ç³¼±µéÀº ¸ğµÎ Á¦°ÅµÇ¾î¾ßÇÔ
+	private JLabel label = new JLabel(); //
+	private String fallingWord = null;
+	private FallingThread thread = null; 
+	private boolean gameOn = false;
+	private WordList wordList; //ë‹¨ì–´ë¥¼ ê´€ë¦¬í•˜ê¸° ìœ„í•œ ìš©ë„
+	
+	private ControlPanel controlPanel;
+	
+	
+	//í’ì„ ì´ ë–¨ì–´ì§€ëŠ” ìŠ¤ë ˆë“œ
+	
+	//í•œ ë¼ìš´ë“œê°€ ëë‚˜ë©´ ê¸°ì¡´ì˜ í’ì„ ë“¤ì€ ëª¨ë‘ ì œê±°ë˜ì–´ì•¼í•¨
 	
 	public GamePanel(int characterType) {
-		setLayout(null); //Ç³¼±ÀÌ ¶³¾îÁö´Â À§Ä¡¸¦ ·£´ıÀ¸·Î ÁöÁ¤ÇÏ±â À§ÇØ
+		setLayout(null);
+		//this.contentPane = contentPane;
 		this.setBackground(Color.gray);
         setSize(1500,900);
 		
-		//°ÔÀÓÀ» »ı¼ºÇÒ¶§´Â Ä³¸¯ÅÍ Á¤º¸¸¦ ÀÔ·Â¹Ş¾Æ¼­ »ı¼º
+        
+		add(label);
+		wordList = new WordList("words.txt");
+        
+		//ê²Œì„ì„ ìƒì„±í• ë•ŒëŠ” ìºë¦­í„° ì •ë³´ë¥¼ ì…ë ¥ë°›ì•„ì„œ ìƒì„±
 		this.characterType = characterType;
 		
-		//¼±ÅÃµÈ Ä³¸¯ÅÍ¿¡ µû¶ó °ÔÀÓ³­ÀÌµµ Á¶Àı
-		//0¹øÀº »ó»óºÎ±â, 1¹øÀº ÇÑ¼º³ÉÀÌ, 3¹øÀº ²Ù²Ù¿Í±î±î
+		//ì„ íƒëœ ìºë¦­í„°ì— ë”°ë¼ ê²Œì„ë‚œì´ë„ ì¡°ì ˆ
+		//0ë²ˆì€ ìƒìƒë¶€ê¸°, 1ë²ˆì€ í•œì„±ëƒ¥ì´, 3ë²ˆì€ ê¾¸ê¾¸ì™€ê¹Œê¹Œ
 		switch(characterType) {
 		case 0:
-			selectedCharacter = sangsangBugi; //»ó»óºÎ±â ÀÌ¹ÌÁö ¼±ÅÃ
-			characterHealth = 150; //»ó»óºÎ±âÀÇ Ä³¸¯ÅÍ Æ¯¼º; Ã¼·ÂÀÌ ¸¹´Ù(´Ü´ÜÇÏ´Ù)
+			selectedCharacter = sangsangBugi; //ìƒìƒë¶€ê¸° ì´ë¯¸ì§€ ì„ íƒ
+			characterHealth = 150; //ìƒìƒë¶€ê¸°ì˜ ìºë¦­í„° íŠ¹ì„±; ì²´ë ¥ì´ ë§ë‹¤(ë‹¨ë‹¨í•˜ë‹¤)
 			break;
 		case 1:
-			selectedCharacter = hansungNyangI; //ÇÑ¼º³ÉÀÌ ÀÌ¹ÌÁö ¼±ÅÃ
+			selectedCharacter = hansungNyangI; //í•œì„±ëƒ¥ì´ ì´ë¯¸ì§€ ì„ íƒ
 			characterHealth = 90;
-			ballonSpeed = 7; //ÇÑ¼º³ÉÀÌÀÇ Ä³¸¯ÅÍ Æ¯¼º; Ç³¼±À» ´À¸®°Ô¶³¾îÁø´Ù(µ¿Ã¼½Ã·Â)
+			ballonSpeed = 350; //í•œì„±ëƒ¥ì´ì˜ ìºë¦­í„° íŠ¹ì„±; í’ì„ ì„ ëŠë¦¬ê²Œë–¨ì–´ì§„ë‹¤(ë™ì²´ì‹œë ¥)
 			break;
 		case 2:
-			selectedCharacter =  kkukkuKkakka; //²Ù²Ù±î±î ÀÌ¹ÌÁö ¼±ÅÃ
+			selectedCharacter =  kkukkuKkakka; //ê¾¸ê¾¸ê¹Œê¹Œ ì´ë¯¸ì§€ ì„ íƒ
 			characterHealth = 80;
-			luckyChance = true; //²Ù²Ù±î±îÀÇ Ä³¸¯ÅÍ Æ¯¼º; ÀÏÁ¤È®·ü~
+			luckyChance = true; //ê¾¸ê¾¸ê¹Œê¹Œì˜ ìºë¦­í„° íŠ¹ì„±; ì¼ì •í™•ë¥ ~
 			break;
 		}
 		
-		//¼³Á¤µÈ Á¤º¸µéÀ» ¹ÙÅÁÀ¸·Î ÀÌ¹ÌÁö¿Í Á¤º¸°¡ ¿ìÃø¿¡ º¸ÀÌµµ·Ï
+		//ì„¤ì •ëœ ì •ë³´ë“¤ì„ ë°”íƒ•ìœ¼ë¡œ ì´ë¯¸ì§€ì™€ ì •ë³´ê°€ ìš°ì¸¡ì— ë³´ì´ë„ë¡
 		JLabel character = new JLabel(selectedCharacter);
 		character.setSize(selectedCharacter.getIconWidth(),selectedCharacter.getIconHeight());
 		character.setLocation(1110,140);
 		add(character);
 		
-		//Å×½ºÆ® È®ÀÎ¿ë Àß ÀÔ·ÂµÇ¾ú³ª È®ÀÎ¿ë
-		System.out.println("¼±ÅÃµÈ Ä³¸¯ÅÍ : " + characterType + "Ä³¸¯ÅÍ Ã¼·Â : " + characterHealth + "Ç³¼± ¼Óµµ: " + ballonSpeed);
-		//Ç³¼±À» ·£´ıÇÏ°Ô »ı¼ºÇÏ´Â ½º·¹µå ½ÇÇà
+		//í…ŒìŠ¤íŠ¸ í™•ì¸ìš© ì˜ ì…ë ¥ë˜ì—ˆë‚˜ í™•ì¸ìš©
+		System.out.println("ì„ íƒëœ ìºë¦­í„° : " + characterType + "ìºë¦­í„° ì²´ë ¥ : " + characterHealth + "í’ì„  ì†ë„: " + ballonSpeed);
 		
-		//Ç³¼±ÀÌ ¶³¾îÁö°Ô ÇÏ´Â ½º·¹µå ½ÇÇà
+		//í’ì„ ì„ ëœë¤í•˜ê²Œ ìƒì„±í•˜ëŠ” ìŠ¤ë ˆë“œ ì‹¤í–‰
+		
+		//ê²Œì„ ì‹œì‘
+		startGame(); 
+		makeSplitPane();
+		
+		
+		//í’ì„ ì´ ë–¨ì–´ì§€ê²Œ í•˜ëŠ” ìŠ¤ë ˆë“œ ì‹¤í–‰
 		setVisible(true);
 	}
 	
 	
-	//Ç³¼±ÀÌ ¶³¾îÁö´Â ½º·¹µå ÀÛ¼º
+	class testPanel extends JPanel{
+		
+		public testPanel() {
+			setSize(900,900);
+			setBackground(Color.cyan);
+			setVisible(true);
+		}
+	}
+	
+	
+	private void makeSplitPane() {
+		setLayout(null); //ì§€ì •ì ì—†ì•¤ë‹¤.
+		JSplitPane hPane = new JSplitPane();
+		hPane.setEnabled(false);
+		hPane.setBounds(0,0,1500,900);
+		hPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);//ë°©í–¥ì„ ì„¤ì • => ì–´ë–»ê²Œ ì˜ì—­ì„ ë¶„í• í• ì§€(ì–´ë–¤ ë°©í–¥)
+		hPane.setDividerLocation(1000); // í™”ë©´ì„ ì–´ë””ì„œë¶€í„° ë‚˜ëˆŒì§€ ì •í•¨
+		add(hPane); //ê°€ìš´ë°ì— splitPane ë¶™ì´ê¸°
+		//=> í™”ë©´ì„ ë‘ê°œë¡œ ë‚˜ëˆ„ì–´ ì‚¬ìš©í• ìˆ˜ ìˆê²Œ í•¨ => ë””ë°”ì´ë”
+		hPane.setLeftComponent(gameRunningPanel);
+		JSplitPane vPane = new JSplitPane(); //ê°€ë¡œë¡œ ë‚˜ëˆ„ëŠ” splitPane
+		vPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		vPane.setDividerLocation(300);
+		//hPaneì— ë¶™ì—¬ì•¼í•¨
+		hPane.setRightComponent(vPane); //hPaneì˜ ì˜¤ë¥¸ìª½ì— ë¶™ì´ê¸°
+
+//		hPane.setLeftComponent(gamePanel);
+//	  
+//		//ì ìˆ˜ íŒ¨ë„ ë¶™ì´ê¸°
+//	    vPane.setTopComponent(scorePanel);
+//	    vPane.setBottomComponent(editPanel);
+	}
+	
+	
+	//í’ì„ ì´ ë–¨ì–´ì§€ëŠ” ìŠ¤ë ˆë“œ ì‘ì„±
+	
+	//ë‹¨ì–´ê°€ ë‚´ë ¤ì˜¤ëŠ” ê³µê°„
+	
+	//ê²Œì„ì´ ì§„í–‰ì¤‘ì¸ì§€ ì—¬ë¶€ë¥¼ ë¦¬í„´í•˜ëŠ” ë©”ì†Œë“œ
+	public boolean isGameOn() {
+		return gameOn;
+	}
+	
+	//ê²Œì„ì„ ì¤‘ë‹¨í•˜ëŠ” ë©”ì†Œë“œ
+	public void stopGame() {
+		if(thread == null)
+			return; //ìŠ¤ë ˆë“œê°€ ìƒì„±ë˜ì§€ì•Šì•˜ë‹¤ë©´ ë¬´ì‹œ
+		thread.interrupt(); //ê·¸ë ‡ì§€ ì•Šë‹¤ë©´ í’ì„  ìŠ¤ë ˆë“œ ì¤‘ì§€
+		thread = null; //ìŠ¤ë ˆë“œë¥¼ ë‹¤ì‹œ nullìƒíƒœë¡œ ëŒë¦¼
+		gameOn = false; //ê²Œì„ì§„í–‰ìƒíƒœ falseë¡œ
+	}
+			
+	//ìƒˆë¡œìš´ ë‹¨ì–´ê°€ ë–¨ì–´ì§€ë„ë¡
+	public void stopSelfAndNewGame() { //ê²Œì„ì„ ì •ì§€í•˜ê³  ìƒˆë¡œìš´ ê²Œì„ ì‹œì‘
+		startGame();	
+	}
+			
+	//ë‹¨ì–´ë¥¼ ë½‘ì•„ì„œ ë¼ë²¨ì— ë¶™ì´ê³ 		
+	public void startGame() { 
+		fallingWord = wordList.getWord(); //ë–¨ì–´ì§€ë„ë¡ í•  ë‹¨ì–´ ì„ ì •
+		label.setText(fallingWord); //ë‹¨ì–´ë¥¼ ë¼ë²¨ì— ë¶™ì¸ë‹¤.
+		label.setSize(200, 30); //ë¼ë²¨ í¬ê¸° ì§€ì •
+		label.setLocation((getWidth()-200)/2, 0); //ë‹¨ì–´ê°€ ë–¨ì–´ì§€ê¸° ì‹œì‘í•  ìœ„ì¹˜ ì§€ì •
+		label.setOpaque(true); //ë°°ê²½ìƒ‰ì„ ì§€ì •í•˜ê¸° ìœ„í•¨
+		label.setForeground(Color.MAGENTA); //ë¼ë²¨ì˜ ë°°ê²½ìƒ‰ì„¤ì •		
+		label.setFont(new Font("Tahoma", Font.ITALIC, 20)); //ë‹¨ì–´ì˜ ê¸€ì”¨ì²´ ì§€ì •
+
+		//ë‹¨ì–´ê°€ ë‚´ë ¤ê°€ê¸° ì‹œì‘í•˜ë©´ í•´ë‹¹ ë‹¨ì–´ë§ˆë‹¤ ê°ê°ì˜ ìŠ¤ë ˆë“œë¥¼ ì‹¤í–‰ì‹œì¼œì•¼í•¨ => ìƒì„±ëœ ì´í›„ ë‚´ë ¤ê°„ ì†ë„ê°€ ë‹¤ ë‹¬ë¼ì•¼ í•˜ë¯€ë¡œ
+		thread = new FallingThread(this, label,ballonSpeed); //ë‹¨ì–´ë³„ë¡œ ë³„ë„ì˜ ìŠ¤ë ˆë“œ ë™ì‘
+		thread.start(); //ìŠ¤ë ˆë“œ ì‘ë™
+		gameOn = true; //ê²Œì„ ì§„í–‰ìƒíƒœ trueë¡œ ë³€ê²½
+	}
+	
+	//ì…ë ¥í•œ ë‹¨ì–´ì™€ í˜„ì¬ ë‚´ë ¤ì˜¤ê³ ìˆëŠ” ë‹¨ì–´ì™€ ë¹„êµí•˜ëŠ” ë©”ì†Œë“œ
+	public boolean matchWord(String text) {
+		//ë‹¨ì–´ê°€ ë‚´ë ¤ê°€ëŠ”ì¤‘ì´ê³ , í•´ë‹¹ ë‹¨ì–´ê°€ ì…ë ¥í•œ ë‹¨ì–´ì™€ ê°™ë‹¤ë©´ trueë¦¬í„´
+		//=> ì—¬ëŸ¬ê°œì˜ ë‹¨ì–´ì— ëŒ€í•´ í™•ì¸í•´ì•¼í•˜ë¯€ë¡œ ë°˜ë³µë¬¸ì„ ì‚¬ìš©í•˜ì—¬ ê´€ë¦¬?
+		if(fallingWord != null && fallingWord.equals(text))
+			return true; 
+		else
+			return false;
+	}
+	
+	
+	//ë‹¨ì–´ê°€ ë‚´ë ¤ê°€ëŠ” ìŠ¤ë ˆë“œ
+	class FallingThread extends Thread {
+		private GamePanel panel; 
+		private JLabel label; //ë‹¨ì–´ë¥¼ ê´€ë¦¬í•˜ê¸° ìœ„í•œ ë¼ë²¨
+		private int ballonSpeed;
+		private long delay = 200; //ë‹¨ì–´ê°€ ë‚´ë ¤ê°€ëŠ” ì†ë„?
+		private boolean falling = false; //ë–¨ì–´ì§€ê³  ìˆëŠ”ì§€ ì—¬ë¶€
+		
+		//ë‹¨ì–´ê°€ ë‚´ë ¤ê°€ëŠ”ê²ƒì„ ë³´ì—¬ì£¼ëŠ” íŒ¨ë„ê³¼, ë‹¨ì–´ì— ëŒ€í•œ ì •ë³´ë¥¼ ë°›ëŠ”ë‹¤.
+		public FallingThread(GamePanel panel, JLabel label,int ballonSpeed) {
+			this.panel = panel;
+			this.label = label;
+			this.ballonSpeed = ballonSpeed;
+		}
+		
+		//í˜„ì¬ ë‹¨ì–´ê°€ ë‚´ë ¤ê°€ê³  ìˆëŠ”ì§€ì—¬ë¶€ë¥¼ ë¦¬í„´
+		public boolean isFalling() {
+			return falling; 
+		}	
+				
+		@Override
+		public void run() {
+			falling = true; //ë–¨ì–´ì§€ê³  ìˆëŠ”ì¤‘ìœ¼ë¡œ í‘œì‹œ
+			while(true) {
+				try {
+					Thread.sleep(ballonSpeed);
+					//sleep(delay);
+					int y = label.getY() + 5; //5í”½ì…€ì”© ì•„ë˜ë¡œ ë–¨ì–´ì§
+					//ë‹¨ì–´ì˜ ë†’ì´ê°€ ì™„ì „íˆ ë•…ìœ¼ë¡œ ë–¨ì–´ì§€ë©´
+					if(y >= panel.getHeight()-label.getHeight()) {
+						falling = false; //ìƒíƒœë¥¼ falseë¡œ ë³€ê²½í•˜ê³ 
+						label.setText("");//ë‚´ìš©ì„ ì§€ìš´ë‹¤.
+						panel.stopSelfAndNewGame();
+						break; 
+					}
+					
+					label.setLocation(label.getX(), y);
+					GamePanel.this.repaint();
+				} catch (InterruptedException e) {
+					falling = false;
+					return; //ìŠ¤ë ˆë“œ ì¢…ë£Œ
+				}
+			}
+		}	
+	}
+
 	
 	
 	
-	
-	
-	@Override
-    public void paintComponent(Graphics g) {
-       super.paintComponent(g); //±×·¡ÇÈ ÄÄÆ÷³ÍÆ® ¼³Á¤
-       //¹è°æ ÀÌ¹ÌÁö
-       g.drawImage(gamePanelBackgroundImage, 0, 0, this.getWidth(),this.getHeight(),null); //ÀÌ¹ÌÁö°¡ ±×·ÁÁö´Â ½ÃÁ¡ ¾Ë¸²¹ŞÁö ¾Ê±â
-    }
 	
 }

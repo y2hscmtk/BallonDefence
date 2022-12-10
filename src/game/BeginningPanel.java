@@ -43,7 +43,7 @@ public class BeginningPanel extends JPanel {
     TestFrame tf;
 
     //테스트용
-//    private ImageIcon icon = new ImageIcon("target.jpg");
+//  private ImageIcon icon = new ImageIcon("target.jpg");
 //	private Image img = icon.getImage();
     
     
