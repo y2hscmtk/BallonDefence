@@ -19,6 +19,7 @@ public class GameFrame extends JFrame {
     private WordEditPanel wordEditPanel;
     private RankingPanel rankingPanel;
     private RulePanel rulePanel;
+    private GamePanel gamePanel;
     
     public GameFrame() {
     	//패널 생성 => 자기 자신을 생성자로 넘겨줘서 부모를 설정해줌
@@ -43,7 +44,7 @@ public class GameFrame extends JFrame {
     
     //사용자의 버튼 클릭에 따라 컨텐트펜을 다르게 붙여가며 화면을 변화시킨다.
     public void swapPanel(int type){
-        //입력받은 변수로 보여줄 윈도우 타입을 설정한다
+        //입력받은 변수에 맞춰 패널을 변경한다.
         switch (type){
             case BEGINNING_PANEL:
                 setContentPane(beginningPanel);
