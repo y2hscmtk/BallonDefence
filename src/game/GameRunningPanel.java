@@ -1,12 +1,18 @@
 package game;
 
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 
 
 //게임 패널에서 왼쪽에 붙어서 게임이 진행되는 패널을 제공
@@ -19,18 +25,95 @@ public class GameRunningPanel extends JPanel {
 	private int ballonSpawnTime; //풍선 하나가 생성되는데 걸리는 시간
 	private WordList wordList = new WordList("words.txt"); //단어 리스트 생성
 	private ballonSpawnThread ballonSpawnThread;
+	private boolean gameOn = false;
+	private ControlPanel controlPanel;
+	
+	private StatusPanel statusPanel;
 	
 	
-	private Vector<String> wordVector = new Vector<String>(); //임시로 String벡터 생성
+	private Vector<JLabel> wordVector = new Vector<JLabel>(); //임시로 String벡터 생성
 	//풍선이 내려가는 스레드를 벡터로 관리(해쉬맵을 사용하는 방향도 고려해볼것)
 	
-	public GameRunningPanel() {
+	public GameRunningPanel(StatusPanel statusPanel) {
+		this.statusPanel = statusPanel;
 		setLayout(null);
 		setSize(1000,900);
+		
+		
 		ballonSpawnTime = 1000;
 		ballonSpawnThread = new ballonSpawnThread(ballonSpawnTime);
 		ballonSpawnThread.start(); //풍선 생성 시작 => 생성된 이후 풍선은 아래로 내려가기 시작
+		gameOn = true; //게임 작동중으로 표시
+		
+		//사용자로부터 입력받을 공간 생성
+		controlPanel = new ControlPanel(statusPanel);	
+		add(controlPanel);
+		
 		setVisible(true);
+	}
+	
+	
+	class ControlPanel extends JPanel {
+		private JTextField input = new JTextField(15); //단어을 입력받을 공간 설정
+		private StatusPanel statusPanel;
+		
+		//생성자 
+		public ControlPanel(StatusPanel statusPanel) {
+			this.statusPanel = statusPanel;
+			setLayout(null);
+			//패널이 생성될 위치 조정
+			setBounds(0,800,1000,100); //0,800의 위치에서 800x100크기의 컨트롤 패널 부착
+			setBackground(Color.cyan); //잘 부착되었는지 확인하기 위한 임시색상 지정
+			System.out.println("컨트롤패널호출됨");
+			
+//			this.setLayout(new FlowLayout());
+//			this.setBackground(Color.LIGHT_GRAY);
+			input.setLocation(10,10);
+			input.setSize(800,50);
+			add(input);
+			
+			//엔터키를 쳤을때 이벤트 발생
+			input.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JTextField tf = (JTextField)e.getSource();
+					String text = tf.getText(); //텍스트에 입력된 단어가 무엇인지 가져옴
+
+					System.out.println(text);
+					//단어가 일치한다면 => 해당 단어에 대한 스레드 종료,삭제	
+					if(isMatch(text)) {
+						statusPanel.plusScore(10); //점수 추가
+						System.out.println("단어 일치함");
+						tf.setText(""); //텍스트 상자에 적힌 글자 지우기 => 단어가 없어지는 효과(임시로)
+					}
+					
+//					if(match) {
+//						gamePanel.printResult("성공");
+//						gamePanel.stopGame(); //단어가 일치한다면 
+//						gamePanel.startGame(); //
+//					}
+									
+				}
+			});
+		}
+		
+		
+		//벡터 안에 있는 단어인지 확인하는 메소드
+		@SuppressWarnings("unlikely-arg-type")
+		public boolean isMatch(String text) {
+			for(int i=0;i<wordVector.size();i++) {
+				//백터의 형식은 라벨이므로 라벨에서 단어를 뽑아야함
+				JLabel label = wordVector.get(i);
+				if(label.getText().equals(text)) { //벡터 안의 단어와 일치한다면
+					System.out.println("단어 일치");
+					return true;
+				}
+			}
+			//반복후에도 단어가 없다면
+			System.out.println("단어 불일치");
+			return false;
+		}
 	}
 	
 	//스레드 작성
@@ -62,11 +145,12 @@ public class GameRunningPanel extends JPanel {
 				label = new JLabel(word); //랜덤 단어를 붙여서 생성
 				label.setSize(100,100);
 				
-				int x = (int)(Math.random()*900); //게임러닝 패널의 가로 길이는 1000
+				int x = (int)(Math.random()*950); //게임러닝 패널의 가로 길이는 1000
 				int y = 10; //임시로 10위치에서 생성되도록
-				System.out.println(x+","+y);
+//				System.out.println(x+","+y);
 				label.setLocation(x,y); //해당 위치에 생성
 				add(label); //패널에 붙이기
+				wordVector.add(label);//벡터에 단어 삽입
 				
 				//풍선에 대한 위치가 변경되도록 하는 스레드 작성
 				//풍선이 떨어지게 하는 스레드에는 풍선이 떨어지는 속도와, 해당 라벨에 대한 참조를 넘겨줌

@@ -40,11 +40,10 @@ public class BeginningPanel extends JPanel {
     //단어 편집 버튼(레이블) 이미지
     private ImageIcon editLabelIcon = new ImageIcon("goEdit.png");
     //private Image EditButtonImage = editLabelIcon.getImage();
+    
+    
     TestFrame tf;
-
-    //테스트용
-//  private ImageIcon icon = new ImageIcon("target.jpg");
-//	private Image img = icon.getImage();
+    
     
     
     public BeginningPanel(GameFrame parent) {
