@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 //게임을 진행하는 공간
@@ -15,9 +16,15 @@ import javax.swing.JPanel;
 //점수, 캐릭터의 체력, 사용중인 무기를 보여주는 패널을 띄우고
 //왼쪽에는 게임을 진행하는 패널을 띄운다.
 public class GamePanel extends JPanel{
-	//이미지 정보
+	//배경 이미지
 	private ImageIcon bgImageicon = new ImageIcon("gamePanelBackgroundImage.png");
     private Image gamePanelBackgroundImage = bgImageicon.getImage();
+    //캐릭터 이미지(우측 상단에 붙일)
+    private ImageIcon sangsangBugi = new ImageIcon("character0.png");
+    private ImageIcon hansungNyangI = new ImageIcon("character1.png");
+    private ImageIcon kkukkuKkakka = new ImageIcon("character2.png");
+    private ImageIcon selectedCharacter = null; //선택된 이미지를 가리키도록
+    
 	//캐릭터 특성, 무기 특성, 풍선 속도
 	private int characterType; //사용자가 선택한 캐릭터가 무엇인지를 저장
 	private int characterHealth;//캐릭터의 체력
@@ -44,17 +51,26 @@ public class GamePanel extends JPanel{
 		//0번은 상상부기, 1번은 한성냥이, 3번은 꾸꾸와까까
 		switch(characterType) {
 		case 0:
+			selectedCharacter = sangsangBugi; //상상부기 이미지 선택
 			characterHealth = 150; //상상부기의 캐릭터 특성; 체력이 많다(단단하다)
 			break;
 		case 1:
+			selectedCharacter = hansungNyangI; //한성냥이 이미지 선택
 			characterHealth = 90;
 			ballonSpeed = 7; //한성냥이의 캐릭터 특성; 풍선을 느리게떨어진다(동체시력)
 			break;
 		case 2:
+			selectedCharacter =  kkukkuKkakka; //꾸꾸까까 이미지 선택
 			characterHealth = 80;
 			luckyChance = true; //꾸꾸까까의 캐릭터 특성; 일정확률~
 			break;
 		}
+		
+		//설정된 정보들을 바탕으로 이미지와 정보가 우측에 보이도록
+		JLabel character = new JLabel(selectedCharacter);
+		character.setSize(selectedCharacter.getIconWidth(),selectedCharacter.getIconHeight());
+		character.setLocation(1110,140);
+		add(character);
 		
 		//테스트 확인용 잘 입력되었나 확인용
 		System.out.println("선택된 캐릭터 : " + characterType + "캐릭터 체력 : " + characterHealth + "풍선 속도: " + ballonSpeed);
@@ -63,6 +79,13 @@ public class GamePanel extends JPanel{
 		//풍선이 떨어지게 하는 스레드 실행
 		setVisible(true);
 	}
+	
+	
+	//풍선이 떨어지는 스레드 작성
+	
+	
+	
+	
 	
 	@Override
     public void paintComponent(Graphics g) {
