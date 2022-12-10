@@ -6,7 +6,7 @@ import java.awt.*;
 //여러 패널을 돌려가며 사용자에게 게임을 조작할수 있는 프레임을 제공
 //실질적인 조작은 패널에서 시행함
 public class GameFrame extends JFrame {
-	//사용자의 버튼 클릭에 따라 패널을 갈아끼며 다양한 상황을 볼수 있음
+	//사용자의 버튼 클릭에 따라 패널을 갈아끼며 다양한 메뉴를 볼 수 있도록
     public static final int BEGINNING_PANEL = 0; //시작 패널
     public static final int SELECT_PANEL = 1; //게임 패널
     public static final int RULE_PANEL = 2; //룰 설명 패널
@@ -14,6 +14,7 @@ public class GameFrame extends JFrame {
     public static final int RANKING_PANEL = 4; //랭킹 보기 패널
     
     //swapPanel함수를 통해 패널을 갈아낄수 있도록 하기 위함
+    //생성은 GameFrame의 생성자가 불려진 이후
     private SelectPanel selectPanel;
     private BeginningPanel beginningPanel;
     private WordEditPanel wordEditPanel;
@@ -31,7 +32,7 @@ public class GameFrame extends JFrame {
         
         setSize(1500, 900);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //x버튼을 눌러 프로그램을 종료하도록
-        //게임이 생성될 위치를 지정
+        //프레임이 생성될 위치를 지정(게임 화면 위치)
         Dimension frameSize = this.getSize();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         // (모니터화면 가로 - 프레임화면 가로) / 2, (모니터화면 세로 - 프레임화면 세로) / 2

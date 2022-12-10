@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+
 //아이디를 입력하고 캐릭터를 선택하는 창 => 아이디 입력은 게임 끝나고 받는걸로 변경
 //사용자의 입력에 맞춰서 게임을 생성한다.
 public class SelectPanel extends JPanel {
@@ -26,6 +27,24 @@ public class SelectPanel extends JPanel {
     
     private int selectType; //사용자가 선택한 캐릭터 저장
     private boolean flag = false; //사용자가 캐릭터 선택을 했는지 확인하는 용도
+    
+    //캐릭터 버튼을 클릭했을때 발생할 이벤트
+    //생성자로 선택한 캐릭터 타입을 입력받아서 게임패널을 생성후 패널을 변경한다.
+    private class CharacterSelectEvent extends MouseAdapter{
+    	private int characterType;
+    	
+    	public CharacterSelectEvent(int characterType) {
+    		this.characterType = characterType;
+    	}
+    	
+    	@Override
+    	public void mouseClicked(MouseEvent e) {
+    		GamePanel game = new GamePanel(characterType); //상상부기(코드0)로 게임 생성
+    		parent.setContentPane(game);
+    		//parent.swapPanel(GameFrame.BEGINNING_PANEL);//부모의 컨텐트팬을 변경하도록 함수 호출
+    	}
+    }
+    
     
     public SelectPanel(GameFrame parent) {
         this.parent = parent;//받은 부모를 전역변수로 저장한다
@@ -58,42 +77,51 @@ public class SelectPanel extends JPanel {
         //캐릭터 선택창 => 한 캐릭터가 선택되었다면 다시 클릭하기 전까지, 다른 캐릭터는 선택할수 없도록 해야함
         //캐릭터 선택 이후, 다시 해당 캐릭터를 클릭하였다면 선택정보가 리셋되고, 다른 캐릭터를 선택할수 있도록
         
+        
         //상상부기 이미지버튼
         JLabel sangsangBugiLabel = new JLabel(sangsangBugiIcon);
         sangsangBugiLabel.setSize(sangsangBugiIcon.getIconWidth(),sangsangBugiIcon.getIconHeight());
         sangsangBugiLabel.setLocation(310, 270);
-        sangsangBugiLabel.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		new GamePanel(0);
-        		//parent.swapPanel(GameFrame.BEGINNING_PANEL);//부모의 컨텐트팬을 변경하도록 함수 호출
-        	}
-        });
+        sangsangBugiLabel.addMouseListener(new CharacterSelectEvent(0));
         add(sangsangBugiLabel);
+        		
+//        		MouseAdapter() {
+//        	@Override
+//        	public void mouseClicked(MouseEvent e) {
+//        		GamePanel game = new GamePanel(0); //상상부기(코드0)로 게임 생성
+//        		parent.setContentPane(game);
+//        		//parent.swapPanel(GameFrame.BEGINNING_PANEL);//부모의 컨텐트팬을 변경하도록 함수 호출
+//        	}
+//        });
+        
         
         //한성냥이 이미지버튼
         JLabel hansungNyanILabel = new JLabel(hansungNyanIicon);
         hansungNyanILabel.setSize(hansungNyanIicon.getIconWidth(),hansungNyanIicon.getIconHeight());
         hansungNyanILabel.setLocation(610, 270);
-        hansungNyanILabel.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		//parent.swapPanel(GameFrame.BEGINNING_PANEL);//부모의 컨텐트팬을 변경하도록 함수 호출
-        	}
-        });
+        hansungNyanILabel.addMouseListener(new CharacterSelectEvent(1));
         add(hansungNyanILabel);
+//        	@Override
+//        	public void mouseClicked(MouseEvent e) {
+//        		GamePanel game = new GamePanel(0); //상상부기(코드0)로 게임 생성
+//        		parent.setContentPane(game);//부모의 컨텐트팬을 변경하도록 함수 호출
+//        		//parent.swapPanel(GameFrame.BEGINNING_PANE
+//        	}
+//        });
+        
 
         //꾸꾸까가 이미지버튼
         JLabel kkukkuKkakkaLabel = new JLabel(kkukkukkakkaIcon);
         kkukkuKkakkaLabel.setSize(kkukkukkakkaIcon.getIconWidth(),kkukkukkakkaIcon.getIconHeight());
         kkukkuKkakkaLabel.setLocation(910, 270);
-        kkukkuKkakkaLabel.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		//parent.swapPanel(GameFrame.BEGINNING_PANEL);//부모의 컨텐트팬을 변경하도록 함수 호출
-        	}
-        });
+        kkukkuKkakkaLabel.addMouseListener(new CharacterSelectEvent(2)); 
         add(kkukkuKkakkaLabel);
+//        	@Override
+//        	public void mouseClicked(MouseEvent e) {
+//        		//parent.swapPanel(GameFrame.BEGINNING_PANEL);//부모의 컨텐트팬을 변경하도록 함수 호출
+//        	}
+//        });
+//        
 
         
         JButton startButton = new JButton("게임시작"); 
