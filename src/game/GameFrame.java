@@ -56,7 +56,7 @@ public class GameFrame extends JFrame {
         this.setResizable(false); //크기 조절 불가능하게
         setContentPane(beginningPanel); //컨텐트펜을 시작패널로 설정
         
-        musicThread = new MusicThread("openingMusic.wav"); //시작화면 음악 삽입
+        musicThread = new MusicThread("openningMusic.wav"); //시작화면 음악 삽입
         musicThread.start();
         
         setVisible(true);
@@ -75,23 +75,8 @@ public class GameFrame extends JFrame {
     	public void musicStop() {
     		clip.stop(); //오디오 재생 중단
     	}
-    	
-//    	//현재 작동중이던 음악을 멈추고 새로운 음악으로 변경
-//    	public void changeMusic(String path) {
-//    		clip.stop();
-//    		this.path = path;
-//    		//음악 변경후 1초 대기
-//    		try {
-//				Thread.sleep(1000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//    		System.out.println("현재 음악 : "+path);
-//    		clip.start(); //음악을 변경하고 다시 시작
-//    	}
-    	
-    	
+  
+  	
     	@Override
     	public void run() {
     		try{
@@ -104,15 +89,12 @@ public class GameFrame extends JFrame {
 	        	System.out.println("불러오기 오류");
     	    }
     	}
-    	//음악을 일시정지 시키는 스레드
-    	
-    	//음악을 중지시키는 스레드
     	
     }
     
+   
     
-    
-    //사용자의 버튼 클릭에 따라 컨텐트펜을 다르게 붙여가며 화면을 변화시킨다.
+    //사용자의 버튼 클릭에 따라 컨텐트펜을 다르게 붙여가며 화면을 변화시키는 메소드
     public void swapPanel(int type){
         //입력받은 변수에 맞춰 패널을 변경한다.
         switch (type){
@@ -130,7 +112,6 @@ public class GameFrame extends JFrame {
                 break;
             case RANKING_PANEL:
             	setContentPane(rankingPanel);
-//            	rankingPanel.showTopTen(rankingPanel); //패널에 붙이기
                 break;
         }
     }

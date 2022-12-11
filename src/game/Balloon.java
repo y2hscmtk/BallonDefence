@@ -79,7 +79,7 @@ public class Balloon extends JLayeredPane{
 	
 	
 	public Balloon(int ballonType,String text,int fallingSpeed, StatusPanel statusPanel){
-		System.out.println("새 풍선 생성됨");
+//		System.out.println("새 풍선 생성됨");
 		setLayout(null);
 		this.ballonType = ballonType; //풍선 타입을 저장
 		this.statusPanel = statusPanel; //래퍼랜스 가져오기
@@ -161,7 +161,7 @@ public class Balloon extends JLayeredPane{
 		
 		//풍선이 떨어지는 속도 지정
 		public BalloonFallingThread(Balloon balloon,int fallingSpeed) {
-			System.out.println("풍선 속도 : "+fallingSpeed);
+//			System.out.println("풍선 속도 : "+fallingSpeed);
 			
 			this.fallingSpeed = fallingSpeed; //떨어지는 속도 지정(sleep시간)
 			this.balloon = balloon; //풍선 참조가져오기

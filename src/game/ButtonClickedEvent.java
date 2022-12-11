@@ -34,10 +34,11 @@ public class ButtonClickedEvent extends MouseAdapter{
 	}
 	
 	
-	//기본 생성자
-	public ButtonClickedEvent() {
-		
-	}
+//	//소리버튼에 사용
+//	public ButtonClickedEvent(ImageIcon enteredIcon,ImageIcon presentIcon) {
+//		this.enteredIcon = enteredIcon;
+//		this.presentIcon = presentIcon;
+//	}
 	
 	
 	@Override //마우스가 컴포넌트 위에 올라갈때의 이벤트
@@ -61,11 +62,16 @@ public class ButtonClickedEvent extends MouseAdapter{
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {	
+//		if(isMusicButton)
+//			System.out.println("뮤직버튼");
+//		else //뮤직버튼이 아니면 패널을 변경하는 모드로
 		parent.swapPanel(type);
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
+//		JLabel label = (JLabel)(e.getComponent()); //이벤트가 발생한 라벨을 가져옴
+//		label.setIcon(presentIcon); //원래 이미지로 변경
 		//버튼이 눌려진 순간 소리가 나도록
 		try {
 			clip = AudioSystem.getClip();

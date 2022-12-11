@@ -1,9 +1,9 @@
 package game;
 
 import java.awt.Color;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -25,6 +25,8 @@ public class StatusPanel extends JPanel{
 	private int score = 0; //점수를 저장할 변수
 	private JLabel scoreLabel = new JLabel(Integer.toString(score));
 	private int coin = 0; //코인을 저장할 변수 => 상점에 이용
+	
+	private Vector<JLabel> healthVector;
 	
 	
 	//선택한 캐릭터가 무엇인지에 대한 정보
@@ -79,6 +81,20 @@ public class StatusPanel extends JPanel{
 			selectedCharacater = kkukkuKkakka;
 			break;
 		}
+		
+		System.out.println("체력바의 개수"+characterHealth/10);
+//		healthVector.add
+//		healthBox = new JLabel[characterHealth/10]; //체력10당 막대기 하나씩 생성
+		
+		//체력 바 화면에 그리기
+//		for(int i=0;i<healthBox.length;i++) {
+//			healthBox[i].setSize(10,10);
+//			healthBox[i].setLocation(0,0);
+//			add(healthBox[i]);
+////			healthBox
+//		}
+		
+		
 		healthLabel = new JLabel(Integer.toString(characterHealth));
 		healthLabel.setSize(200,200);
 		healthLabel.setLocation(65,500);
@@ -109,7 +125,6 @@ public class StatusPanel extends JPanel{
 	//점수를 추가하는 메소드
 	public void plusScore(int pScore) {
 		score += pScore; //점수 추가
-		System.out.println("현재 점수 : "+score);
 		//변경된 점수 표시
 		scoreLabel.setText(Integer.toString(score));
 	}	

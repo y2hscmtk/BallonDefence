@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,8 +31,14 @@ import javax.swing.JTextField;
 //게임 패널에서 왼쪽에 붙어서 게임이 진행되는 패널을 제공
 public class GameRunningPanel extends JPanel {
 	//게임에 대한 특성
+	//라운드마다 생성될 풍선의 최대 개수 => 해당 풍선을 모두 지우면 다음 라운드로 넘어가도록
+	private static final int ROUND1BALLONCOUNT = 10; //1라운드에는 10개의 풍선
+	private static final int ROUND2BALLONCOUNT = 20; //2라운드에는 20개의 풍선
+	private static final int ROUND3BALLONCOUNT = 30; //3라운드에는 30개의 풍선
+	
 	private int weaponPower; //사용중인 무기의 공격력
 	private int characterType; //사용자가 선택한 캐릭터가 무엇인지를 저장
+	
 	//풍선이 떨어지는 속도 => 캐릭터 특성에 따라 달라짐
 	private int ballonSpeed;//풍선이 내려오는 시간 => 딜레이 되는 시간(밀리초단위)
 	//꾸꾸까까가 선택될경우에 true로 변경
@@ -42,6 +49,7 @@ public class GameRunningPanel extends JPanel {
 	//배경 이미지
 	private ImageIcon bgImageicon = new ImageIcon("gamePanelBackgroundImage.png");
 	private Image gamePanelBackgroundImage = bgImageicon.getImage();
+	
 	
 	
 	private int ballonSpawnTime; //풍선 하나가 생성되는데 걸리는 시간
@@ -100,7 +108,9 @@ public class GameRunningPanel extends JPanel {
 		add(stopBalloon);
 		
 		ballonSpawnTime = 2000; //풍선이 생성되는데 걸리는 시간을 1초로 지정
-		ballonSpawnThread = new BallonSpawnThread(ballonSpawnTime,ballonSpeed,statusPanel);
+		
+		//1라운드로 풍선 생성 스레드 시작
+		ballonSpawnThread = new BallonSpawnThread(ballonSpawnTime,ballonSpeed,statusPanel,1);
 		ballonSpawnThread.start(); //풍선 생성 시작 => 생성된 이후 풍선은 아래로 내려가기 시작(풍선 객체 내부 스레드)
 		gameOn = true; //게임 작동중으로 표시
 		
@@ -114,12 +124,10 @@ public class GameRunningPanel extends JPanel {
 	}
 	
 	
-	
-	
-	
 	//게임을 관리하는 스레드 작성 => 라운드 관리, 게임오버 관리
 	//게임러닝패널 클래스 안에 작성하여, 정보들을 관리할수 있도록
 	private class GameMangeThread extends Thread{
+		private int ballonCount = 0;//현재 생성된 풍선의 개수를 저장할 변수
 		
 		//게임의 진행상황에 맞춰 게임을 관리
 		@Override
@@ -149,6 +157,7 @@ public class GameRunningPanel extends JPanel {
 	
 	//스레드 작성
 	//일정 시간마다 풍선을 생성하고 해당 풍선이 내려가도록 하는 스레드를 별도로 붙인다.
+	//라운드에 따라서 풍선의 색깔별 확률을 부여한다.
 	private class BallonSpawnThread extends Thread{
 		private int spawnSpeed; //풍선이 생성되는 속도 => 라운드마다 달라지도록
 		private int percentage; //풍선생성 확률 => 라운드에 따라 달라지도록
@@ -157,6 +166,11 @@ public class GameRunningPanel extends JPanel {
 		private int fallingSpeed; //떨어지는 시간
 		private int x; //풍선이 생성될 가로 위치를 지정
 		
+		private int gameLevel = 3; //게임의 현재 라운드를 기록
+		//각 색깔풍선의 생성확률
+		private int redBalloonPercentage;
+		private int blueBalloonPercentage;
+		//노랑풍선은 그 이외의 확률이므로 별도 지정x
 		private int BallonCount;
 		
 		//풍선이 어느정도 균등한 위치에서 생성되도록 하기위함
@@ -167,7 +181,35 @@ public class GameRunningPanel extends JPanel {
 		
 		//풍선 생성시 스테이터스창에 대한 래퍼랜스를 넘겨줘야함
 		//=>풍선이 떨어지는 스레드에서 풍선이 땅으로 떨어지면 스테이터스창에 영향을 가할수 있도록
-		public BallonSpawnThread(int spawnSpeed,int fallingSpeed,StatusPanel statusPanel) {
+		public BallonSpawnThread(int spawnSpeed,int fallingSpeed,StatusPanel statusPanel,int gameLevel) {
+			this.gameLevel = gameLevel; //게임 레벨
+//			gameLevel = 3;
+			//레벨에 맞춰 색깔풍선 확률과, 생성될 풍선의 수 지정
+			switch(gameLevel) {
+			case 1:
+				BallonCount = ROUND1BALLONCOUNT; //10개
+				//빨강풍선 : 파랑풍선 = 8 : 2 비율설정
+				redBalloonPercentage = 80;
+				blueBalloonPercentage = 20;
+				//노랑풍선은 그 이외의 확률
+				break;
+			case 2:
+				BallonCount = ROUND2BALLONCOUNT; //20개
+				//빨강풍선 : 파랑풍선 = 5 : 3 : 2 비율설정
+				redBalloonPercentage = 50;
+				blueBalloonPercentage = 30;
+				//노랑풍선은 그 이외의 확률
+				break;
+			case 3:
+				BallonCount = ROUND3BALLONCOUNT; //30개
+				//빨강풍선 : 파랑풍선 : 노랑풍선 = 4 : 2 : 3 비율 설정
+				redBalloonPercentage = 40;
+				blueBalloonPercentage = 20;
+				//노랑풍선은 그 이외의 확률
+				break;
+			}
+			
+			
 			this.fallingSpeed = fallingSpeed;
 			this.spawnSpeed = spawnSpeed;
 			this.statusPanel = statusPanel;
@@ -175,7 +217,12 @@ public class GameRunningPanel extends JPanel {
 		
 		@Override
 		public void run() {
-			while(true) {
+			
+//			while(true) {
+//				
+//			}
+			//원하는 순자만큼 풍선을 생성하도록
+			for(int i=0;i<BallonCount;i++) {
 				int position;
 				word = wordList.getWord(); //랜덤 단어 추출
 				//랜덤한 풍선에 대한 확률조정
@@ -195,15 +242,25 @@ public class GameRunningPanel extends JPanel {
 				}	
 				
 				//포지션을 통해 풍선의 x좌표 지정
-				x = (int)(Math.random()*100) + (70*position);
-
+				x = (int)(Math.random()*100) + (70*position); //이전에 생성되었던 2곳의 위치에 생성되지않도록
 				//풍선이 생성될 위치 결정
-				
 				int y = -100; //임시로 0위치에서 생성되도록
+				
+				//풍선 확률 조정
+				int random = (int)(Math.random()*100)+1; //0~100까지의 난수 생성
+				int ballonType; //풍선이 생성될 타입 지정
+				System.out.println("난수 : "+random);
+				if(0<=random&&random<=redBalloonPercentage)
+					ballonType = 0; //0~80사이의 난수 생성시 풍선 타입 빨강색지정
+				else if(redBalloonPercentage<random&&random<=redBalloonPercentage+blueBalloonPercentage)
+					ballonType = 1;
+				else //나머지는 노랑색
+					ballonType = 2; 
+				
 				
 				//풍선 생성 => (풍선 타입, 단어)
 				//풍선 생성시 스테이터스 패널에 대한 참조를 넘김 => 스테이터스 패널에 영향을 가할수 있도록
-				balloon = new Balloon(2,word,fallingSpeed,statusPanel);
+				balloon = new Balloon(ballonType,word,fallingSpeed,statusPanel);
 				balloon.setVisible(true);
 				balloon.setSize(300,300);
 				balloon.setLocation(x,y);
@@ -235,6 +292,12 @@ public class GameRunningPanel extends JPanel {
 					break; //스레드 종료
 				}
 			}
+			
+			
+			System.out.println("스레드 종료");
+//			while(true) {
+//				
+//			}
 		}
 	}
 	
@@ -279,9 +342,11 @@ public class GameRunningPanel extends JPanel {
 							System.out.println("오류!");
 						}
 						clip.start(); // 버튼을 클릭했을때 소리가 나도록
-						statusPanel.plusScore(10); //점수 추가
 						
-						System.out.println("단어 일치함");
+						//풍선의 체력이 0이되었을때만 점수추가
+//						statusPanel.plusScore(10); //점수 추가
+						
+//						System.out.println("단어 일치함");
 						
 					}
 					else { //정답이 아닐시 => 체력을 5깎음
@@ -308,7 +373,7 @@ public class GameRunningPanel extends JPanel {
 				
 				Balloon balloon = balloonVector.get(i);
 				if(balloon.getWord().equals(text)) { //벡터 안의 단어와 일치한다면
-					System.out.println("단어 일치");
+//					System.out.println("단어 일치");
 					
 					if(luckyChance) { //럭키찬스 효과가 활성화 되어있다면
 						//50퍼센트의 확률로 추가 공격을 가한다.
@@ -319,7 +384,7 @@ public class GameRunningPanel extends JPanel {
 						if(random%2!=0) {
 							//풍선에 추가 공격을 가한다.(꼬꼬가 공격하면 꾸꾸도 공격)
 							System.out.println("추가공격!");
-							balloon.getDamage(weaponPower*2);
+							balloon.getDamage(weaponPower+1);
 						}
 						else
 							balloon.getDamage(weaponPower); 
@@ -333,6 +398,11 @@ public class GameRunningPanel extends JPanel {
 					
 					//풍선의 체력이 0이하가 되면 풍선을 삭제한다.
 					if(ballonHealth<=0) {
+						//풍선의 체력이 0이하가되면 점수 추가
+						
+						//풍선 종류별로 차등한 점수를 부여하도록
+						//빨강풍선(0+100점), 파랑풍선(100+100점), 노랑풍선(200+100점)
+						statusPanel.plusScore(balloon.getBalloonType()*100+100);
 						balloon.setVisible(false); //안보이도록 처리
 						balloon.stopFallingThread(); //풍선 멈추기
 						balloonVector.remove(balloon); //벡터에서 풍선제거
@@ -357,10 +427,10 @@ public class GameRunningPanel extends JPanel {
 	}
 	
 	//게임러닝패널의 백그라운드 이미지 그리기
-//	@Override
-//    public void paintComponent(Graphics g) {
-//       super.paintComponent(g); //그래픽 컴포넌트 설정
-//       //배경 이미지
-//       g.drawImage(gamePanelBackgroundImage, 0, 0, this.getWidth(),this.getHeight(),null); //이미지가 그려지는 시점 알림받지 않기
-//    }
+	@Override
+    public void paintComponent(Graphics g) {
+       super.paintComponent(g); //그래픽 컴포넌트 설정
+       //배경 이미지
+       g.drawImage(gamePanelBackgroundImage, 0, 0, this.getWidth(),this.getHeight(),null); //이미지가 그려지는 시점 알림받지 않기
+    }
 }

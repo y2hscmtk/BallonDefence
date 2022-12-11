@@ -132,11 +132,11 @@ public class RankingPanel extends JPanel {
 		List<String> keySet = new ArrayList<>(playerMap.keySet());
 		int index = 0;
 
-        //점수를 기준으로 오름차순 정렬
+        //점수를 기준으로 내림차순 정렬(상위 10명에 사용)
         keySet.sort(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
-                return playerMap.get(o1).compareTo(playerMap.get(o2));
+                return playerMap.get(o2).compareTo(playerMap.get(o1));
             }
         });
 

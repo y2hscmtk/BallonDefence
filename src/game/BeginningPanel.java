@@ -42,6 +42,9 @@ public class BeginningPanel extends JPanel {
     private ImageIcon editLabelIcon = new ImageIcon("goEdit.png");
     //private Image EditButtonImage = editLabelIcon.getImage();
     
+    private ImageIcon soundLabelIcon = new ImageIcon("music.png");
+    private ImageIcon soundLabelMuteIcon = new ImageIcon("mute.png");
+    
     
     TestFrame tf;
     
@@ -52,12 +55,19 @@ public class BeginningPanel extends JPanel {
         
         setLayout(null); //배치 관리자 제거
         
+        //소리 조작 버튼
+        JLabel soundButtonLabel = new JLabel(soundLabelIcon);
+        soundButtonLabel.setSize(soundLabelIcon.getIconWidth(),soundLabelIcon.getIconHeight());
+        soundButtonLabel.setLocation(20, 20);
+        soundButtonLabel.addMouseListener(new ButtonClickedEvent(parent, GameFrame.SELECT_PANEL,soundLabelMuteIcon,soundLabelIcon));
+        add(soundButtonLabel);
+        
         //4개의 버튼을 달고 있는 panel을 생성
         //1. 게임 시작 버튼
         //=> 버튼을 누르면 프레임의 패널을 선택 패널로 이동, 기존 패널은 프레임에서 제거
         JLabel startButtonLabel = new JLabel(selectLabelicon);
         startButtonLabel.setSize(selectLabelicon.getIconWidth(),selectLabelicon.getIconHeight());
-        startButtonLabel.setLocation(398, 211);
+        startButtonLabel.setLocation(398, 200);
         startButtonLabel.addMouseListener(new ButtonClickedEvent(parent, GameFrame.SELECT_PANEL,selectLabelEnteredicon,selectLabelicon));
         add(startButtonLabel);		
         
@@ -65,7 +75,7 @@ public class BeginningPanel extends JPanel {
         //=> 버튼을 누르면 프레임의 패널을 규칙설명패널로 이동, 기존 패널은 프레임에서 제거
         JLabel ruleButtonLabel = new JLabel(ruleLabelIcon);
         ruleButtonLabel.setSize(ruleLabelIcon.getIconWidth(),ruleLabelIcon.getIconHeight());
-        ruleButtonLabel.setLocation(398, 358);
+        ruleButtonLabel.setLocation(398, 328);
         ruleButtonLabel.addMouseListener(new ButtonClickedEvent(parent, GameFrame.RULE_PANEL));
         add(ruleButtonLabel);
 
@@ -73,7 +83,7 @@ public class BeginningPanel extends JPanel {
         //=> 버튼을 누르면 프레임의 패널을 단어편집패널로 이동, 기존 패널은 프레임에서 제거
         JLabel wordEditButtonLabel = new JLabel(editLabelIcon);
         wordEditButtonLabel.setSize(editLabelIcon.getIconWidth(),editLabelIcon.getIconHeight());
-        wordEditButtonLabel.setLocation(398, 498);
+        wordEditButtonLabel.setLocation(398, 458);
         wordEditButtonLabel.addMouseListener(new ButtonClickedEvent(parent, GameFrame.EDIT_PANEL));
         add(wordEditButtonLabel);
 
@@ -81,7 +91,7 @@ public class BeginningPanel extends JPanel {
         //=> 버튼을 누르면 프레임의 패널을 랭킹패널로 이동, 기존 패널은 프레임에서 제거
         JLabel showLankingButtonLabel = new JLabel(langkingLabelIcon);
         showLankingButtonLabel.setSize(editLabelIcon.getIconWidth(),editLabelIcon.getIconHeight());
-        showLankingButtonLabel.setLocation(398, 643);
+        showLankingButtonLabel.setLocation(398, 593);
         showLankingButtonLabel.addMouseListener(new ButtonClickedEvent(parent, GameFrame.RANKING_PANEL));
         add(showLankingButtonLabel);
 
