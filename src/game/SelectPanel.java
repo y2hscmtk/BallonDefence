@@ -18,6 +18,8 @@ import javax.swing.JTextField;
 public class SelectPanel extends JPanel {
     private GameFrame parent;//부모를 변수로 저장
     
+    private ImageIcon homeButtonIcon = new ImageIcon("back.png");
+    
     private ImageIcon sangsangBugiIcon = new ImageIcon("sangsangbugi.png");  //상상부기 아이콘
     private ImageIcon hansungNyanIicon = new ImageIcon("hansungNyang-i.png"); //한성냥이 아이콘
     private ImageIcon kkokkokkukkuIcon = new ImageIcon("kkokkokkukku.png"); //꼬꼬&꾸꾸 아이콘
@@ -54,16 +56,13 @@ public class SelectPanel extends JPanel {
         //setBounds(0, 0, 1500,900);
 
         //뒤로가기 버튼 => 다시 4가지 메뉴 창으로 되돌아간다.
-        JButton backButton = new JButton("뒤로가기");
-        backButton.setSize(200,200);
-        backButton.setLocation(10,25);
-        backButton.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		parent.swapPanel(GameFrame.BEGINNING_PANEL);//부모의 컨텐트팬을 변경하기 위해 함수 호출
-        	}
-        });
-        add(backButton);
+        //홈 버튼
+  		JButton backButton = new JButton(homeButtonIcon);
+  		backButton.setSize(200,200);
+  		backButton.setLocation(1200,50);
+  		backButton.addMouseListener(new ButtonClickedEvent(parent,parent.BEGINNING_PANEL));
+  		add(backButton);
+        
         
         //사용자로부터 입력을 받는 부분
         //텍스트 박스와 레이블 3개가 필요(상상부기, 한성냥이, 꼬꼬&꾸꾸 캐릭터 선택창)

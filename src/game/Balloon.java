@@ -207,7 +207,7 @@ public class Balloon extends JLayeredPane{
 				
 				int x = balloon.getX();
 				int y = balloon.getY()+10;//10픽셀씩 아래로 이동
-				//일정 높이 이하로 떨어지면 풍선 객체 삭제
+				//일정 높이 이하로 떨어지면 풍선 객체 삭제c
 				if(y>=500) {
 					setVisible(false);
 					//체력을 깎아야함

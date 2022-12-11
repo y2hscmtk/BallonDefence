@@ -20,8 +20,6 @@ public class ButtonClickedEvent extends MouseAdapter{
 		this.parent = parent;
 		this.type = type; //사용자로부터 이동할 메뉴를 생성자로 입력받음
 		//버튼클릭 효과음 실행
-		
-		
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {	
