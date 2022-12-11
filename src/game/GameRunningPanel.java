@@ -98,8 +98,9 @@ public class GameRunningPanel extends JPanel {
 		setVisible(true);
 	}
 	
-	
-	
+	//라운드 스레드
+	//1분이 지나면 현재 작동중인 모든 스레드를 멈추고, 풍선 벡터를 비운뒤
+	//새로운 난이도를 지정하여 BallonSpawnThread를 다시 작동시킨다.
 	
 	//스레드 작성
 	//일정 시간마다 풍선을 생성하고 해당 풍선이 내려가도록 하는 스레드를 별도로 붙인다.
@@ -146,7 +147,7 @@ public class GameRunningPanel extends JPanel {
 				
 				//풍선이 생성될 위치 결정
 				
-				int y = 0; //임시로 0위치에서 생성되도록
+				int y = -100; //임시로 0위치에서 생성되도록
 				
 				//풍선 생성 => (풍선 타입, 단어)
 				balloon = new Balloon(1,word,fallingSpeed);
@@ -247,10 +248,11 @@ public class GameRunningPanel extends JPanel {
 		}
 	}
 	
-	@Override
-    public void paintComponent(Graphics g) {
-       super.paintComponent(g); //그래픽 컴포넌트 설정
-       //배경 이미지
-       g.drawImage(gamePanelBackgroundImage, 0, 0, this.getWidth(),this.getHeight(),null); //이미지가 그려지는 시점 알림받지 않기
-    }
+	//게임러닝패널의 백그라운드 이미지 그리기
+//	@Override
+//    public void paintComponent(Graphics g) {
+//       super.paintComponent(g); //그래픽 컴포넌트 설정
+//       //배경 이미지
+//       g.drawImage(gamePanelBackgroundImage, 0, 0, this.getWidth(),this.getHeight(),null); //이미지가 그려지는 시점 알림받지 않기
+//    }
 }

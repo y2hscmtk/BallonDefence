@@ -23,6 +23,8 @@ public class GameFrame extends JFrame {
     private GamePanel gamePanel;
     
     public GameFrame() {
+    	setTitle("BallonDefense");
+    	
     	//패널 생성 => 자기 자신을 생성자로 넘겨줘서 부모를 설정해줌
     	selectPanel = new SelectPanel(this);
         beginningPanel = new BeginningPanel(this);

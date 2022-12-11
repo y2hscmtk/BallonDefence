@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 
+//단어 편집 패널
 public class WordEditPanel extends JPanel{
 	private GameFrame parent;//부모 변수
 	
