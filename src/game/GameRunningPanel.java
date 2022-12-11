@@ -183,7 +183,7 @@ public class GameRunningPanel extends JPanel {
 		//=>풍선이 떨어지는 스레드에서 풍선이 땅으로 떨어지면 스테이터스창에 영향을 가할수 있도록
 		public BallonSpawnThread(int spawnSpeed,int fallingSpeed,StatusPanel statusPanel,int gameLevel) {
 			this.gameLevel = gameLevel; //게임 레벨
-//			gameLevel = 3;
+			gameLevel = 3;
 			//레벨에 맞춰 색깔풍선 확률과, 생성될 풍선의 수 지정
 			switch(gameLevel) {
 			case 1:
