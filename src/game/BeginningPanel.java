@@ -30,6 +30,7 @@ public class BeginningPanel extends JPanel {
     private Image backgroundPanelImage = bgImageicon.getImage();
     //게임 시작 버튼(레이블) 이미지
     private ImageIcon selectLabelicon = new ImageIcon("goGame.png");
+    private ImageIcon selectLabelEnteredicon = new ImageIcon("goGameEntered.png");
     //private Image gameStartLabelImage = selectLabelicon.getImage();
     //게임 설명 버튼(레이블) 이미지
     private ImageIcon ruleLabelIcon = new ImageIcon("goRule.png");
@@ -57,7 +58,7 @@ public class BeginningPanel extends JPanel {
         JLabel startButtonLabel = new JLabel(selectLabelicon);
         startButtonLabel.setSize(selectLabelicon.getIconWidth(),selectLabelicon.getIconHeight());
         startButtonLabel.setLocation(398, 211);
-        startButtonLabel.addMouseListener(new ButtonClickedEvent(parent, GameFrame.SELECT_PANEL));
+        startButtonLabel.addMouseListener(new ButtonClickedEvent(parent, GameFrame.SELECT_PANEL,selectLabelEnteredicon,selectLabelicon));
         add(startButtonLabel);		
         
         //2. 규칙 설명 버튼

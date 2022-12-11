@@ -24,6 +24,10 @@ public class SelectPanel extends JPanel {
     private ImageIcon hansungNyanIicon = new ImageIcon("hansungNyang-i.png"); //한성냥이 아이콘
     private ImageIcon kkokkokkukkuIcon = new ImageIcon("kkokkokkukku.png"); //꼬꼬&꾸꾸 아이콘
     
+    //마우스가 올라갔을때 변경되도록 할 이미지
+    private ImageIcon enteredBugi = new ImageIcon("enteredBugi.png");
+    
+    
     private ImageIcon bgImageicon = new ImageIcon("selectBackgroundImage.png");
     private Image selectBackgroundImage = bgImageicon.getImage();
     
@@ -34,8 +38,12 @@ public class SelectPanel extends JPanel {
     //생성자로 선택한 캐릭터 타입을 입력받아서 게임패널을 생성후 패널을 변경한다.
     private class CharacterSelectEvent extends MouseAdapter{
     	private int characterType;
+    	private ImageIcon enteredIcon; //마우스가 올라갔을때 보여지도록 할 이미지
+    	private ImageIcon presentIcon; //컴포넌트의 현재 이미지 아이콘
     	
-    	public CharacterSelectEvent(int characterType) {
+    	public CharacterSelectEvent(int characterType,ImageIcon enteredIcon,ImageIcon presentIcon) {
+    		this.enteredIcon = enteredIcon;
+    		this.presentIcon = presentIcon;
     		this.characterType = characterType;
     	}
     	
@@ -45,6 +53,20 @@ public class SelectPanel extends JPanel {
     		parent.setContentPane(game);
     		//parent.swapPanel(GameFrame.BEGINNING_PANEL);//부모의 컨텐트팬을 변경하도록 함수 호출
     	}
+    	
+    	
+    	@Override //마우스가 컴포넌트 위에 올라갈때의 이벤트
+    	public void mouseEntered(MouseEvent e) {
+    		JLabel label = (JLabel)(e.getComponent()); //이벤트가 발생한 라벨을 가져옴
+    		label.setIcon(enteredIcon); //마우스가 올라갈때의 이미지로 변경
+    	}
+    	
+    	@Override //마우스가 컴포넌트 위를 벗어날때 이벤트
+    	public void mouseExited(MouseEvent e) {
+			JLabel label = (JLabel)(e.getComponent()); //이벤트가 발생한 라벨을 가져옴
+			label.setIcon(presentIcon); //마우스가 올라갈때의 이미지로 변경
+    	}
+    	
     }
     
     
@@ -81,7 +103,7 @@ public class SelectPanel extends JPanel {
         JLabel sangsangBugiLabel = new JLabel(sangsangBugiIcon);
         sangsangBugiLabel.setSize(sangsangBugiIcon.getIconWidth(),sangsangBugiIcon.getIconHeight());
         sangsangBugiLabel.setLocation(310, 270);
-        sangsangBugiLabel.addMouseListener(new CharacterSelectEvent(0));
+        sangsangBugiLabel.addMouseListener(new CharacterSelectEvent(0,enteredBugi,sangsangBugiIcon));
         add(sangsangBugiLabel);
         		
 //        		MouseAdapter() {
@@ -98,7 +120,7 @@ public class SelectPanel extends JPanel {
         JLabel hansungNyanILabel = new JLabel(hansungNyanIicon);
         hansungNyanILabel.setSize(hansungNyanIicon.getIconWidth(),hansungNyanIicon.getIconHeight());
         hansungNyanILabel.setLocation(610, 270);
-        hansungNyanILabel.addMouseListener(new CharacterSelectEvent(1));
+        hansungNyanILabel.addMouseListener(new CharacterSelectEvent(1,enteredBugi,sangsangBugiIcon));
         add(hansungNyanILabel);
 
 
@@ -106,7 +128,7 @@ public class SelectPanel extends JPanel {
         JLabel kkokkokkukkuLabel = new JLabel(kkokkokkukkuIcon);
         kkokkokkukkuLabel.setSize(kkokkokkukkuIcon.getIconWidth(),kkokkokkukkuIcon.getIconHeight());
         kkokkokkukkuLabel.setLocation(910, 270);
-        kkokkokkukkuLabel.addMouseListener(new CharacterSelectEvent(2)); 
+        kkokkokkukkuLabel.addMouseListener(new CharacterSelectEvent(2,enteredBugi,sangsangBugiIcon)); 
         add(kkokkokkukkuLabel);
 
         //캐릭터를 선택하면 바로 넘어가게 할것인가, 버튼을 눌러 게임을 진행할것인가 고려

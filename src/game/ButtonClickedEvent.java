@@ -3,24 +3,62 @@ package game;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public class ButtonClickedEvent extends MouseAdapter{
 	private GameFrame parent;//부모 변수
 	private int type;
 	private Clip clip;
+	private ImageIcon enteredIcon; //마우스가 올라갔을때 보여지도록 할 이미지
+	private ImageIcon presentIcon; //컴포넌트의 현재 이미지 아이콘
+	private boolean authority = false; //마우스 entered이벤트와 exited이벤트의 활성권한
 	
 	public ButtonClickedEvent(GameFrame parent,int type){
 		this.parent = parent;
 		this.type = type; //사용자로부터 이동할 메뉴를 생성자로 입력받음
 		//버튼클릭 효과음 실행
 	}
+	
+	//현재 이미지와 마우스가 올라갔을때 변경될 이미지를 배개변수로 받는 생성자
+	public ButtonClickedEvent(GameFrame parent,int type,ImageIcon enteredIcon,ImageIcon presentIcon) {
+		authority = true; //entered이벤트와 exited이벤트 발생 권한 부여
+		this.parent = parent;
+		this.type = type; //사용자로부터 이동할 메뉴를 생성자로 입력받음
+		this.enteredIcon = enteredIcon;
+		this.presentIcon = presentIcon;
+	}
+	
+	
+	//기본 생성자
+	public ButtonClickedEvent() {
+		
+	}
+	
+	
+	@Override //마우스가 컴포넌트 위에 올라갈때의 이벤트
+	public void mouseEntered(MouseEvent e) {
+		if(authority) { //권한이 있다면 이벤트 발생
+			JLabel label = (JLabel)(e.getComponent()); //이벤트가 발생한 라벨을 가져옴
+			label.setIcon(enteredIcon); //마우스가 올라갈때의 이미지로 변경
+		}
+		
+	}
+	
+	@Override //마우스가 컴포넌트 위를 벗어날때 이벤트
+	public void mouseExited(MouseEvent e) {
+		if(authority) { //권한이 있다면 이벤트 발생
+			JLabel label = (JLabel)(e.getComponent()); //이벤트가 발생한 라벨을 가져옴
+			label.setIcon(presentIcon); //마우스가 올라갈때의 이미지로 변경
+		}
+	}
+	
+	
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {	
 		parent.swapPanel(type);
