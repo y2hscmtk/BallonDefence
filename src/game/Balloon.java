@@ -14,7 +14,11 @@ import b.Balloon;
 public class Balloon extends JLayeredPane{
 	
 	private String text; //풍선에 함께 달려서 내려올 단어
-	private int health = 3;
+	private int ballonType; //어떤 종류의 풍선인지 정보를 저장
+	
+	private int health = 3; //풍선의 체력
+	private int fallingSpeed; //풍선이 떨어지는 속도
+	
 	//풍선 이미지 아이콘
 	private ImageIcon blue = new ImageIcon("blue.png");
 	private ImageIcon blueBalloonIcon = new ImageIcon("blueBalloon.png");//파랑 풍선 아이콘
@@ -27,6 +31,13 @@ public class Balloon extends JLayeredPane{
 		return fallingThread; 
 	}
 	
+	//외부에서 풍선을 멈출수 있도록 메소드 작성
+	public void stopFallingThread() {
+		if(fallingThread!=null) //null이 아닌경우에 대해 스레드 종료
+			fallingThread.interrupt();
+	}
+	
+	
 	//풍선에 달린 단어를 리턴
 	public String getWord() {
 		return answerText.getText();
@@ -38,10 +49,12 @@ public class Balloon extends JLayeredPane{
 	}
 	
 	  
-	public Balloon(int health,String text){
+	public Balloon(int ballonType,String text,int fallingSpeed){
+		System.out.println("새 풍선 생성됨");
 		setLayout(null);
-		this.health = health;
+		this.ballonType = ballonType; //풍선 타입을 저장
 	    this.text = text;
+	    this.fallingSpeed = fallingSpeed; ///풍선이 떨어지는 속도 지정
 	      
 	    setSize(100,200);
 	    
@@ -61,7 +74,7 @@ public class Balloon extends JLayeredPane{
 		add(answerText);
 		
 		//자기자신에 대한 참조와 풍선이 떨어지는 속도(sleep)를 넘겨서 스레드 생성
-		fallingThread = new BalloonFallingThread(this, 200);
+		fallingThread = new BalloonFallingThread(this, fallingSpeed);
 		fallingThread.start(); //풍선 떨이지게 하는 스레드 작동
 		
 		setVisible(true);  
@@ -88,6 +101,8 @@ public class Balloon extends JLayeredPane{
 		
 		//풍선이 떨어지는 속도 지정
 		public BalloonFallingThread(Balloon balloon,int fallingSpeed) {
+			System.out.println("풍선 속도 : "+fallingSpeed);
+			
 			this.fallingSpeed = fallingSpeed; //떨어지는 속도 지정(sleep시간)
 			this.balloon = balloon; //풍선 참조가져오기
 		}

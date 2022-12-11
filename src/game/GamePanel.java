@@ -25,44 +25,6 @@ import javax.swing.JTextField;
 //점수, 캐릭터의 체력, 사용중인 무기를 보여주는 패널을 띄우고
 //왼쪽에는 게임을 진행하는 패널을 띄운다.
 
-//텍스트를 입력받아 올바른 단어인지 확인하는 메소드
-//텍스트창을 관리한다.
-//class ControlPanel extends JPanel {
-//	private GamePanel gamePanel;
-//	private JTextField input = new JTextField(15); //단어을 입력받을 공간 설정
-//	
-//	public ControlPanel(GamePanel gamePanel) {
-//		this.gamePanel = gamePanel;
-//		this.setLayout(new FlowLayout());
-//		this.setBackground(Color.LIGHT_GRAY);
-//		add(input);
-//		
-//		input.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				JTextField tf = (JTextField)e.getSource();
-//				String text = tf.getText(); //텍스트에 입력된 단어가 무엇인지 가져옴
-//				if(text.equals("exit")) //exit입력시 종료
-//					System.exit(0); //프로그램 종료
-//				
-//				if(!gamePanel.isGameOn()) //엑션 무시
-//					return;
-//					
-//				boolean match = gamePanel.matchWord(text); //입력한 단어가 올바른 단어인지 확인
-//				
-//				if(match) {
-//					gamePanel.stopGame(); //단어가 일치한다면 
-//					gamePanel.startGame(); //
-//				}
-//				tf.setText(""); //텍스트 상자에 적힌 글자 지우기				
-//			}
-//		});
-//	}
-//}
-
-
-//게임이 진행되는 공간
 public class GamePanel extends JPanel{
 	//Container contentPane; //컨텐트펜을 다루기 위해
 	
@@ -108,6 +70,19 @@ public class GamePanel extends JPanel{
 		//선택된 캐릭터에 따라 게임난이도 조절
 		//0번은 상상부기, 1번은 한성냥이, 3번은 꾸꾸와까까
 		
+		switch(characterType) {
+		case 0:
+			characterHealth = 150;
+			break;
+		case 1: //한성냥이의 경우 => 90의 체력으로 시작한다.
+			characterHealth = 90;
+			break;
+		case 2: //꾸꾸까까의 경우 체력 80으로 시작한다.
+			characterHealth = 80;
+			break;
+		}
+		
+		
 		//위에서 정의된 정보를 바탕으로 스테이터스 창으로 넘김
 		
 		
@@ -115,13 +90,13 @@ public class GamePanel extends JPanel{
 //		//왼쪽에 띄울 스테이터스 창 이미지
 	
 		statusPanel = new StatusPanel(characterType);
-		gameRunningPanel = new GameRunningPanel(statusPanel);
+		gameRunningPanel = new GameRunningPanel(statusPanel,characterType);
 		
 		
 		//설정된 정보들을 바탕으로 이미지와 정보가 우측에 보이도록
 //		
 		//테스트 확인용 잘 입력되었나 확인용
-		System.out.println("선택된 캐릭터 : " + characterType + "캐릭터 체력 : " + characterHealth + "풍선 속도: " + ballonSpeed);
+		//System.out.println("선택된 캐릭터 : " + characterType + "캐릭터 체력 : " + characterHealth + "풍선 속도: " + ballonSpeed);
 		
 		//풍선을 랜덤하게 생성하는 스레드 실행
 		

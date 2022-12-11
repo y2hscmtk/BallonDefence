@@ -17,32 +17,62 @@ import javax.swing.JTextField;
 
 //게임 패널에서 왼쪽에 붙어서 게임이 진행되는 패널을 제공
 public class GameRunningPanel extends JPanel {
+	//게임에 대한 특성
+	private int characterType; //사용자가 선택한 캐릭터가 무엇인지를 저장
+	//풍선이 떨어지는 속도 => 캐릭터 특성에 따라 달라짐
+	private int ballonSpeed;//딜레이 되는 시간(밀리초단위) => 200밀리초
+	//꾸꾸까까가 선택될경우에 true로 변경
+	private boolean luckyChance = false; //꾸꾸꼬꼬의 특성, true라면 일정확률로 풍선을 하나 더 터트림
+	
 	//풍선이 내려오는 스레드
 	//풍선에 달린 단어가 올바른 단어인지 확인하는 메소드
 	//배경 이미지
 	private ImageIcon bgImageicon = new ImageIcon("gamePanelBackgroundImage.png");
 	private Image gamePanelBackgroundImage = bgImageicon.getImage();
+	
+	
 	private int ballonSpawnTime; //풍선 하나가 생성되는데 걸리는 시간
 	private WordList wordList = new WordList("words.txt"); //단어 리스트 생성
-	private ballonSpawnThread ballonSpawnThread;
-	private boolean gameOn = false;
-	private ControlPanel controlPanel;
 	
+	
+	private BallonSpawnThread ballonSpawnThread; //풍선을 생성하는 스레드
+	private boolean gameOn = false;
+	
+	//패널 관리
+	private ControlPanel controlPanel;
 	private StatusPanel statusPanel;
 	
+	//풍선을 관리하기 위한 벡터
+	private Balloon balloon;
+	private Vector<Balloon> balloonVector = new Vector<Balloon>();
 	
 	private Vector<JLabel> wordVector = new Vector<JLabel>(); //임시로 String벡터 생성
 	//풍선이 내려가는 스레드를 벡터로 관리(해쉬맵을 사용하는 방향도 고려해볼것)
 	
-	public GameRunningPanel(StatusPanel statusPanel) {
+	public GameRunningPanel(StatusPanel statusPanel,int characterType) {
+		this.characterType = characterType; //캐릭터 타입 지정
 		this.statusPanel = statusPanel;
 		setLayout(null);
 		setSize(1000,900);
 		
+		//선택한 캐릭터에 따른 게임 생성
+		switch(characterType) {
+		case 0:
+			ballonSpeed = 200;
+			break;
+		case 1: //한성냥이의 경우 => 동체시력
+			ballonSpeed = 350;//풍선을 느리게 본다.
+			break;
+		case 2: //꾸꾸까까의 경우 => 럭키찬스 효과
+			ballonSpeed= 200;
+			luckyChance = true; //럭키찬스 활성화
+			break;
+		}
 		
-		ballonSpawnTime = 1000;
-		ballonSpawnThread = new ballonSpawnThread(ballonSpawnTime);
-		ballonSpawnThread.start(); //풍선 생성 시작 => 생성된 이후 풍선은 아래로 내려가기 시작
+		
+		ballonSpawnTime = 1000; //풍선이 생성되는데 걸리는 시간을 1초로 지정
+		ballonSpawnThread = new BallonSpawnThread(ballonSpawnTime,ballonSpeed);
+		ballonSpawnThread.start(); //풍선 생성 시작 => 생성된 이후 풍선은 아래로 내려가기 시작(풍선 객체 내부 스레드)
 		gameOn = true; //게임 작동중으로 표시
 		
 		//사용자로부터 입력받을 공간 생성
@@ -50,6 +80,72 @@ public class GameRunningPanel extends JPanel {
 		add(controlPanel);
 		
 		setVisible(true);
+	}
+	
+	
+	
+	
+	//스레드 작성
+	//일정 시간마다 풍선을 생성하고 해당 풍선이 내려가도록 하는 스레드를 별도로 붙인다.
+	private class BallonSpawnThread extends Thread{
+		private int spawnSpeed; //풍선이 생성되는 속도 => 라운드마다 달라지도록
+		private int percentage; //풍선생성 확률 => 라운드에 따라 달라지도록
+		private String word;
+		private JLabel label; //임시로 라벨로 설정 => 차후 풍선 객체로 수정
+		private int fallingSpeed; //떨어지는 시간
+		
+//		private ballonFallingThread fallingThread; //풍선이 떨어지게 하는 스레드
+		
+		public BallonSpawnThread(int spawnSpeed,int fallingSpeed) {
+			this.fallingSpeed = fallingSpeed;
+			this.spawnSpeed = spawnSpeed;
+		}
+		
+		@Override
+		public void run() {
+			while(true) {
+				System.out.println("풍선스레드 생성됨");
+				word = wordList.getWord(); //랜덤 단어 추출
+				//랜덤한 풍선에 대한 확률조정
+				
+				//풍선이 생성될 위치 결정
+				int x = (int)(Math.random()*950); //게임러닝 패널의 가로 길이는 1000
+				int y = 10; //임시로 10위치에서 생성되도록
+				
+				//풍선 생성 => (풍선 타입, 단어)
+				balloon = new Balloon(1,word,fallingSpeed);
+				balloon.setVisible(true);
+				balloon.setSize(300,300);
+				balloon.setLocation(x,y);
+				add(balloon); //패널에 붙이기
+				balloonVector.add(balloon);//벡터에 풍선 삽입
+				System.out.println(x+","+y);
+				//풍선 생성시 풍선 생성자에 매개변수로 랜덤한 숫자와 단어를 넣어서 보냄
+				
+				//풍선 객체에서는 해당 숫자를 보고 생성될 풍선의 타입(빨강,파랑,노랑,etc)을 결정
+				
+//				//테스트용으로 JLabel에 작성
+//				label = new JLabel(word); //랜덤 단어를 붙여서 생성
+//				label.setSize(100,100);
+//						
+//				label.setLocation(x,y); //해당 위치에 생성
+//				add(label); //패널에 붙이기
+				//wordVector.add(label);//벡터에 단어 삽입
+				
+				//풍선에 대한 위치가 변경되도록 하는 스레드 작성
+				//풍선이 떨어지게 하는 스레드에는 풍선이 떨어지는 속도와, 해당 라벨에 대한 참조를 넘겨줌
+//				fallingThread = new ballonFallingThread(label,700);
+//				fallingThread.start();
+				
+				try {
+					Thread.sleep(spawnSpeed);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					//인터룹 발생시
+					break; //스레드 종료
+				}
+			}
+		}
 	}
 	
 	
@@ -87,25 +183,19 @@ public class GameRunningPanel extends JPanel {
 						System.out.println("단어 일치함");
 						tf.setText(""); //텍스트 상자에 적힌 글자 지우기 => 단어가 없어지는 효과(임시로)
 					}
-					
-//					if(match) {
-//						gamePanel.printResult("성공");
-//						gamePanel.stopGame(); //단어가 일치한다면 
-//						gamePanel.startGame(); //
-//					}
 									
 				}
 			});
 		}
 		
-		
-		//벡터 안에 있는 단어인지 확인하는 메소드
+		//풍선벡터 안에 있는 단어인지 확인하는 메소드
 		@SuppressWarnings("unlikely-arg-type")
 		public boolean isMatch(String text) {
-			for(int i=0;i<wordVector.size();i++) {
-				//백터의 형식은 라벨이므로 라벨에서 단어를 뽑아야함
-				JLabel label = wordVector.get(i);
-				if(label.getText().equals(text)) { //벡터 안의 단어와 일치한다면
+			for(int i=0;i<balloonVector.size();i++) {
+				
+				Balloon balloon = balloonVector.get(i);
+				if(balloon.getWord().equals(text)) { //벡터 안의 단어와 일치한다면
+					balloon.stopFallingThread(); //풍선 멈추기
 					System.out.println("단어 일치");
 					return true;
 				}
@@ -115,87 +205,6 @@ public class GameRunningPanel extends JPanel {
 			return false;
 		}
 	}
-	
-	//스레드 작성
-	//일정 시간마다 풍선을 생성하고 해당 풍선이 내려가도록 하는 스레드를 별도로 붙인다.
-	private class ballonSpawnThread extends Thread{
-		private int spawnSpeed; //풍선이 생성되는 속도 => 라운드마다 달라지도록
-		private int percentage; //풍선생성 확률 => 라운드에 따라 달라지도록
-		private String word;
-		private JLabel label; //임시로 라벨로 설정 => 차후 풍선 객체로 수정
-		
-		private ballonFallingThread fallingThread; //풍선이 떨어지게 하는 스레드
-		
-		public ballonSpawnThread(int spawnSpeed) {
-			this.spawnSpeed = spawnSpeed;
-		}
-		
-		@Override
-		public void run() {
-			while(true) {
-				word = wordList.getWord(); //랜덤 단어 추출
-				//랜덤한 풍선에 대한 확률조정
-				
-				//풍선 생성
-				//풍선 생성시 풍선 생성자에 매개변수로 랜덤한 숫자와 단어를 넣어서 보냄
-				
-				//풍선 객체에서는 해당 숫자를 보고 생성될 풍선의 타입(빨강,파랑,노랑,etc)을 결정
-				
-				//테스트용으로 JLabel에 작성
-				label = new JLabel(word); //랜덤 단어를 붙여서 생성
-				label.setSize(100,100);
-				
-				int x = (int)(Math.random()*950); //게임러닝 패널의 가로 길이는 1000
-				int y = 10; //임시로 10위치에서 생성되도록
-//				System.out.println(x+","+y);
-				label.setLocation(x,y); //해당 위치에 생성
-				add(label); //패널에 붙이기
-				wordVector.add(label);//벡터에 단어 삽입
-				
-				//풍선에 대한 위치가 변경되도록 하는 스레드 작성
-				//풍선이 떨어지게 하는 스레드에는 풍선이 떨어지는 속도와, 해당 라벨에 대한 참조를 넘겨줌
-				fallingThread = new ballonFallingThread(label,700);
-				fallingThread.start();
-				
-				try {
-					Thread.sleep(spawnSpeed);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					//인터룹 발생시
-					break; //스레드 종료
-				}
-			}
-		}
-	}
-	
-	//풍선이 내려가도록 하는 스레드 작성
-	private class ballonFallingThread extends Thread{
-		private int fallingSpeed;
-		private JLabel label;
-		
-		//풍선이 떨어지는 속도와 라벨을 받음 => 해당 라벨에 독립적으로 동작하는 스레드를 작성하기 위함
-		public ballonFallingThread(JLabel label, int fallingSpeed) {
-			this.fallingSpeed = fallingSpeed;
-			this.label = label; //참조를 가져옴
-		}
-		
-		@Override
-		public void run() {
-			while(true) {
-				int x = label.getX();
-				int y = label.getY() + 10; //한번에 10픽셀씩 내려가도록
-				label.setLocation(x,y);
-				
-				try {
-					Thread.sleep(fallingSpeed); //해당 초 이후에 다시 위치 변경
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
 	
 	@Override
     public void paintComponent(Graphics g) {

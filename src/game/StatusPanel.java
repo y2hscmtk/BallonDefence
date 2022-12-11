@@ -8,6 +8,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class StatusPanel extends JPanel{
+	//캐릭터에 따른 게임 상황을 변경하기 위한 변수들
+	private int characterHealth;
+	private int weaponType; //캐릭터의 무기, 사용자가 사용중인 무기가 무엇인지 보이도록	
+	private int weaponPower = 1; // 무기의 데미지, 기본 무기의 능력치는 1
+	
+	
+	
 	//캐릭터들의 이미지 정보
 	private ImageIcon sangsangBugi = new ImageIcon("character0.png");
     private ImageIcon hansungNyangI = new ImageIcon("character1.png");
@@ -32,16 +39,25 @@ public class StatusPanel extends JPanel{
 		setBackground(Color.cyan);
 		//캐릭터 선택정보를 토대로 띄울 이미지 결정
 		switch(characterType) {
-		case 0:
+		case 0: //상상부기의 경우
+			characterHealth = 150; //150의 체력으로 시작
 			selectedCharacater = sangsangBugi;
 			break;
-		case 1:
+		case 1: //한성냥이의 경우
+			characterHealth = 90; //90의 체력으로 시작
 			selectedCharacater = hansungNyangI;
 			break;
-		case 2:
+		case 2: //꾸꾸와 까까의 경우
+			characterHealth = 80; //80의 체력으로 시작
 			selectedCharacater = kkukkuKkakka;
 			break;
 		}
+		
+		JLabel health = new JLabel("체력 : "+Integer.toString(characterHealth));
+		health.setSize(200,200);
+		health.setLocation(65,500);
+		add(health);
+		
 		
 		JLabel character = new JLabel(selectedCharacater);
 		character.setSize(selectedCharacater.getIconWidth(),selectedCharacater.getIconHeight());
