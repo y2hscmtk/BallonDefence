@@ -21,8 +21,10 @@ public class Balloon extends JLayeredPane{
 	
 	//풍선 이미지 아이콘
 	//private ImageIcon blue = new ImageIcon("blue.png");
+	private ImageIcon redBalloonIcon = new ImageIcon("redBalloon.png");//빨강 풍선 아이콘
 	private ImageIcon blueBalloonIcon = new ImageIcon("ballon.png");//파랑 풍선 아이콘
-	private Image image = blueBalloonIcon.getImage();
+	private ImageIcon yellowBalloonIcon = new ImageIcon("yellowBalloon.png");//노랑 풍선 아이콘
+	private Image image; 
 	private BalloonFallingThread fallingThread = null; //풍선이 떨어지게 하는 스레드
 	private JButton balloonImage; //풍선 이미지
 	private JLabel answerText; //풍선 밑에 붙일 단어
@@ -38,6 +40,11 @@ public class Balloon extends JLayeredPane{
 			fallingThread.interrupt();
 	}
 	
+	//매개변수로 받은 아이콘의 이미지로 풍선의 이미지 변경하는 메소드
+	public void setImage(ImageIcon icon) {
+		this.image = icon.getImage();
+	}
+	
 	
 	//풍선에 달린 단어를 리턴
 	public String getWord() {
@@ -49,12 +56,39 @@ public class Balloon extends JLayeredPane{
 		return balloonImage;
 	}
 	
+	//풍선의 타입을 리턴한다.(풍선의 색 0: 빨강, 1:파랑 2: 노랑, 체력도 동일)
+	public int getBalloonType() {
+		return ballonType;
+	}
+	
+	//풍선의 체력을 리턴한다.
+	public int getHealth() {
+		return health;
+	}
 	
 	//풍선의 속성은 라벨
 	public Balloon(int ballonType,String text,int fallingSpeed){
 		System.out.println("새 풍선 생성됨");
 		setLayout(null);
 		this.ballonType = ballonType; //풍선 타입을 저장
+		
+		//풍선의 타입에 따른 풍선 특성 결정
+		switch(ballonType) {
+		case 0: //빨강풍선의 경우
+			health = 1;
+			image = redBalloonIcon.getImage();
+			break;
+		case 1: //파랑풍선의 경우
+			image = blueBalloonIcon.getImage();
+			health = 2;
+			break;
+		case 2: //노랑풍선의 경우
+			image = yellowBalloonIcon.getImage();
+			health = 3;
+			break;
+		}
+		
+		
 	    this.text = text;
 	    this.fallingSpeed = fallingSpeed; ///풍선이 떨어지는 속도 지정
 	    setSize(100,100);
@@ -95,7 +129,13 @@ public class Balloon extends JLayeredPane{
 	public void getDamage(int damage){
 		health-=damage;
 		switch (health){
-		case 1:
+//		case 0: //체력이 0이되면 풍선제거
+//			setVisible(false);
+		case 1: //체력이 1이면 빨강풍선 이미지
+			setImage(redBalloonIcon);
+			break;
+		case 2: //체력이 2이면 파랑풍선 이미지로
+			setImage(blueBalloonIcon);
 			break;
 		}
 	}

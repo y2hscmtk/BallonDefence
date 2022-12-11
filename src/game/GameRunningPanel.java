@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 //게임 패널에서 왼쪽에 붙어서 게임이 진행되는 패널을 제공
 public class GameRunningPanel extends JPanel {
 	//게임에 대한 특성
+	private int weaponPower;
 	private int characterType; //사용자가 선택한 캐릭터가 무엇인지를 저장
 	//풍선이 떨어지는 속도 => 캐릭터 특성에 따라 달라짐
 	private int ballonSpeed;//딜레이 되는 시간(밀리초단위) => 200밀리초
@@ -71,6 +72,8 @@ public class GameRunningPanel extends JPanel {
 			break;
 		}
 		
+		weaponPower = 1; //기본 무기의 파워는 1
+		
 		JButton stopBalloon = new JButton("풍선 멈추기");
 		stopBalloon.setSize(100,100);
 		stopBalloon.setLocation(0,800);
@@ -111,9 +114,10 @@ public class GameRunningPanel extends JPanel {
 		private JLabel label; //임시로 라벨로 설정 => 차후 풍선 객체로 수정
 		private int fallingSpeed; //떨어지는 시간
 		private int x; //풍선이 생성될 가로 위치를 지정
-		private int lastPosition = 9; //이전에 생성된 위치를 저장 임의로 x로 지정
 		
-//		private ballonFallingThread fallingThread; //풍선이 떨어지게 하는 스레드
+		//풍선이 어느정도 균등한 위치에서 생성되도록 하기위함
+		private int lastPosition = 0; //첫번째로 생성된 위치를 저장 임의로 x로 지정
+		private int lastPosition2 = 5; //두번째로 생성된 위치를 저장
 		
 		public BallonSpawnThread(int spawnSpeed,int fallingSpeed) {
 			this.fallingSpeed = fallingSpeed;
@@ -133,24 +137,24 @@ public class GameRunningPanel extends JPanel {
 				//이미지의 가로길이를 가져와서 게임러닝패널의 영역으로 나누어 영역을 지정
 				while(true) {
 					position = (int)(Math.random()*10);//0~9까지의 난수 생성 => 풍선이 생성될 위치를 임의로 지정하기 위함
-					if(position!=lastPosition) {//이전의 위치가 아니라면
-						lastPosition = position; //현재 위치를 저장하고
+					if(position!=lastPosition&&position!=lastPosition2) {//이전 2개의 위치가 아닌곳에 생성
+						lastPosition2 = lastPosition; //첫번째 생성위치를 두번째 생성위치로 옮기고
+						lastPosition = position; //현재 생성된 위치를 저장 => 이후 2개의 위치가 아닌곳에 생성되게함
+						System.out.println(position);
 						break; //탈출
 					}
 						
 				}	
 				
 				//포지션을 통해 풍선의 x좌표 지정
-				x = (int)(Math.random()*100) + (100*position);
+				x = (int)(Math.random()*100) + (70*position);
 
-				
-				
 				//풍선이 생성될 위치 결정
 				
 				int y = -100; //임시로 0위치에서 생성되도록
 				
 				//풍선 생성 => (풍선 타입, 단어)
-				balloon = new Balloon(1,word,fallingSpeed);
+				balloon = new Balloon(2,word,fallingSpeed);
 				balloon.setVisible(true);
 				balloon.setSize(300,300);
 				balloon.setLocation(x,y);
@@ -233,12 +237,29 @@ public class GameRunningPanel extends JPanel {
 				
 				Balloon balloon = balloonVector.get(i);
 				if(balloon.getWord().equals(text)) { //벡터 안의 단어와 일치한다면
-					
-					balloon.setVisible(false); //안보이도록 처리
-					balloon.stopFallingThread(); //풍선 멈추기
-					balloonVector.remove(balloon);
-					remove(balloon); //패널에 달린 풍선객체를 지운다.
 					System.out.println("단어 일치");
+					
+					balloon.getDamage(weaponPower); //무기의 데미지 만큼 풍선에 피해를 가한다.
+					
+					//이후 풍선의 체력을 가져와서 확인
+					int ballonHealth = balloon.getHealth();
+					
+					//풍선의 체력이 0이되면 풍선을 안보이게 한다.
+					if(ballonHealth==0) {
+						balloon.setVisible(false); //안보이도록 처리
+						balloon.stopFallingThread(); //풍선 멈추기
+						balloonVector.remove(balloon); //벡터에서 풍선제거
+						remove(balloon); //패널에 달린 풍선객체를 지운다.
+					}
+					
+					//풍선의 색을 빨강색으로 변경
+					//풍선의 타입에 따른 다른 처리
+//					int balloonType = balloon.getBalloonType();
+//					switch(balloonType) {
+//					case 0: //빨강풍선의 경우
+//						
+//						
+//					}
 					return true;
 				}
 			}
