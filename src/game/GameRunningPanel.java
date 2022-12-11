@@ -1,14 +1,17 @@
 package game;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.Vector;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -104,6 +107,8 @@ public class GameRunningPanel extends JPanel {
 		//사용자로부터 입력받을 공간 생성
 		controlPanel = new ControlPanel(statusPanel);	
 		add(controlPanel);
+		GameMangeThread gameThread = new GameMangeThread();
+		gameThread.start();
 		
 		setVisible(true);
 	}
@@ -151,6 +156,8 @@ public class GameRunningPanel extends JPanel {
 		private JLabel label; //임시로 라벨로 설정 => 차후 풍선 객체로 수정
 		private int fallingSpeed; //떨어지는 시간
 		private int x; //풍선이 생성될 가로 위치를 지정
+		
+		private int BallonCount;
 		
 		//풍선이 어느정도 균등한 위치에서 생성되도록 하기위함
 		private int lastPosition = 0; //첫번째로 생성된 위치를 저장 임의로 x로 지정
@@ -235,6 +242,7 @@ public class GameRunningPanel extends JPanel {
 	class ControlPanel extends JPanel {
 		private JTextField input = new JTextField(15); //단어을 입력받을 공간 설정
 		private StatusPanel statusPanel;
+		private Clip clip;
 		
 		//생성자 
 		public ControlPanel(StatusPanel statusPanel) {
@@ -261,10 +269,32 @@ public class GameRunningPanel extends JPanel {
 					//System.out.println(text);
 					//단어가 일치한다면 => 해당 단어에 대한 스레드 종료,삭제	
 					if(isMatch(text)) {
+						//정답시 효과음 나도록
+						try {
+							clip = AudioSystem.getClip();
+							File audioFile = new File("Correct.wav");
+							AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+							clip.open(audioStream);
+						}catch(Exception E) {
+							System.out.println("오류!");
+						}
+						clip.start(); // 버튼을 클릭했을때 소리가 나도록
 						statusPanel.plusScore(10); //점수 추가
 						
 						System.out.println("단어 일치함");
 						
+					}
+					else { //정답이 아닐시 => 체력을 5깎음
+						try {
+							clip = AudioSystem.getClip();
+							File audioFile = new File("Wrong.wav");
+							AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+							clip.open(audioStream);
+						}catch(Exception E) {
+							System.out.println("오류!");
+						}
+						clip.start(); // 버튼을 클릭했을때 소리가 나도록
+						statusPanel.getDamage(5);
 					}
 					tf.setText(""); //텍스트 상자에 적힌 글자 지우기 => 단어가 없어지는 효과(임시로)				
 				}

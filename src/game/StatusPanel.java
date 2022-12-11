@@ -99,8 +99,8 @@ public class StatusPanel extends JPanel{
 	
 	//캐릭터에게 데미지를 가하는 메소드 
 	//=> 풍선이 떨어질때 10의 데미지를 가한다.
-	public void getDamage() {
-		characterHealth -= 10;
+	public void getDamage(int damage) {
+		characterHealth -= damage;
 		//변경된 체력 표시
 		healthLabel.setText(Integer.toString(characterHealth));
 	}

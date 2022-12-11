@@ -2,6 +2,7 @@ package game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 //여러 패널을 돌려가며 사용자에게 게임을 조작할수 있는 프레임을 제공
 //실질적인 조작은 패널에서 시행함
@@ -62,7 +63,8 @@ public class GameFrame extends JFrame {
                 setContentPane(wordEditPanel);
                 break;
             case RANKING_PANEL:
-                setContentPane(rankingPanel);
+            	setContentPane(rankingPanel);
+//            	rankingPanel.showTopTen(rankingPanel); //패널에 붙이기
                 break;
         }
     }

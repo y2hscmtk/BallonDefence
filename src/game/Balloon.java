@@ -211,7 +211,7 @@ public class Balloon extends JLayeredPane{
 				if(y>=500) {
 					setVisible(false);
 					//체력을 깎아야함
-					statusPanel.getDamage(); //캐릭터에게 데미지를 가한다.
+					statusPanel.getDamage(10); //캐릭터에게 데미지를 가한다.
 					break;//스레드 종료
 				}
 				

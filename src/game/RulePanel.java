@@ -25,14 +25,9 @@ public class RulePanel extends JPanel {
         //홈버튼
         //홈 화면으로 이동
         JButton backButton = new JButton(icon);
-        backButton.setSize(icon.getIconWidth(),icon.getIconHeight());
-        backButton.setLocation(500,325);
-        backButton.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		parent.swapPanel(GameFrame.BEGINNING_PANEL);//부모의 컨텐트팬을 변경하기 위해 함수 호출
-        	}
-        });
+        backButton.setSize(200,200);
+		backButton.setLocation(1200,50);
+        backButton.addMouseListener(new ButtonClickedEvent(parent,parent.BEGINNING_PANEL));
         
         add(backButton);
         setVisible(true);
