@@ -40,6 +40,14 @@ public class Balloon extends JLayeredPane{
 			fallingThread.interrupt();
 	}
 	
+	public void waitFallingThread() {
+		fallingThread.stopBalloon(); //풍선을 잠깐 멈추게함
+	}
+	
+	public void resumeFallingThread() {
+		fallingThread.resumeBalloon(); //다시 움직이게 함
+	}
+	
 	//매개변수로 받은 아이콘의 이미지로 풍선의 이미지 변경하는 메소드
 	public void setImage(ImageIcon icon) {
 		this.image = icon.getImage();
@@ -139,6 +147,7 @@ public class Balloon extends JLayeredPane{
 			break;
 		}
 	}
+
 	  
 	//풍선이 내려가도록 하는 스레드 작성
 	private class BalloonFallingThread extends Thread{

@@ -128,7 +128,6 @@ public class GameRunningPanel extends JPanel {
 		public void run() {
 			while(true) {
 				int position;
-				System.out.println("풍선스레드 생성됨");
 				word = wordList.getWord(); //랜덤 단어 추출
 				//랜덤한 풍선에 대한 확률조정
 				
@@ -140,7 +139,7 @@ public class GameRunningPanel extends JPanel {
 					if(position!=lastPosition&&position!=lastPosition2) {//이전 2개의 위치가 아닌곳에 생성
 						lastPosition2 = lastPosition; //첫번째 생성위치를 두번째 생성위치로 옮기고
 						lastPosition = position; //현재 생성된 위치를 저장 => 이후 2개의 위치가 아닌곳에 생성되게함
-						System.out.println(position);
+						//System.out.println(position);
 						break; //탈출
 					}
 						
@@ -160,7 +159,7 @@ public class GameRunningPanel extends JPanel {
 				balloon.setLocation(x,y);
 				add(balloon); //패널에 붙이기
 				balloonVector.add(balloon);//벡터에 풍선 삽입
-				System.out.println(x+","+y);
+				//System.out.println(x+","+y);
 				//풍선 생성시 풍선 생성자에 매개변수로 랜덤한 숫자와 단어를 넣어서 보냄
 				
 				//풍선 객체에서는 해당 숫자를 보고 생성될 풍선의 타입(빨강,파랑,노랑,etc)을 결정
@@ -201,7 +200,6 @@ public class GameRunningPanel extends JPanel {
 			//패널이 생성될 위치 조정
 			setBounds(0,800,1000,100); //0,800의 위치에서 800x100크기의 컨트롤 패널 부착
 			setBackground(Color.cyan); //잘 부착되었는지 확인하기 위한 임시색상 지정
-			System.out.println("컨트롤패널호출됨");
 			
 //			this.setLayout(new FlowLayout());
 //			this.setBackground(Color.LIGHT_GRAY);
@@ -217,7 +215,7 @@ public class GameRunningPanel extends JPanel {
 					JTextField tf = (JTextField)e.getSource();
 					String text = tf.getText(); //텍스트에 입력된 단어가 무엇인지 가져옴
 
-					System.out.println(text);
+					//System.out.println(text);
 					//단어가 일치한다면 => 해당 단어에 대한 스레드 종료,삭제	
 					if(isMatch(text)) {
 						statusPanel.plusScore(10); //점수 추가
@@ -239,7 +237,23 @@ public class GameRunningPanel extends JPanel {
 				if(balloon.getWord().equals(text)) { //벡터 안의 단어와 일치한다면
 					System.out.println("단어 일치");
 					
-					balloon.getDamage(weaponPower); //무기의 데미지 만큼 풍선에 피해를 가한다.
+					if(luckyChance) { //럭키찬스 효과가 활성화 되어있다면
+						//50퍼센트의 확률로 추가 공격을 가한다.
+						
+						
+						int random = (int)(Math.random()*100);
+						System.out.println(random);
+						if(random%2!=0) {
+							//풍선에 추가 공격을 가한다.(꾸꾸가 공격하면 꼬꼬도 공격)
+							System.out.println("추가공격!");
+							balloon.getDamage(weaponPower*2);
+						}
+						else
+							balloon.getDamage(weaponPower); 
+//						
+					}
+					else //꾸꾸까까가 아닌경우에는(luckyChance 비활성화
+						balloon.getDamage(weaponPower); //무기의 데미지 만큼 풍선에 피해를 가한다.
 					
 					//이후 풍선의 체력을 가져와서 확인
 					int ballonHealth = balloon.getHealth();
