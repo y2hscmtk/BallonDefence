@@ -107,22 +107,7 @@ public class GamePanel extends JPanel{
 		
 		//선택된 캐릭터에 따라 게임난이도 조절
 		//0번은 상상부기, 1번은 한성냥이, 3번은 꾸꾸와까까
-		switch(characterType) {
-		case 0:
-			//selectedCharacter = sangsangBugi; //상상부기 이미지 선택
-			characterHealth = 150; //상상부기의 캐릭터 특성; 체력이 많다(단단하다)
-			break;
-		case 1:
-			//selectedCharacter = hansungNyangI; //한성냥이 이미지 선택
-			characterHealth = 90;
-			ballonSpeed = 350; //한성냥이의 캐릭터 특성; 풍선을 느리게떨어진다(동체시력)
-			break;
-		case 2:
-			//selectedCharacter = kkukkuKkakka; //꾸꾸까까 이미지 선택
-			characterHealth = 80;
-			luckyChance = true; //꾸꾸까까의 캐릭터 특성; 일정확률~
-			break;
-		}
+		
 		//위에서 정의된 정보를 바탕으로 스테이터스 창으로 넘김
 		
 		
