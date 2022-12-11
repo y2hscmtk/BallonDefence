@@ -1,14 +1,16 @@
 package game;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -58,10 +60,10 @@ public class GameRunningPanel extends JPanel {
 		//선택한 캐릭터에 따른 게임 생성
 		switch(characterType) {
 		case 0:
-			ballonSpeed = 200;
+			ballonSpeed = 800;
 			break;
 		case 1: //한성냥이의 경우 => 동체시력
-			ballonSpeed = 350;//풍선을 느리게 본다.
+			ballonSpeed = 1500;//풍선을 느리게 본다.
 			break;
 		case 2: //꾸꾸까까의 경우 => 럭키찬스 효과
 			ballonSpeed= 200;
@@ -69,8 +71,22 @@ public class GameRunningPanel extends JPanel {
 			break;
 		}
 		
+		JButton stopBalloon = new JButton("풍선 멈추기");
+		stopBalloon.setSize(100,100);
+		stopBalloon.setLocation(0,800);
+		stopBalloon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				for(int i=0;i<balloonVector.size();i++) {
+					Balloon balloon = balloonVector.get(i);
+					balloonVector.remove(i);// 벡터에서 지우기
+					balloon.stopFallingThread();
+				}
+			}
+		});
+		add(stopBalloon);
 		
-		ballonSpawnTime = 1000; //풍선이 생성되는데 걸리는 시간을 1초로 지정
+		ballonSpawnTime = 2000; //풍선이 생성되는데 걸리는 시간을 1초로 지정
 		ballonSpawnThread = new BallonSpawnThread(ballonSpawnTime,ballonSpeed);
 		ballonSpawnThread.start(); //풍선 생성 시작 => 생성된 이후 풍선은 아래로 내려가기 시작(풍선 객체 내부 스레드)
 		gameOn = true; //게임 작동중으로 표시
@@ -93,6 +109,8 @@ public class GameRunningPanel extends JPanel {
 		private String word;
 		private JLabel label; //임시로 라벨로 설정 => 차후 풍선 객체로 수정
 		private int fallingSpeed; //떨어지는 시간
+		private int x; //풍선이 생성될 가로 위치를 지정
+		private int lastPosition = 9; //이전에 생성된 위치를 저장 임의로 x로 지정
 		
 //		private ballonFallingThread fallingThread; //풍선이 떨어지게 하는 스레드
 		
@@ -104,13 +122,31 @@ public class GameRunningPanel extends JPanel {
 		@Override
 		public void run() {
 			while(true) {
+				int position;
 				System.out.println("풍선스레드 생성됨");
 				word = wordList.getWord(); //랜덤 단어 추출
 				//랜덤한 풍선에 대한 확률조정
 				
+				
+				//풍선의 생성 위치 조정 => 풍선끼리 잘 겹치지 않도록
+				//이미지의 가로길이를 가져와서 게임러닝패널의 영역으로 나누어 영역을 지정
+				while(true) {
+					position = (int)(Math.random()*10);//0~9까지의 난수 생성 => 풍선이 생성될 위치를 임의로 지정하기 위함
+					if(position!=lastPosition) {//이전의 위치가 아니라면
+						lastPosition = position; //현재 위치를 저장하고
+						break; //탈출
+					}
+						
+				}	
+				
+				//포지션을 통해 풍선의 x좌표 지정
+				x = (int)(Math.random()*100) + (100*position);
+
+				
+				
 				//풍선이 생성될 위치 결정
-				int x = (int)(Math.random()*950); //게임러닝 패널의 가로 길이는 1000
-				int y = 10; //임시로 10위치에서 생성되도록
+				
+				int y = 0; //임시로 0위치에서 생성되도록
 				
 				//풍선 생성 => (풍선 타입, 단어)
 				balloon = new Balloon(1,word,fallingSpeed);
@@ -180,10 +216,11 @@ public class GameRunningPanel extends JPanel {
 					//단어가 일치한다면 => 해당 단어에 대한 스레드 종료,삭제	
 					if(isMatch(text)) {
 						statusPanel.plusScore(10); //점수 추가
+						
 						System.out.println("단어 일치함");
-						tf.setText(""); //텍스트 상자에 적힌 글자 지우기 => 단어가 없어지는 효과(임시로)
+						
 					}
-									
+					tf.setText(""); //텍스트 상자에 적힌 글자 지우기 => 단어가 없어지는 효과(임시로)				
 				}
 			});
 		}
@@ -195,7 +232,11 @@ public class GameRunningPanel extends JPanel {
 				
 				Balloon balloon = balloonVector.get(i);
 				if(balloon.getWord().equals(text)) { //벡터 안의 단어와 일치한다면
+					
+					balloon.setVisible(false); //안보이도록 처리
 					balloon.stopFallingThread(); //풍선 멈추기
+					balloonVector.remove(balloon);
+					remove(balloon); //패널에 달린 풍선객체를 지운다.
 					System.out.println("단어 일치");
 					return true;
 				}

@@ -2,13 +2,13 @@ package game;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionListener;
+import java.awt.Graphics;
+import java.awt.Image;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-
-import b.Balloon;
 
 //풍선이 겹칠때를 대비하여 LayerdPane으로 작성
 public class Balloon extends JLayeredPane{
@@ -20,10 +20,11 @@ public class Balloon extends JLayeredPane{
 	private int fallingSpeed; //풍선이 떨어지는 속도
 	
 	//풍선 이미지 아이콘
-	private ImageIcon blue = new ImageIcon("blue.png");
-	private ImageIcon blueBalloonIcon = new ImageIcon("blueBalloon.png");//파랑 풍선 아이콘
+	//private ImageIcon blue = new ImageIcon("blue.png");
+	private ImageIcon blueBalloonIcon = new ImageIcon("ballon.png");//파랑 풍선 아이콘
+	private Image image = blueBalloonIcon.getImage();
 	private BalloonFallingThread fallingThread = null; //풍선이 떨어지게 하는 스레드
-	private JLabel balloonImage; //풍선 이미지
+	private JButton balloonImage; //풍선 이미지
 	private JLabel answerText; //풍선 밑에 붙일 단어
 	
 	//풍선 객체 외부에서 풍선 객체가 떨어지는 스레드를 조작할수 있도록 스레드 리턴
@@ -44,36 +45,42 @@ public class Balloon extends JLayeredPane{
 	}
 	
 	//현재 풍선이미지를 리턴한다.
-	public JLabel getBalloonImage() {
+	public JButton getBalloonImage() {
 		return balloonImage;
 	}
 	
-	  
+	
+	//풍선의 속성은 라벨
 	public Balloon(int ballonType,String text,int fallingSpeed){
 		System.out.println("새 풍선 생성됨");
 		setLayout(null);
 		this.ballonType = ballonType; //풍선 타입을 저장
 	    this.text = text;
 	    this.fallingSpeed = fallingSpeed; ///풍선이 떨어지는 속도 지정
-	      
-	    setSize(100,200);
+	    setSize(100,100);
+	    setBackground(Color.cyan);
 	    
 	    //풍선 이미지 밑에 텍스트를 붙이는 작업
-	    balloonImage = new JLabel(blueBalloonIcon);
-	    balloonImage.setSize(blueBalloonIcon.getIconWidth(),blueBalloonIcon.getIconHeight());
+	    balloonImage = new JButton(blueBalloonIcon);
+	    balloonImage.setSize(200,800);
+	    balloonImage.setLocation(0,0); //풍선 라벨의 x,y좌표에 보이게
+	    balloonImage.setOpaque(true);
+	    balloonImage.setBackground(Color.black);
+//	    balloonImage.setBounds(0,0,100,160);
 		//button.setBounds(0,0,100,160);
 		//button.setBackground(Color.RED);
-		add(balloonImage);
+		//add(balloonImage);
 		
+	    int textLength = text.length();
 		answerText = new JLabel(text);
 		answerText.setOpaque(true); //배경색을 칠하게 하기 위함
 		answerText.setBackground(Color.white);
 		answerText.setFont(new Font("SansSerif",Font.BOLD, 30));
-		answerText.setSize(80,40);
-		answerText.setLocation(balloonImage.getX()+130,balloonImage.getY()+320);
+		answerText.setSize(textLength*20,40);
+		answerText.setLocation(80,getHeight()+145);
 		add(answerText);
-		
-		//자기자신에 대한 참조와 풍선이 떨어지는 속도(sleep)를 넘겨서 스레드 생성
+//		
+//		//자기자신에 대한 참조와 풍선이 떨어지는 속도(sleep)를 넘겨서 스레드 생성
 		fallingThread = new BalloonFallingThread(this, fallingSpeed);
 		fallingThread.start(); //풍선 떨이지게 하는 스레드 작동
 		
@@ -144,6 +151,8 @@ public class Balloon extends JLayeredPane{
 				if(stopFlag) { //stop플래그가 올라와있다면
 					waitFlag(); //풍선 멈추게 하기
 				}
+				
+				
 				int x = balloon.getX();
 				int y = balloon.getY()+10;//5픽셀 이동하게 하기위함
 				
@@ -158,6 +167,14 @@ public class Balloon extends JLayeredPane{
 			}
 		}
 		
+		
+		
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		g.drawImage(image,0,0,getWidth(),getHeight(),null);
 	}
 	
 }
