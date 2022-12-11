@@ -19,6 +19,9 @@ public class Balloon extends JLayeredPane{
 	private int health = 3; //풍선의 체력
 	private int fallingSpeed; //풍선이 떨어지는 속도
 	
+	
+	private StatusPanel statusPanel; //스테이터스 패널에 대한 래퍼랜스
+	
 	//풍선 이미지 아이콘
 	//private ImageIcon blue = new ImageIcon("blue.png");
 	private ImageIcon redBalloonIcon = new ImageIcon("redBalloon.png");//빨강 풍선 아이콘
@@ -74,11 +77,12 @@ public class Balloon extends JLayeredPane{
 		return health;
 	}
 	
-	//풍선의 속성은 라벨
-	public Balloon(int ballonType,String text,int fallingSpeed){
+	
+	public Balloon(int ballonType,String text,int fallingSpeed, StatusPanel statusPanel){
 		System.out.println("새 풍선 생성됨");
 		setLayout(null);
 		this.ballonType = ballonType; //풍선 타입을 저장
+		this.statusPanel = statusPanel; //래퍼랜스 가져오기
 		
 		//풍선의 타입에 따른 풍선 특성 결정
 		switch(ballonType) {
@@ -201,9 +205,15 @@ public class Balloon extends JLayeredPane{
 					waitFlag(); //풍선 멈추게 하기
 				}
 				
-				
 				int x = balloon.getX();
-				int y = balloon.getY()+10;//5픽셀 이동하게 하기위함
+				int y = balloon.getY()+10;//10픽셀씩 아래로 이동
+				//일정 높이 이하로 떨어지면 풍선 객체 삭제
+				if(y>=500) {
+					setVisible(false);
+					//체력을 깎아야함
+					statusPanel.getDamage(); //캐릭터에게 데미지를 가한다.
+					break;//스레드 종료
+				}
 				
 				balloon.setLocation(x,y); //풍선 위치 이동
 				try {

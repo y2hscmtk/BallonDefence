@@ -73,7 +73,7 @@ public class GameRunningPanel extends JPanel {
 		case 1: //한성냥이의 경우 => 동체시력
 			ballonSpeed = 1500;//풍선을 느리게 본다.
 			break;
-		case 2: //꼬꼬꾸꾸의 경우 => 럭키찬스 효과
+		case 2: //꼬꼬꾸꾸의 경우 => 50프로 확률의 추가타
 			ballonSpeed= 200;
 			luckyChance = true; //럭키찬스 활성화
 			break;
@@ -97,7 +97,7 @@ public class GameRunningPanel extends JPanel {
 		add(stopBalloon);
 		
 		ballonSpawnTime = 2000; //풍선이 생성되는데 걸리는 시간을 1초로 지정
-		ballonSpawnThread = new BallonSpawnThread(ballonSpawnTime,ballonSpeed);
+		ballonSpawnThread = new BallonSpawnThread(ballonSpawnTime,ballonSpeed,statusPanel);
 		ballonSpawnThread.start(); //풍선 생성 시작 => 생성된 이후 풍선은 아래로 내려가기 시작(풍선 객체 내부 스레드)
 		gameOn = true; //게임 작동중으로 표시
 		
@@ -107,6 +107,39 @@ public class GameRunningPanel extends JPanel {
 		
 		setVisible(true);
 	}
+	
+	
+	
+	
+	
+	//게임을 관리하는 스레드 작성 => 라운드 관리, 게임오버 관리
+	//게임러닝패널 클래스 안에 작성하여, 정보들을 관리할수 있도록
+	private class GameMangeThread extends Thread{
+		
+		//게임의 진행상황에 맞춰 게임을 관리
+		@Override
+		public void run() {
+			while(true) {
+				//캐릭터의 체력이 0이하가 되면 게임 종료
+				if(statusPanel.getHealth()<=0) {
+					//음악 스레드 종료 => 사망 음악 실행
+					
+					//풍선 스레드 종료 => 벡터를 돌면서
+					
+					//벡터 비우기
+					
+					//풍선 생성 스레드 종료
+					
+					//최종 결과창 출력 => 아이디 입력받기 => 다시하기 버튼, 점수보기 버튼 보여주기
+					
+					System.out.println("프로그램 종료");
+					System.exit(0);
+				}
+			}
+		}
+			
+	}
+	
 	
 	
 	//스레드 작성
@@ -123,9 +156,14 @@ public class GameRunningPanel extends JPanel {
 		private int lastPosition = 0; //첫번째로 생성된 위치를 저장 임의로 x로 지정
 		private int lastPosition2 = 5; //두번째로 생성된 위치를 저장
 		
-		public BallonSpawnThread(int spawnSpeed,int fallingSpeed) {
+		private StatusPanel statusPanel; //스테이터스 패널에 대한 래퍼랜스
+		
+		//풍선 생성시 스테이터스창에 대한 래퍼랜스를 넘겨줘야함
+		//=>풍선이 떨어지는 스레드에서 풍선이 땅으로 떨어지면 스테이터스창에 영향을 가할수 있도록
+		public BallonSpawnThread(int spawnSpeed,int fallingSpeed,StatusPanel statusPanel) {
 			this.fallingSpeed = fallingSpeed;
 			this.spawnSpeed = spawnSpeed;
+			this.statusPanel = statusPanel;
 		}
 		
 		@Override
@@ -157,7 +195,8 @@ public class GameRunningPanel extends JPanel {
 				int y = -100; //임시로 0위치에서 생성되도록
 				
 				//풍선 생성 => (풍선 타입, 단어)
-				balloon = new Balloon(2,word,fallingSpeed);
+				//풍선 생성시 스테이터스 패널에 대한 참조를 넘김 => 스테이터스 패널에 영향을 가할수 있도록
+				balloon = new Balloon(2,word,fallingSpeed,statusPanel);
 				balloon.setVisible(true);
 				balloon.setSize(300,300);
 				balloon.setLocation(x,y);
