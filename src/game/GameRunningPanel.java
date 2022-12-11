@@ -16,16 +16,23 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
+/*
+ * 라운드 시스템으로 작성
+ * 라운드마다 생성될 풍선의 수가 정해져있고, 해당 풍선을 모두 처리하면 라운드가 종료되는 방식으로
+ * 라운드가 종료되면 기존의 스레드를 정지시키고, 벡터를 비우고, 게임 정보를 수정한다(풍선 생성 속도, 풍선 종류)
+ * 라운드 종료 이후 상점이 등장하고, 게임에서 벌어들인 돈을 바탕으로 상점에서 무기를 변경할수 있도록함 
+ * 1라운드에서 돈을 충분히 벌지 못하면 무기를 사지 못하도록 알맞은 금액으로 설정할것, 무기 이외의 다른 아이템 생각해볼것
+*/
 
 //게임 패널에서 왼쪽에 붙어서 게임이 진행되는 패널을 제공
 public class GameRunningPanel extends JPanel {
 	//게임에 대한 특성
-	private int weaponPower;
+	private int weaponPower; //사용중인 무기의 공격력
 	private int characterType; //사용자가 선택한 캐릭터가 무엇인지를 저장
 	//풍선이 떨어지는 속도 => 캐릭터 특성에 따라 달라짐
-	private int ballonSpeed;//딜레이 되는 시간(밀리초단위) => 200밀리초
+	private int ballonSpeed;//풍선이 내려오는 시간 => 딜레이 되는 시간(밀리초단위)
 	//꾸꾸까까가 선택될경우에 true로 변경
-	private boolean luckyChance = false; //꾸꾸꼬꼬의 특성, true라면 일정확률로 풍선을 하나 더 터트림
+	private boolean luckyChance = false; //꼬꼬꾸꾸의 특성, true라면 일정확률로 풍선에 추가타를 가함
 	
 	//풍선이 내려오는 스레드
 	//풍선에 달린 단어가 올바른 단어인지 확인하는 메소드
@@ -66,7 +73,7 @@ public class GameRunningPanel extends JPanel {
 		case 1: //한성냥이의 경우 => 동체시력
 			ballonSpeed = 1500;//풍선을 느리게 본다.
 			break;
-		case 2: //꾸꾸까까의 경우 => 럭키찬스 효과
+		case 2: //꼬꼬꾸꾸의 경우 => 럭키찬스 효과
 			ballonSpeed= 200;
 			luckyChance = true; //럭키찬스 활성화
 			break;
@@ -101,9 +108,6 @@ public class GameRunningPanel extends JPanel {
 		setVisible(true);
 	}
 	
-	//라운드 스레드
-	//1분이 지나면 현재 작동중인 모든 스레드를 멈추고, 풍선 벡터를 비운뒤
-	//새로운 난이도를 지정하여 BallonSpawnThread를 다시 작동시킨다.
 	
 	//스레드 작성
 	//일정 시간마다 풍선을 생성하고 해당 풍선이 내려가도록 하는 스레드를 별도로 붙인다.
@@ -244,7 +248,7 @@ public class GameRunningPanel extends JPanel {
 						int random = (int)(Math.random()*100);
 						System.out.println(random);
 						if(random%2!=0) {
-							//풍선에 추가 공격을 가한다.(꾸꾸가 공격하면 꼬꼬도 공격)
+							//풍선에 추가 공격을 가한다.(꼬꼬가 공격하면 꾸꾸도 공격)
 							System.out.println("추가공격!");
 							balloon.getDamage(weaponPower*2);
 						}
@@ -258,8 +262,8 @@ public class GameRunningPanel extends JPanel {
 					//이후 풍선의 체력을 가져와서 확인
 					int ballonHealth = balloon.getHealth();
 					
-					//풍선의 체력이 0이되면 풍선을 안보이게 한다.
-					if(ballonHealth==0) {
+					//풍선의 체력이 0이하가 되면 풍선을 삭제한다.
+					if(ballonHealth<=0) {
 						balloon.setVisible(false); //안보이도록 처리
 						balloon.stopFallingThread(); //풍선 멈추기
 						balloonVector.remove(balloon); //벡터에서 풍선제거

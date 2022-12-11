@@ -20,7 +20,7 @@ public class SelectPanel extends JPanel {
     
     private ImageIcon sangsangBugiIcon = new ImageIcon("sangsangbugi.png");  //상상부기 아이콘
     private ImageIcon hansungNyanIicon = new ImageIcon("hansungNyang-i.png"); //한성냥이 아이콘
-    private ImageIcon kkukkukkakkaIcon = new ImageIcon("kkukkukkakka.png"); //꾸꾸&까까 아이콘
+    private ImageIcon kkokkokkukkuIcon = new ImageIcon("kkokkokkukku.png"); //꼬꼬&꾸꾸 아이콘
     
     private ImageIcon bgImageicon = new ImageIcon("selectBackgroundImage.png");
     private Image selectBackgroundImage = bgImageicon.getImage();
@@ -103,12 +103,12 @@ public class SelectPanel extends JPanel {
         add(hansungNyanILabel);
 
 
-        //꾸꾸까가 이미지버튼
-        JLabel kkukkuKkakkaLabel = new JLabel(kkukkukkakkaIcon);
-        kkukkuKkakkaLabel.setSize(kkukkukkakkaIcon.getIconWidth(),kkukkukkakkaIcon.getIconHeight());
-        kkukkuKkakkaLabel.setLocation(910, 270);
-        kkukkuKkakkaLabel.addMouseListener(new CharacterSelectEvent(2)); 
-        add(kkukkuKkakkaLabel);
+        //꼬꼬꾸꾸 이미지버튼
+        JLabel kkokkokkukkuLabel = new JLabel(kkokkokkukkuIcon);
+        kkokkokkukkuLabel.setSize(kkokkokkukkuIcon.getIconWidth(),kkokkokkukkuIcon.getIconHeight());
+        kkokkokkukkuLabel.setLocation(910, 270);
+        kkokkokkukkuLabel.addMouseListener(new CharacterSelectEvent(2)); 
+        add(kkokkokkukkuLabel);
 
         //캐릭터를 선택하면 바로 넘어가게 할것인가, 버튼을 눌러 게임을 진행할것인가 고려
 //        JButton startButton = new JButton("게임시작"); 
