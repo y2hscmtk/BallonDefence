@@ -1,8 +1,13 @@
 package game;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.IOException;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.io.File;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.JFrame;
 
 //여러 패널을 돌려가며 사용자에게 게임을 조작할수 있는 프레임을 제공
 //실질적인 조작은 패널에서 시행함
@@ -22,6 +27,13 @@ public class GameFrame extends JFrame {
     private RankingPanel rankingPanel;
     private RulePanel rulePanel;
     private GamePanel gamePanel;
+    
+    private MusicThread musicThread;
+    
+    public MusicThread getMusicThread() {
+    	return musicThread;
+    }
+    
     
     public GameFrame() {
     	setTitle("BallonDefense");
@@ -43,8 +55,62 @@ public class GameFrame extends JFrame {
 
         this.setResizable(false); //크기 조절 불가능하게
         setContentPane(beginningPanel); //컨텐트펜을 시작패널로 설정
+        
+        musicThread = new MusicThread("openingMusic.wav"); //시작화면 음악 삽입
+        musicThread.start();
+        
         setVisible(true);
     }
+    
+    //시작배경음악 플레이 스레드
+    public class MusicThread extends Thread{
+    	private String path; //음악파일의 경로를 저장받음
+    	private Clip clip; //클립을 필드로 생성
+    	
+    	public MusicThread(String path) {
+    		this.path = path;
+    	}
+    	
+    	//음악 종료
+    	public void musicStop() {
+    		clip.stop(); //오디오 재생 중단
+    	}
+    	
+//    	//현재 작동중이던 음악을 멈추고 새로운 음악으로 변경
+//    	public void changeMusic(String path) {
+//    		clip.stop();
+//    		this.path = path;
+//    		//음악 변경후 1초 대기
+//    		try {
+//				Thread.sleep(1000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//    		System.out.println("현재 음악 : "+path);
+//    		clip.start(); //음악을 변경하고 다시 시작
+//    	}
+    	
+    	
+    	@Override
+    	public void run() {
+    		try{
+        		AudioInputStream ais = AudioSystem.getAudioInputStream(new File(path));
+        		clip = AudioSystem.getClip();
+	            clip.open(ais);
+	            clip.start();
+	            clip.loop(Clip.LOOP_CONTINUOUSLY);
+	        }catch (Exception ex){
+	        	System.out.println("불러오기 오류");
+    	    }
+    	}
+    	//음악을 일시정지 시키는 스레드
+    	
+    	//음악을 중지시키는 스레드
+    	
+    }
+    
+    
     
     //사용자의 버튼 클릭에 따라 컨텐트펜을 다르게 붙여가며 화면을 변화시킨다.
     public void swapPanel(int type){

@@ -53,7 +53,7 @@ public class ButtonClickedEvent extends MouseAdapter{
 	public void mouseExited(MouseEvent e) {
 		if(authority) { //권한이 있다면 이벤트 발생
 			JLabel label = (JLabel)(e.getComponent()); //이벤트가 발생한 라벨을 가져옴
-			label.setIcon(presentIcon); //마우스가 올라갈때의 이미지로 변경
+			label.setIcon(presentIcon); //원래 이미지로 변경
 		}
 	}
 	

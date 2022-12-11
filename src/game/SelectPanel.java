@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 //사용자의 입력에 맞춰서 게임을 생성한다.
 public class SelectPanel extends JPanel {
     private GameFrame parent;//부모를 변수로 저장
-    
+   
     private ImageIcon homeButtonIcon = new ImageIcon("back.png");
     
     private ImageIcon sangsangBugiIcon = new ImageIcon("sangsangbugi.png");  //상상부기 아이콘
@@ -50,6 +50,11 @@ public class SelectPanel extends JPanel {
     	@Override
     	public void mouseClicked(MouseEvent e) {
     		GamePanel game = new GamePanel(characterType); //상상부기(코드0)로 게임 생성
+    		
+    		//현재 진행중인 음악 종료
+    		//parent.getMusicThread()
+    		parent.getMusicThread().musicStop(); //음악 중단
+    		
     		parent.setContentPane(game);
     		//parent.swapPanel(GameFrame.BEGINNING_PANEL);//부모의 컨텐트팬을 변경하도록 함수 호출
     	}
@@ -76,7 +81,7 @@ public class SelectPanel extends JPanel {
         this.setBackground(Color.gray);
         setSize(1500,900);
         //setBounds(0, 0, 1500,900);
-
+        //System.out.println(this.getParent().getName());
         //뒤로가기 버튼 => 다시 4가지 메뉴 창으로 되돌아간다.
         //홈 버튼
   		JButton backButton = new JButton(homeButtonIcon);
@@ -85,7 +90,8 @@ public class SelectPanel extends JPanel {
   		backButton.addMouseListener(new ButtonClickedEvent(parent,parent.BEGINNING_PANEL));
   		add(backButton);
         
-        
+  	
+  		
         //사용자로부터 입력을 받는 부분
         //텍스트 박스와 레이블 3개가 필요(상상부기, 한성냥이, 꼬꼬&꾸꾸 캐릭터 선택창)
         
