@@ -32,7 +32,7 @@ public class GameRunningPanel extends JPanel {
 	private GameFrame parent;
 	//게임에 대한 특성
 	//라운드마다 생성될 풍선의 최대 개수 => 해당 풍선을 모두 지우면 다음 라운드로 넘어가도록
-	private static final int ROUND1BALLONCOUNT = 1; //1라운드에는 10개의 풍선
+	private static final int ROUND1BALLONCOUNT = 10; //1라운드에는 10개의 풍선
 	private static final int ROUND2BALLONCOUNT = 20; //2라운드에는 20개의 풍선
 	private static final int ROUND3BALLONCOUNT = 30; //3라운드에는 30개의 풍선
 	
@@ -290,6 +290,7 @@ public class GameRunningPanel extends JPanel {
 		setLayout(null);
 		setSize(1000,900);
 		
+		weaponPower = 1; //게임 패널 생성시 기본무기로 적용
 		
 		//게임패널에서 홈 화면으로 돌아갈수 있도록 하기 위함 => 게임 종료후 다시하기에 사용
 		//현재까지의 모든 벡터를 비우고,스레드를 중지시키고, 홈화면으로 돌아가면 다시 음악을 실행시켜야함
@@ -317,7 +318,7 @@ public class GameRunningPanel extends JPanel {
 			break;
 		}
 		
-		weaponPower = 1; //기본 무기의 파워는 1
+		
 		
 		JButton stopBalloon = new JButton("풍선 멈추기");
 		stopBalloon.setSize(100,100);
@@ -673,7 +674,7 @@ public class GameRunningPanel extends JPanel {
 				//풍선 색 확률조정
 				int random = (int)(Math.random()*100)+1; //0~100까지의 난수 생성
 				int ballonType; //풍선이 생성될 타입 지정
-				System.out.println("난수 : "+random);
+//				System.out.println("난수 : "+random); 확인용
 				//0~3사이의 난수 => 3퍼센트
 				if(0<=random&&random<coinBalloonPercentage) //3퍼센트 확률로 코인풍선 등장
 					ballonType = 3; //코인풍선
@@ -837,7 +838,7 @@ public class GameRunningPanel extends JPanel {
 					//이후 풍선의 체력을 가져와서 확인
 					int ballonHealth = balloon.getHealth();
 					
-					//풍선의 체력이 0이하가 되면 풍선을 삭제한다.
+					//풍선의 체력이 0이하가 되면 풍선을 삭제한다. => 풍선의 종류에 따라 다른 점수를 부여한다.
 					if(ballonHealth<=0) {
 						//풍선의 체력이 0이하가되면 점수 추가
 						//풍선 종류별로 차등한 점수를 부여한다.
@@ -869,6 +870,12 @@ public class GameRunningPanel extends JPanel {
 							doublePoint = 2; //경험치 부여를 2배로 변경
 							
 						}
+						
+						if(doublePoint==2) {
+							System.out.println("경험치 2배효과 적용중");
+						}
+						else
+							System.out.println("기본 경험치로 적용중");
 						statusPanel.plusScore(score*doublePoint);//스타풍선 터트리기전에는 doublePoint가 1
 						statusPanel.plusCoin(coin);
 						

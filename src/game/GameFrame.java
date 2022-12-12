@@ -28,10 +28,10 @@ public class GameFrame extends JFrame {
     private RulePanel rulePanel;
     private GamePanel gamePanel;
     
-    private MusicThread musicThread;
+    private Music music;
     
-    public MusicThread getMusicThread() {
-    	return musicThread;
+    public Music getMusic() {
+    	return music;
     }
     
     
@@ -56,19 +56,57 @@ public class GameFrame extends JFrame {
         this.setResizable(false); //크기 조절 불가능하게
         setContentPane(beginningPanel); //컨텐트펜을 시작패널로 설정
         
-        musicThread = new MusicThread("openningMusic.wav"); //시작화면 음악 삽입
-        musicThread.start();
+        music = new Music("openningMusic.wav"); //시작화면 음악 삽입
+        music.loadAndStartMusic();
+//        musicThread.start();
         
         setVisible(true);
     }
     
-    //시작배경음악 플레이 스레드
-    public class MusicThread extends Thread{
+   
+    //음악은 프레임에서 관리
+    //음악을 관리하는 클래스 작성
+    //음악 설정, 음악 변경,등
+    public class Music {
     	private String path; //음악파일의 경로를 저장받음
     	private Clip clip; //클립을 필드로 생성
     	
-    	public MusicThread(String path) {
+    	public Music(String path) {
     		this.path = path;
+    	}
+    	
+    	//음악 실행
+    	public void loadAndStartMusic() {
+    		loadAudio(path);
+    		startMusic();
+    	}
+    	
+    	//로드되어있는 오디오를 실행시킨다.
+    	public void startMusic() {
+    		clip.start();
+    	}
+    	
+    	
+    	public void loadAudio(String pathName) {
+    		try{
+        		clip = AudioSystem.getClip();
+        		File audioFile = new File(pathName);
+        		AudioInputStream ais = AudioSystem.getAudioInputStream(audioFile);
+	            clip.open(ais);
+	        }catch (Exception ex){
+	        	System.out.println("불러오기 오류");
+    	    }
+    	}
+    	
+    	
+    	//중지된 이후부터 음악을 시작
+    	public void resumeMusic() {
+    		clip.start();
+    	}
+    	
+    	public void musicReStart() {
+    		clip.setFramePosition(0); //재생 위치를 처음으로 옮김
+    		clip.start(); //처음부터 다시 시작
     	}
     	
     	//음악 종료
@@ -77,18 +115,18 @@ public class GameFrame extends JFrame {
     	}
   
   	
-    	@Override
-    	public void run() {
-    		try{
-        		AudioInputStream ais = AudioSystem.getAudioInputStream(new File(path));
-        		clip = AudioSystem.getClip();
-	            clip.open(ais);
-	            clip.start();
-	            clip.loop(Clip.LOOP_CONTINUOUSLY);
-	        }catch (Exception ex){
-	        	System.out.println("불러오기 오류");
-    	    }
-    	}
+//    	@Override
+//    	public void run() {
+//    		try{
+//        		AudioInputStream ais = AudioSystem.getAudioInputStream(new File(path));
+//        		clip = AudioSystem.getClip();
+//	            clip.open(ais);
+//	            clip.start();
+//	            clip.loop(Clip.LOOP_CONTINUOUSLY);
+//	        }catch (Exception ex){
+//	        	System.out.println("불러오기 오류");
+//    	    }
+//    	}
     	
     }
     

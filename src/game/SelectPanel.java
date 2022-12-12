@@ -26,14 +26,17 @@ public class SelectPanel extends JPanel {
     private ImageIcon kkokkokkukkuIcon = new ImageIcon("kkokkokkukku.png"); //꼬꼬&꾸꾸 아이콘
     
     //마우스가 올라갔을때 캐릭터 버튼의 변화를 주기 위해
-    private ImageIcon enteredBugi = new ImageIcon("enteredBugi.png");
+    private ImageIcon enteredBugi = new ImageIcon("sangsangbugiEntered.png");
+    private ImageIcon enteredHansungNyangi = new ImageIcon("hansungNyang-iEntered.png");
+    private ImageIcon enteredKKKK = new ImageIcon("kkokkokkukkuEntered.png");
     
     //배경 이미지
-    private ImageIcon bgImageicon = new ImageIcon("selectBackgroundImage.png");
+    private ImageIcon bgImageicon = new ImageIcon("background.png");
     private Image selectBackgroundImage = bgImageicon.getImage();
     
-    
-    
+//    private ImageIcon bgImageicon = new ImageIcon("background.png");
+//    private Image backgroundPanelImage = bgImageicon.getImage();
+//    
     
     private int selectType; //사용자가 선택한 캐릭터 저장
 //    private boolean flag = false; //사용자가 캐릭터 선택을 했는지 확인하는 용도
@@ -57,7 +60,7 @@ public class SelectPanel extends JPanel {
     		
     		//현재 진행중인 음악 종료
     		//parent.getMusicThread()
-    		parent.getMusicThread().musicStop(); //음악 중단
+    		parent.getMusic().musicStop(); //음악 중단
     		
     		parent.setContentPane(game);
     		//parent.swapPanel(GameFrame.BEGINNING_PANEL);//부모의 컨텐트팬을 변경하도록 함수 호출
@@ -108,6 +111,7 @@ public class SelectPanel extends JPanel {
         //캐릭터 선택창 => 한 캐릭터가 선택되었다면 다시 클릭하기 전까지, 다른 캐릭터는 선택할수 없도록 해야함
         //캐릭터 선택 이후, 다시 해당 캐릭터를 클릭하였다면 선택정보가 리셋되고, 다른 캐릭터를 선택할수 있도록
         
+  		//캐릭터 버튼 이벤트 => 버튼 클릭 이벤트를 오버라이딩해서 캐릭터 선택하는 부분만 추가로 삽입?
         
         //상상부기 이미지버튼
         JLabel sangsangBugiLabel = new JLabel(sangsangBugiIcon);
@@ -130,7 +134,7 @@ public class SelectPanel extends JPanel {
         JLabel hansungNyanILabel = new JLabel(hansungNyanIicon);
         hansungNyanILabel.setSize(hansungNyanIicon.getIconWidth(),hansungNyanIicon.getIconHeight());
         hansungNyanILabel.setLocation(610, 270);
-        hansungNyanILabel.addMouseListener(new CharacterSelectEvent(1,enteredBugi,sangsangBugiIcon));
+        hansungNyanILabel.addMouseListener(new CharacterSelectEvent(1,enteredHansungNyangi,hansungNyanIicon));
         add(hansungNyanILabel);
 
 
@@ -138,7 +142,7 @@ public class SelectPanel extends JPanel {
         JLabel kkokkokkukkuLabel = new JLabel(kkokkokkukkuIcon);
         kkokkokkukkuLabel.setSize(kkokkokkukkuIcon.getIconWidth(),kkokkokkukkuIcon.getIconHeight());
         kkokkokkukkuLabel.setLocation(910, 270);
-        kkokkokkukkuLabel.addMouseListener(new CharacterSelectEvent(2,enteredBugi,sangsangBugiIcon)); 
+        kkokkokkukkuLabel.addMouseListener(new CharacterSelectEvent(2, enteredKKKK, kkokkokkukkuIcon)); 
         add(kkokkokkukkuLabel);
 
         //캐릭터를 선택하면 바로 넘어가게 할것인가, 버튼을 눌러 게임을 진행할것인가 고려
@@ -166,8 +170,7 @@ public class SelectPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
        super.paintComponent(g); //그래픽 컴포넌트 설정
-       
-       //배경 이미지 설정
-       g.drawImage(selectBackgroundImage, 0, 0, this.getWidth(),this.getHeight(),null);
+       //배경 이미지
+       g.drawImage(selectBackgroundImage, 0, 0, this.getWidth(),this.getHeight(),null); //이미지가 그려지는 시점 알림받지 않기
     }
 }

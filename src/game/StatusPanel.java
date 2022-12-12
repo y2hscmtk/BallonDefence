@@ -167,7 +167,7 @@ public class StatusPanel extends JPanel{
 		int i=0;
 //		//체력바 생성 => 체력을 10나누고 2를 곱한만큼 생성=> 체력이 150이면 30개 생성(체력바 1개당 체력5를 의미)
 		for(i=0;i<(characterHealth/10*2);i++) {
-			System.out.println("체력바 추가");
+//			System.out.println("체력바 추가"); 확인용
 			JLabel healthBar = new JLabel(healthBarIcon);
 			healthBar.setSize(healthBarIcon.getIconWidth(),healthBarIcon.getIconHeight());
 			healthBar.setLocation(64+(i*10),420);
@@ -235,7 +235,7 @@ public class StatusPanel extends JPanel{
 		//플러스된 체력수만큼 체력바를 더해준다.
 		int i=0;
 		for(i=0;i<(pHealth/10*2);i++) {
-			System.out.println("체력바 추가");
+//			System.out.println("체력바 추가");
 			JLabel healthBar = new JLabel(healthBarIcon);
 			healthBar.setSize(healthBarIcon.getIconWidth(),healthBarIcon.getIconHeight());
 			//이전 체력바의 x좌표를 얻을방법 고안

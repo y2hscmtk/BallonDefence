@@ -10,10 +10,13 @@ import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+//라벨을 버튼으로 취급하여 클릭했을때의 변화를 준다
+//마우스 올라갈때 이미지 변화
+//누르고 땠을때 이미지 변화,등
 public class ButtonClickedEvent extends MouseAdapter{
 	private GameFrame parent;//부모 변수
 	private int type;
-	private Clip clip;
+	private Clip clip; //효과음을 위하여
 	private ImageIcon enteredIcon; //마우스가 올라갔을때 보여지도록 할 이미지
 	private ImageIcon presentIcon; //컴포넌트의 현재 이미지 아이콘
 	private boolean authority = false; //마우스 entered이벤트와 exited이벤트의 활성권한
@@ -29,23 +32,22 @@ public class ButtonClickedEvent extends MouseAdapter{
 		authority = true; //entered이벤트와 exited이벤트 발생 권한 부여
 		this.parent = parent;
 		this.type = type; //사용자로부터 이동할 메뉴를 생성자로 입력받음
-		this.enteredIcon = enteredIcon;
-		this.presentIcon = presentIcon;
+		this.setEnteredIcon(enteredIcon);
+		this.setPresentIcon(presentIcon);
 	}
 	
 	
-//	//소리버튼에 사용
-//	public ButtonClickedEvent(ImageIcon enteredIcon,ImageIcon presentIcon) {
-//		this.enteredIcon = enteredIcon;
-//		this.presentIcon = presentIcon;
-//	}
+	public ButtonClickedEvent(ImageIcon enteredIcon,ImageIcon presentIcon) {
+		this.setEnteredIcon(enteredIcon);
+		this.setPresentIcon(presentIcon);
+	}
 	
 	
 	@Override //마우스가 컴포넌트 위에 올라갈때의 이벤트
 	public void mouseEntered(MouseEvent e) {
 		if(authority) { //권한이 있다면 이벤트 발생
 			JLabel label = (JLabel)(e.getComponent()); //이벤트가 발생한 라벨을 가져옴
-			label.setIcon(enteredIcon); //마우스가 올라갈때의 이미지로 변경
+			label.setIcon(getEnteredIcon()); //마우스가 올라갈때의 이미지로 변경
 		}
 		
 	}
@@ -54,7 +56,7 @@ public class ButtonClickedEvent extends MouseAdapter{
 	public void mouseExited(MouseEvent e) {
 		if(authority) { //권한이 있다면 이벤트 발생
 			JLabel label = (JLabel)(e.getComponent()); //이벤트가 발생한 라벨을 가져옴
-			label.setIcon(presentIcon); //원래 이미지로 변경
+			label.setIcon(getPresentIcon()); //원래 이미지로 변경
 		}
 	}
 	
@@ -62,7 +64,7 @@ public class ButtonClickedEvent extends MouseAdapter{
 	public void mouseReleased(MouseEvent e) {
 		if(authority) { //권한이 있다면 이벤트 발생
 			JLabel label = (JLabel)(e.getComponent()); //이벤트가 발생한 라벨을 가져옴
-			label.setIcon(presentIcon); //원래 이미지로 변경
+			label.setIcon(getPresentIcon()); //원래 이미지로 변경
 		}
 	}
 	
@@ -90,5 +92,21 @@ public class ButtonClickedEvent extends MouseAdapter{
 			System.out.println("오류!");
 		}
 		clip.start(); // 버튼을 클릭했을때 소리가 나도록
+	}
+
+	public ImageIcon getEnteredIcon() {
+		return enteredIcon;
+	}
+
+	public void setEnteredIcon(ImageIcon enteredIcon) {
+		this.enteredIcon = enteredIcon;
+	}
+
+	public ImageIcon getPresentIcon() {
+		return presentIcon;
+	}
+
+	public void setPresentIcon(ImageIcon presentIcon) {
+		this.presentIcon = presentIcon;
 	}
 }
