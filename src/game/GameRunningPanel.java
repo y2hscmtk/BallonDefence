@@ -93,6 +93,8 @@ public class GameRunningPanel extends JPanel {
 	//게임에 대한 정보를 받아서, 매 라운드마다 차등한 상점 생성
 	//상점이용 종료하고 다음 라운드로 넘어가게 하는 버튼 작성
 	private class StoreAndFianlPanel extends JPanel{
+		private StatusPanel statusPanel;//아이템 구매시 코인과 체력을 조작하기 위해
+		
 		private int gameLevel; //게임 레벨에 대한 정보 저장
 		private Clip clip; //상점에서 아이템을 고를때의 효과음을 위해
 		
@@ -113,8 +115,10 @@ public class GameRunningPanel extends JPanel {
 		private ImageIcon chainsawIcon = new ImageIcon("chainsaw.png"); //톱 이미지 아이콘
 		private ImageIcon scissorsIcon = new ImageIcon("scissors.png"); //가위 이미지 아이콘
 		private ImageIcon healthPostionIcon = new ImageIcon("HealthPositon.png"); //체력회복 물약 아이콘
+		private ImageIcon noneIcon = new ImageIcon("None.png");
 		
 		
+		private ItemLabelEvent itemSelectEvent;
 //		//마지막 창에 보여지게 할 아이콘
 //		private ImageIcon finalImageIcon = new ImageIcon("finalImage.png");
 		
@@ -122,90 +126,192 @@ public class GameRunningPanel extends JPanel {
 		
 		//상점에는 2가지의 아이템만 보여줄것
 		private ImageIcon item1;
+		private JLabel item1Label;
 		private ImageIcon item2;
+		private JLabel item2Label;
 		
 		//아이템을 구매하지 않고 넘어갈수 있으므로=> 그 경우 기초아이템의 아이템코드인 1번을 유지
 		private int selectedItem = 1; //선택된 아이템을 저장할 변수 => 이벤트 발생시 넘겨줄것\
 		private int weaponCode; //무기 코드를 저장
 		
+		//현재 무기를 판매중인지 여부
+		private boolean selling = true;
+		
+		//아직 물건을 판매중인지 확인
+		public boolean isSelling() {
+			return selling;
+		}
+		
+		//판매된 상태로 변경
+		public void setSelling() {
+			selling = false;
+		}
+		
 		//아이템라벨과 관련된 이벤트 작성
 		private class ItemLabelEvent extends MouseAdapter {
+			private StatusPanel statusPanel; //아이템 구매에 따라 스테이터스 창의 코인을 불러오기위해
 			private int itemCode;
 			
 			//아이템코드를 입력받아 저장
-			public ItemLabelEvent(int itemCode) {
+			public ItemLabelEvent(int itemCode,StatusPanel statusPanel) {
+				this.statusPanel = statusPanel; //스테이터스창에 대한 참조 가져오기
 				this.itemCode = itemCode;
 			}
 			
-			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//				//어떤 아이템을 선택했는지 확인
-//				if(itemCode==POSTION)
-//					
-				//아이템을 돌아가면서 클릭하더라도 상점에 등장하는 무기아이템은 하나이므로
-				//스위치케이스문으로 작성해도 문제없을것
+				int itemPrice = 0; //아이템 가격을 저장할 부분
+
+				//스테이터스의 코인 가져오기로 누를때마다 잔여 골드 확인
+				
 				switch(itemCode) {
-				case POSTION: //포션 선택시
-					statusPanel.healthRecovery(30); //30의 체력을 회복
+				case POSTION: //1번 (포션) 선택시
+					itemPrice = 300; //아이템 가격 가져오기
+					//해당아이템의 가격보다 많은 돈을 가지고 있는지 확인
 					break;
-				case SCISSORS:
+				case SCISSORS: //가위는 천원
+					itemPrice = 1000; //아이템 가격 가져오기
 					selectedItem = SCISSORS; //가위를 선택하였음을 저장
+					setSelling(); //판매됨 상태로 전환
 					break;
-				case CHAINSAW:
-					selectedItem = SCISSORS; //톱을 선택하였음을 저장
+				case CHAINSAW: //톱은 삼천원
+					itemPrice = 3000; //아이템 가격 가져오기
+					selectedItem = CHAINSAW; //톱을 선택하였음을 저장
+					setSelling(); //판매됨 상태로 전환
 					break;
 				}
+				
+				//물건의 가격보다 많은 돈을 갖고있을때 이벤트 발생
+				if(statusPanel.getCoin()>=itemPrice) {
+					switch(selectedItem) {
+					case POSTION: //1번 (포션) 선택시
+						statusPanel.healthRecovery(30); //30의 체력을 회복
+						statusPanel.minusCoin(300); //포션의 가격 지불
+						break;
+					case SCISSORS: //가위는 천원
+						System.out.println("가위 선택");
+						System.out.println("천원 차감");
+						statusPanel.minusCoin(1000); //금액 지불
+						statusPanel.setWeapon(selectedItem);
+						break;
+					case CHAINSAW: //톱은 삼천원
+						System.out.println("톱 선택");
+						statusPanel.minusCoin(3000); //금액 지불
+						System.out.println(selectedItem+","+CHAINSAW);
+						statusPanel.setWeapon(selectedItem);
+						break;
+					}	
+				}
+				else {
+					//구매불가 소리 삽입?
+					System.out.println("구매 불가");
+				}
+				
 			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				//버튼이 눌려진 순간 소리가 나도록
+				try {
+					clip = AudioSystem.getClip();
+					File audioFile = new File("ButtonClick.wav");
+					AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+					clip.open(audioStream);
+				}catch(Exception E) {
+					System.out.println("오류!");
+				}
+				clip.start(); // 버튼을 클릭했을때 소리가 나도록
+			}
+			
+			
 		}
+		
+		
+		//플레이어 사망시 패널을 엔딩패널로 보이게 하는 함수 작성
 		
 		
 		//상점 레벨에 따라 종료칸으로도 넘어갈수 있도록
 		public void setPanelElement(int gameLevel) {
-			switch(gameLevel) {
-			case 1:
+			//현재 코인을 바탕으로 아이템 결정
+			int nowCoin = statusPanel.getCoin();// 현재 금액이 얼마인지 확인
+			if(nowCoin<1000) {
+				item1 = noneIcon; //아무것도 없도록
+				item2 = healthPostionIcon; //체력물약을 2번째 아이템으로 지정
+			}
+			else if(1000<=nowCoin&&nowCoin<3000) {
 				item1 = scissorsIcon; //가위 아이템 보여주기
-				item2 = healthPostionIcon; //두번째 아이템은 항상 체력회복 포션으로
-				break;
-			case 2:
+				item2 = healthPostionIcon; //체력물약을 2번째 아이템으로 지정
+			}
+			else {
 				item1 = chainsawIcon; //톱 아이템 보여주기
-				item2 = healthPostionIcon; //두번째 아이템은 항상 체력회복 포션으로
-				break;
-			case 3:
-				item1 = null;
-				item2 = null;
+				item2 = healthPostionIcon; //체력물약을 2번째 아이템으로 지정
 			}
 			
+			//레벨이 3이면 아무것도 보이지 않도록
+			if(gameLevel==3) {
+				item1 = null; 
+				item2 = null;
+			}
+				
 		}
-		
-		
 		//상점 창과 게임 클리어 창을 관리하는 클래스
 		//현재 난이도 받아오기,게임 매니저 스레드 참조가져오기
-		public StoreAndFianlPanel(int gameLevel,GameMangeThread gameMangeThread) { 
+		public StoreAndFianlPanel(int gameLevel,GameMangeThread gameMangeThread,StatusPanel statusPanel) {
+			this.statusPanel = statusPanel; //스테이터스 창에 대한 참조를 가져옴 => 체력,코인 관리
 			this.gameLevel = gameLevel; //1레벨 상점부터 시작
 			this.gameMangeThread = gameMangeThread;
-			weaponCode = gameLevel+1; //1레벨 상점에 등장하는 무기 코드는 레벨+1
+			
+			this.selling = true; //상점이 생성되면 무기를 판매중인 상태로 전환
+			
+			int nowCoin = statusPanel.getCoin();
+			//스테이터스 창의 금액 상황을 보고 코드 결정	
+			if(nowCoin<=0) {
+				this.weaponCode = 1;
+			}
+			else if(1000<=nowCoin&&nowCoin<3000) {
+				this.weaponCode = 2;
+			}
+			else {
+				this.weaponCode = 3;
+			}
+			
+//			weaponCode = gameLevel+1; //1레벨 상점에 등장하는 무기 코드는 레벨+1
 	
+			
+			//판넬에 보여지게 할 내용 결정
+			//엔딩창이 될수도 있고, 클리어창이 될수도있고, 상점창이 될수도 있다
+			//상점창을 띄울경우 어떤 아이템을 보이게 할지는 현재 코인을 보고 결정
 			setPanelElement(gameLevel);
+			
+			
 			if(gameLevel==3) {
 				System.out.println("3라운드까지 완료!");
+				//이곳에 게임 엔딩창을 
+				
 			}
 			else { //1,2레벨 상점창 관리 => 3라운드 상점은 앤딩판넬을 보여줌=>아이디를 입력받아 저장하는 공간과, 처음화면으로 돌아가는버튼
-				JLabel weaponItem = new JLabel(item1);
-				weaponItem.setSize(item1.getIconWidth(),item1.getIconHeight());
-				weaponItem.setLocation(140,150);
-				//아이템 코드번호를 넘겨줘야함
-				weaponItem.addMouseListener(new ItemLabelEvent(weaponCode));
-				add(weaponItem);
+				item1Label = new JLabel(item1);
+				
+				item1Label.setSize(item1.getIconWidth(),item1.getIconHeight());
+				item1Label.setLocation(140,150);
+				
+				//무기 변경 이벤트 작성 => 한번 구매된 이후 추가구매가 없도록
+				item1Label.addMouseListener(new ItemLabelEvent(weaponCode,statusPanel));
+				add(item1Label);
 				
 				JLabel border1 = new JLabel(borderIcon);
 				border1.setSize(borderIcon.getIconWidth(),borderIcon.getIconHeight());
 				border1.setLocation(60,100);
 				add(border1);
 				
+				
 				JLabel postionItem = new JLabel(item2);
 				postionItem.setSize(item2.getIconWidth(),item2.getIconHeight());
-				postionItem.setLocation(420,150);
+				postionItem.setLocation(420,150); 
+				//포션의 코드를 넘겨서 이벤트 작성, 포션의 가격은 300원으로
+				postionItem.addMouseListener(new ItemLabelEvent(POSTION,statusPanel)); 
+				//
+				
 				add(postionItem);
 				
 				JLabel border2 = new JLabel(borderIcon);
@@ -235,7 +341,7 @@ public class GameRunningPanel extends JPanel {
 					@Override
 					public void mouseClicked(MouseEvent e) {	
 						//상점의 무기 구매정보를 스테이터스창으로 넘기고
-						getStatusPanel().setWeapon(selectedItem);
+						//getStatusPanel().setWeapon(selectedItem);
 						//무기 공격력 변경
 						setWeaponPower(selectedItem);				
 						setVisible(false);
@@ -476,8 +582,8 @@ public class GameRunningPanel extends JPanel {
 				if(!ballonSpawnThread.getIsRun()&&balloonVector.isEmpty()&&isStoreOn==false) {
 					//게임이 3라운드까지 모두 끝났는지 확인필요
 					if(gameLevel==3) {
-						System.out.println(gameLevel + "레벨 상점창 띄우기");
-						storeAndFinalPanel = new StoreAndFianlPanel(gameLevel,this); //현재 스레드에 대한 접근 권한 부여
+						System.out.println(gameLevel + "까지 클리어! => 엔딩창 띄우기");
+						storeAndFinalPanel = new StoreAndFianlPanel(gameLevel,this,statusPanel); //현재 스레드에 대한 접근 권한 부여
 						storeAndFinalPanel.setBounds(100,200,800,500);
 						add(storeAndFinalPanel);
 						
@@ -487,7 +593,7 @@ public class GameRunningPanel extends JPanel {
 					else {
 						gameLevel++;
 						System.out.println(gameLevel-1 + "레벨 상점창 띄우기");//상점창에서 버튼을 눌러 다음 스테이지로 넘어가게끔
-						storeAndFinalPanel = new StoreAndFianlPanel(gameLevel-1,this); //현재 스레드에 대한 접근 권한 부여
+						storeAndFinalPanel = new StoreAndFianlPanel(gameLevel-1,this,statusPanel); //현재 스레드에 대한 접근 권한 부여
 						storeAndFinalPanel.setBounds(100,200,800,500);
 						
 						add(storeAndFinalPanel);
@@ -649,7 +755,15 @@ public class GameRunningPanel extends JPanel {
 			//원하는 순자만큼 풍선을 생성하도록
 			for(int i=0;i<BallonCount;i++) {
 				int position;
-				word = wordList.getWord(); //랜덤 단어 추출
+				
+				//풍선 박스안에 적절히 들어갈 길이의 단어로 랜덤 단어 추출
+				while(true) {
+					word = wordList.getWord(); //랜덤 단어 추출
+					if(word.length()<10) //9글자 이하의 단어의 경우 반복문 탈출
+						break;
+				}
+				
+				
 				//랜덤한 풍선에 대한 확률조정
 				
 				
@@ -809,6 +923,8 @@ public class GameRunningPanel extends JPanel {
 			});
 		}
 		
+		
+		//체크포인트
 		//풍선벡터 안에 있는 단어인지 확인하는 메소드
 		@SuppressWarnings("unlikely-arg-type")
 		public boolean isMatch(String text) {
@@ -876,6 +992,8 @@ public class GameRunningPanel extends JPanel {
 						}
 						else
 							System.out.println("기본 경험치로 적용중");
+						
+						//코인과 점수를 더한다.
 						statusPanel.plusScore(score*doublePoint);//스타풍선 터트리기전에는 doublePoint가 1
 						statusPanel.plusCoin(coin);
 						

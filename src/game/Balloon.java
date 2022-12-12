@@ -112,6 +112,11 @@ public class Balloon extends JLayeredPane{
 		
 		
 	    this.text = text;
+	    
+//	    //단어길이 테스트용
+//	    this.text = "ABCDEFGHI"; //10글자의 경우
+	    //9글자가 딱 적당함
+	    
 	    this.fallingSpeed = fallingSpeed; ///풍선이 떨어지는 속도 지정
 	    setSize(100,100);
 	    setBackground(Color.cyan);
@@ -127,13 +132,16 @@ public class Balloon extends JLayeredPane{
 		//button.setBackground(Color.RED);
 		//add(balloonImage);
 		
+	    //단어의 길이 확인
 	    int textLength = text.length();
-		answerText = new JLabel(text);
+	    
+	    
+		answerText = new JLabel(this.text);
 		answerText.setOpaque(true); //배경색을 칠하게 하기 위함
 		answerText.setBackground(Color.white);
 		answerText.setFont(new Font("SansSerif",Font.BOLD, 30));
-		answerText.setSize(textLength*20,40);
-		answerText.setLocation(80,getHeight()+145);
+		answerText.setSize(180,42);
+		answerText.setLocation(62,getHeight()+136);
 		add(answerText);
 //		
 //		//자기자신에 대한 참조와 풍선이 떨어지는 속도(sleep)를 넘겨서 스레드 생성

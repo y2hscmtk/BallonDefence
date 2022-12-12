@@ -70,9 +70,9 @@ public class StatusPanel extends JPanel{
 	private int healthBarIndex=0;
 	
 	
-	//게임 음악을 키고 끌수 있게?
 	
 	
+	//게임음악을 도중에 키고 끌수있도록 버튼에 달아줄 이벤트
 	//음악을 관리하기 위해 기존에 작성한 버튼클릭이벤트를 오버라이딩하여 새로운 기능 작성
     private class SoundButtonClickedEvent extends ButtonClickedEvent{
     	private GameFrame parent;
@@ -112,11 +112,6 @@ public class StatusPanel extends JPanel{
 	
 	
 	
-	
-	
-	
-	
-	
 	//선택한 캐릭터가 무엇인지에 대한 정보
 	//캐릭터의 체력 정보
 	//캐릭터의 무기 정보, 무기들 이미지
@@ -140,22 +135,25 @@ public class StatusPanel extends JPanel{
 	//무기의 공격력을 리턴
 	public int getWeaponPower() {return weaponPower;}
 	
-	//선택된 무기로 무기 변경 => 현재 무기 데미지변경
+	//선택된 무기로 무기 이미지 변경 => 현재 무기 데미지변경
 	public void setWeapon(int selectedItem) {
 		weaponType = selectedItem; //입력받은 아이템으로 현재 무기 변경
 		//1은 연필, 2는 가위, 3은 톱
 		//무기 타입에 맞는 무기 이미지, 무기 데미지 변경
 		switch(weaponType) {
 		case PENCIL:
+			System.out.println("연필로 이미지 변경");
 			weaponLabel.setIcon(pencilIcon);
 			weaponPower = 1;
 			break;
 		case SCISSORS: 
+			System.out.println("가위로 이미지 변경");
 			weaponLabel.setIcon(scissorsIcon);
 			repaint();
 			weaponPower = 2;
 			break;
 		case CHAINSAW:
+			System.out.println("톱으로 이미지 변경");
 			weaponLabel.setIcon(chainsawIcon);
 			weaponPower = 3;
 			break;
@@ -166,10 +164,6 @@ public class StatusPanel extends JPanel{
 		this.parent = parent;
 		setLayout(null);
 		setSize(500,900);
-		
-		
-		//초기 무기 설정 => 초기 무기는 연필
-		weaponLabel = new JLabel(pencilIcon);
 		
 		//점수 보여주기
 		add(new JLabel("SCORE"));
@@ -189,16 +183,7 @@ public class StatusPanel extends JPanel{
 //        		new ButtonClickedEvent(parent, GameFrame.SELECT_PANEL,soundLabelMuteIcon,soundLabelIcon));
         add(soundButtonLabel);
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 		//코인 아이콘& x아이콘
 		JLabel coinImageLabel = new JLabel(coinIcon);
 		coinImageLabel.setSize(coinIcon.getIconWidth(),coinIcon.getIconHeight());
@@ -209,6 +194,10 @@ public class StatusPanel extends JPanel{
 				healthRecovery(30); //누를때마다 30의 체력이 회복
 			}
 		});
+		coinLabel.setSize(300,300);
+		coinLabel.setLocation(280,350);
+		add(coinLabel);
+		
 		
 		JLabel xImageLabel = new JLabel(xIcon);
 		xImageLabel.setSize(xIcon.getIconWidth(),xIcon.getIconHeight());
@@ -216,10 +205,10 @@ public class StatusPanel extends JPanel{
 		add(coinImageLabel);
 		add(xImageLabel);
 		
-		add(new JLabel("COIN"));
-		coinLabel.setSize(300,300);
-		coinLabel.setLocation(280,350);
-		add(coinLabel);
+		
+		
+		
+		
 		
 		
 		System.out.println("스테이터스 생성자 호출");
@@ -269,11 +258,26 @@ public class StatusPanel extends JPanel{
 //		health.setLocation(65,500);
 //		add(health);
 
-		
+		//캐릭터 아이콘
 		JLabel character = new JLabel(selectedCharacater);
 		character.setSize(selectedCharacater.getIconWidth(),selectedCharacater.getIconHeight());
 		character.setLocation(65,140);
 		add(character);
+		
+		
+		//무기 아이콘 보이게
+		//초기 무기 설정 => 초기 무기는 연필
+		weaponLabel = weaponLabel = new JLabel(pencilIcon);
+		weaponLabel.setSize(pencilIcon.getIconWidth(),pencilIcon.getIconHeight());
+		weaponLabel.setLocation(65,560);
+		add(weaponLabel);
+		
+		
+		
+		
+		
+		
+		
 		
 		setVisible(true);
 	}
@@ -343,15 +347,16 @@ public class StatusPanel extends JPanel{
 		coin += pCoin; //점수 추가
 		//변경된 코인 표시
 		System.out.println(pCoin+"원 추가");
-		coinLabel.setText(Integer.toString(score));
+		coinLabel.setText(Integer.toString(coin));
 	}
 	
 	
 	//코인을 빼는 메소드 => 물건구매
 	public void minusCoin(int mCoin) {
+		System.out.println(mCoin +"차감");
 		coin -= mCoin; //점수 추가
 		//변경된 코인 표시
-		coinLabel.setText(Integer.toString(score));
+		coinLabel.setText(Integer.toString(coin));
 	}
 	
 	
