@@ -3,7 +3,6 @@ package game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -20,7 +19,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
 /*
  * 라운드 시스템으로 작성
  * 라운드마다 생성될 풍선의 수가 정해져있고, 해당 풍선을 모두 처리하면 라운드가 종료되는 방식으로
@@ -34,7 +32,7 @@ public class GameRunningPanel extends JPanel {
 	private GameFrame parent;
 	//게임에 대한 특성
 	//라운드마다 생성될 풍선의 최대 개수 => 해당 풍선을 모두 지우면 다음 라운드로 넘어가도록
-	private static final int ROUND1BALLONCOUNT = 10; //1라운드에는 10개의 풍선
+	private static final int ROUND1BALLONCOUNT = 1; //1라운드에는 10개의 풍선
 	private static final int ROUND2BALLONCOUNT = 20; //2라운드에는 20개의 풍선
 	private static final int ROUND3BALLONCOUNT = 30; //3라운드에는 30개의 풍선
 	
@@ -52,8 +50,6 @@ public class GameRunningPanel extends JPanel {
 	private ImageIcon bgImageicon = new ImageIcon("gamePanelBackgroundImage.png");
 	private Image gamePanelBackgroundImage = bgImageicon.getImage();
 	
-	
-	
 	private int ballonSpawnTime; //풍선 하나가 생성되는데 걸리는 시간
 	private WordList wordList = new WordList("words.txt"); //단어 리스트 생성
 	
@@ -68,6 +64,223 @@ public class GameRunningPanel extends JPanel {
 	//풍선을 관리하기 위한 벡터
 	private Balloon balloon;
 	private Vector<Balloon> balloonVector = new Vector<Balloon>();
+	
+	//스테이터스창에 대한 참조를 리턴
+	public StatusPanel getStatusPanel() {
+		return statusPanel;
+	}
+	
+	//무기의 공격력을 설정
+	public void setWeaponPower(int selectedItem) {
+//		weaponType = selectedItem; //입력받은 아이템으로 현재 무기 변경
+//		//1은 연필, 2는 가위, 3은 톱
+//		//무기 타입에 맞는 무기 이미지, 무기 데미지 변경
+		switch(selectedItem) {
+		case 1:
+			weaponPower = 1;
+			break;
+		case 2: 
+			weaponPower = 2;
+			break;
+		case 3:
+			weaponPower = 3;
+			break;
+		}
+	}
+	
+	
+	//상점을 관리하는 패널
+	//게임에 대한 정보를 받아서, 매 라운드마다 차등한 상점 생성
+	//상점이용 종료하고 다음 라운드로 넘어가게 하는 버튼 작성
+	private class StoreAndFianlPanel extends JPanel{
+		private int gameLevel; //게임 레벨에 대한 정보 저장
+		private Clip clip; //상점에서 아이템을 고를때의 효과음을 위해
+		
+		private GameMangeThread gameMangeThread;
+		
+		private ImageIcon backgroundImageIcon = new ImageIcon("StoreBoard.png");
+		private Image backgroundImage = backgroundImageIcon.getImage();
+		
+		private ImageIcon rightArrowIcon = new ImageIcon("rightArrow.png");
+		private ImageIcon rightArrowEnteredIcon = new ImageIcon("rightArrowEntered.png");
+		
+		//아이템 코드번호
+		private static final int POSTION = 1;
+		private static final int SCISSORS = 2;
+		private static final int CHAINSAW = 3;
+		
+		
+		private ImageIcon chainsawIcon = new ImageIcon("chainsaw.png"); //톱 이미지 아이콘
+		private ImageIcon scissorsIcon = new ImageIcon("scissors.png"); //가위 이미지 아이콘
+		private ImageIcon healthPostionIcon = new ImageIcon("HealthPositon.png"); //체력회복 물약 아이콘
+		
+		
+//		//마지막 창에 보여지게 할 아이콘
+//		private ImageIcon finalImageIcon = new ImageIcon("finalImage.png");
+		
+		private ImageIcon borderIcon = new ImageIcon("border.png");
+		
+		//상점에는 2가지의 아이템만 보여줄것
+		private ImageIcon item1;
+		private ImageIcon item2;
+		
+		//아이템을 구매하지 않고 넘어갈수 있으므로=> 그 경우 기초아이템의 아이템코드인 1번을 유지
+		private int selectedItem = 1; //선택된 아이템을 저장할 변수 => 이벤트 발생시 넘겨줄것\
+		private int weaponCode; //무기 코드를 저장
+		
+		//아이템라벨과 관련된 이벤트 작성
+		private class ItemLabelEvent extends MouseAdapter {
+			private int itemCode;
+			
+			//아이템코드를 입력받아 저장
+			public ItemLabelEvent(int itemCode) {
+				this.itemCode = itemCode;
+			}
+			
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+//				//어떤 아이템을 선택했는지 확인
+//				if(itemCode==POSTION)
+//					
+				//아이템을 돌아가면서 클릭하더라도 상점에 등장하는 무기아이템은 하나이므로
+				//스위치케이스문으로 작성해도 문제없을것
+				switch(itemCode) {
+				case POSTION: //포션 선택시
+					statusPanel.healthRecovery(30); //30의 체력을 회복
+					break;
+				case SCISSORS:
+					selectedItem = SCISSORS; //가위를 선택하였음을 저장
+					break;
+				case CHAINSAW:
+					selectedItem = SCISSORS; //톱을 선택하였음을 저장
+					break;
+				}
+			}
+		}
+		
+		
+		//상점 레벨에 따라 종료칸으로도 넘어갈수 있도록
+		public void setPanelElement(int gameLevel) {
+			switch(gameLevel) {
+			case 1:
+				item1 = scissorsIcon; //가위 아이템 보여주기
+				item2 = healthPostionIcon; //두번째 아이템은 항상 체력회복 포션으로
+				break;
+			case 2:
+				item1 = chainsawIcon; //톱 아이템 보여주기
+				item2 = healthPostionIcon; //두번째 아이템은 항상 체력회복 포션으로
+				break;
+			case 3:
+				item1 = null;
+				item2 = null;
+			}
+			
+		}
+		
+		
+		//상점 창과 게임 클리어 창을 관리하는 클래스
+		//현재 난이도 받아오기,게임 매니저 스레드 참조가져오기
+		public StoreAndFianlPanel(int gameLevel,GameMangeThread gameMangeThread) { 
+			this.gameLevel = gameLevel; //1레벨 상점부터 시작
+			this.gameMangeThread = gameMangeThread;
+			weaponCode = gameLevel+1; //1레벨 상점에 등장하는 무기 코드는 레벨+1
+	
+			setPanelElement(gameLevel);
+			if(gameLevel==3) {
+				System.out.println("3라운드까지 완료!");
+			}
+			else { //1,2레벨 상점창 관리 => 3라운드 상점은 앤딩판넬을 보여줌=>아이디를 입력받아 저장하는 공간과, 처음화면으로 돌아가는버튼
+				JLabel weaponItem = new JLabel(item1);
+				weaponItem.setSize(item1.getIconWidth(),item1.getIconHeight());
+				weaponItem.setLocation(140,150);
+				//아이템 코드번호를 넘겨줘야함
+				weaponItem.addMouseListener(new ItemLabelEvent(weaponCode));
+				add(weaponItem);
+				
+				JLabel border1 = new JLabel(borderIcon);
+				border1.setSize(borderIcon.getIconWidth(),borderIcon.getIconHeight());
+				border1.setLocation(60,100);
+				add(border1);
+				
+				JLabel postionItem = new JLabel(item2);
+				postionItem.setSize(item2.getIconWidth(),item2.getIconHeight());
+				postionItem.setLocation(420,150);
+				add(postionItem);
+				
+				JLabel border2 = new JLabel(borderIcon);
+				border2.setSize(borderIcon.getIconWidth(),borderIcon.getIconHeight());
+				border2.setLocation(400,100);
+				add(border2);
+				
+				JLabel nextLevelButton = new JLabel(rightArrowIcon);
+				nextLevelButton.setSize(rightArrowIcon.getIconWidth(),rightArrowIcon.getIconHeight());
+				nextLevelButton.setLocation(500,20);
+				nextLevelButton.addMouseListener(new MouseAdapter() {
+					
+					@Override //마우스가 컴포넌트 위에 올라갈때의 이벤트
+					public void mouseEntered(MouseEvent e) {
+						JLabel label = (JLabel)(e.getComponent()); //이벤트가 발생한 라벨을 가져옴
+						label.setIcon(rightArrowEnteredIcon); //마우스가 올라갈때의 이미지로 변경
+					}
+					
+					@Override //마우스 버튼이 떼어질때
+					public void mouseReleased(MouseEvent e) {
+						JLabel label = (JLabel)(e.getComponent()); //이벤트가 발생한 라벨을 가져옴
+						label.setIcon(rightArrowIcon); //원래 이미지로 변경
+					}
+					
+					
+					//상점 클릭
+					@Override
+					public void mouseClicked(MouseEvent e) {	
+						//상점의 무기 구매정보를 스테이터스창으로 넘기고
+						getStatusPanel().setWeapon(selectedItem);
+						//무기 공격력 변경
+						setWeaponPower(selectedItem);				
+						setVisible(false);
+						
+						
+						//remove(this);
+//						//새로운 난이도로 풍선생성스레드 작동시작
+//						gameMangeThread
+						gameMangeThread.makeBalloonSpawnThreadAndStart(); //다음 라운드의 게임생성
+						gameMangeThread.setIsStoreOn(); //상점이 다시 안보이는 상태로 변경
+						
+					}
+					
+					@Override
+					public void mousePressed(MouseEvent e) {
+						//버튼이 눌려진 순간 소리가 나도록
+						try {
+							clip = AudioSystem.getClip();
+							File audioFile = new File("ButtonClick.wav");
+							AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+							clip.open(audioStream);
+						}catch(Exception E) {
+							System.out.println("오류!");
+						}
+						clip.start(); // 버튼을 클릭했을때 소리가 나도록
+					}
+				});
+				add(nextLevelButton);
+			}
+			
+			
+		}
+		
+		//배경 이미지 그리기
+		@Override
+		public void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			g.drawImage(backgroundImage,0,0,backgroundImageIcon.getIconWidth(),backgroundImageIcon.getIconHeight(),null);
+		}
+		
+		
+	}
+	
+	
+	private StoreAndFianlPanel storeAndFinalPanel;
 	
 	
 	public GameRunningPanel(StatusPanel statusPanel,int characterType,GameFrame parent) {
@@ -145,9 +358,12 @@ public class GameRunningPanel extends JPanel {
 	private class GameMangeThread extends Thread{
 //		private int ballonCount = 0;//현재 생성된 풍선의 개수를 저장할 변수
 		private boolean isGameRun = true;
-		private BallonSpawnThread spawnThread; //풍선이 생성되게 하는 스레드
+		//private BallonSpawnThread spawnThread; //풍선이 생성되게 하는 스레드
 		private int gameLevel = 1;
 		private boolean isPlayerAlive = true; //플레이어의 생존상태 표시
+		private int roundCount = 3;
+		private boolean isStoreOn = false; //상점창이 띄워져있는지 확인
+		private boolean testFlag = false;
 		
 		public void startGame() {
 			this.isGameRun = true;
@@ -192,6 +408,18 @@ public class GameRunningPanel extends JPanel {
 		}
 		
 		
+		//풍선 생성 스레드를 생성하는 메소드 => 상점창에서 다음 라운드를 생성하도록 하기 위함
+		public void makeBalloonSpawnThreadAndStart() {//생성되면 다음 레벨로 게임을 생성함
+			ballonSpawnThread = new BallonSpawnThread(ballonSpawnTime,ballonSpeed,statusPanel,gameLevel);
+			ballonSpawnThread.start();
+		}
+		
+		
+		//상점이 다시 안보이는 상태라고 변경
+		public void setIsStoreOn() {
+			isStoreOn = false;
+		}
+		
 		//게임의 진행상황에 맞춰 게임을 관리
 		@Override
 		public void run() {
@@ -232,24 +460,81 @@ public class GameRunningPanel extends JPanel {
 					}
 					
 				}
+			
 				
 				
+//				//라운드가 4로 넘어가면 클리어!
+//				if(gameLevel>3&&isStoreOn==false&&testFlag == false) {
+//					System.out.println("게임 성공! 아이디를 입력하세요!!");
+//					//작동중인 스레드는 GameMangeThread이외에는 없게 될것이므로 해당 스레드만 종료시키면됨
+//					isGameRun = false;
+//					break; //while문 break;
+//				}
 				
 				//풍선이 전부 생성이 되었고,생성된 풍선을 모두 지웠을때 => 다음 라운드로 넘어가거나, 게임 클리어를 알림
-				if(!ballonSpawnThread.getIsRun()&&balloonVector.isEmpty()) {
+				if(!ballonSpawnThread.getIsRun()&&balloonVector.isEmpty()&&isStoreOn==false) {
 					//게임이 3라운드까지 모두 끝났는지 확인필요
-					if(gameLevel>3) {
-						System.out.println("게임 성공! 아이디를 입력하세요!!");
-						//작동중인 스레드는 GameMangeThread이외에는 없게 될것이므로 해당 스레드만 종료시키면됨
-						isGameRun = false;
+					if(gameLevel==3) {
+						System.out.println(gameLevel + "레벨 상점창 띄우기");
+						storeAndFinalPanel = new StoreAndFianlPanel(gameLevel,this); //현재 스레드에 대한 접근 권한 부여
+						storeAndFinalPanel.setBounds(100,200,800,500);
+						add(storeAndFinalPanel);
+						
+						repaint(); //상점창이 보이도록
+						isStoreOn = true;
 					}
-					else { //3라운드 이하의 라운드에서만 상점과 새로운 풍선스레드를 동작
-						System.out.println("상점창 띄우기");//상점창에서 버튼을 눌러 다음 스테이지로 넘어가게끔
+					else {
+						gameLevel++;
+						System.out.println(gameLevel-1 + "레벨 상점창 띄우기");//상점창에서 버튼을 눌러 다음 스테이지로 넘어가게끔
+						storeAndFinalPanel = new StoreAndFianlPanel(gameLevel-1,this); //현재 스레드에 대한 접근 권한 부여
+						storeAndFinalPanel.setBounds(100,200,800,500);
+						
+						add(storeAndFinalPanel);
+						
+						repaint(); //상점창이 보이도록
+						isStoreOn = true;
+						testFlag = true;
+						
+//						if(gameLevel==3&&balloonVector.isEmpty()) {
+//							System.out.println("게임 클리어!");
+//							break;
+//						}
+					}
+//					if(gameLevel>3) {
+//						//아이디 입력받는 패널 띄우기 => 메인화면으로 돌아가기 버튼을 부착할것
+//						System.out.println("게임 성공! 아이디를 입력하세요!!");
+//						//작동중인 스레드는 GameMangeThread이외에는 없게 될것이므로 해당 스레드만 종료시키면됨
+//						isGameRun = false;
+//					}
+//					else { //3라운드 이하의 라운드에서만 상점과 새로운 풍선스레드를 동작
+//						if(isStoreOn!=true&&gameLevel<=2) {
+//							System.out.println(roundCount);
+//							gameLevel++;
+//							System.out.println(gameLevel-1 + "레벨 상점창 띄우기");//상점창에서 버튼을 눌러 다음 스테이지로 넘어가게끔
+//							storePanel = new StorePanel(gameLevel-1,this); //현재 스레드에 대한 접근 권한 부여
+//							storePanel.setBounds(100,200,800,500);
+//							
+//							add(storePanel);
+//							
+//							repaint(); //상점창이 보이도록
+//							isStoreOn = true;
+//							testFlag = true;
+//							
+//							if(gameLevel==3&&balloonVector.isEmpty()) {
+//								System.out.println("게임 클리어!");
+//								break;
+//							}
+							
+							
+//						}
+						
 						//벡터 비우기
-						gameLevel+=1;
-						ballonSpawnThread = new BallonSpawnThread(ballonSpawnTime,ballonSpeed,statusPanel,gameLevel);
-						ballonSpawnThread.start();
-					}
+
+//						//아래 내용을 상점창의 버튼으로 옮길것
+//						gameLevel+=1;
+//						ballonSpawnThread = new BallonSpawnThread(ballonSpawnTime,ballonSpeed,statusPanel,gameLevel);
+//						ballonSpawnThread.start();
+					
 				}
 				
 				//현재 살아있는 경우에 대해서만 죽임

@@ -18,8 +18,15 @@ public class StatusPanel extends JPanel{
 	private int characterHealth;
 	private JLabel healthLabel; 
 	
-	private int weaponType; //캐릭터의 무기, 사용자가 사용중인 무기가 무엇인지 보이도록	
+	private int weaponType = 1; //캐릭터의 무기, 사용자가 사용중인 무기가 무엇인지 보이도록,기본무기는 1번무기
+	
+	//무기에 대한 아이템 코드번호
+	private final static int PENCIL = 1;
+	private static final int SCISSORS = 2;
+	private static final int CHAINSAW = 3;
+	
 	private int weaponPower = 1; // 무기의 데미지, 기본 무기의 능력치는 1
+	
 	
 	//캐릭터들의 이미지 정보
 	private ImageIcon sangsangBugi = new ImageIcon("character0.png");
@@ -32,6 +39,14 @@ public class StatusPanel extends JPanel{
 	private ImageIcon xIcon = new ImageIcon("xImage.png");
 	//체력바 아이콘(하나당 체력5)
 	private ImageIcon healthBarIcon = new ImageIcon("healthBar.jpg");
+	//무기 아이콘
+	private ImageIcon pencilIcon = new ImageIcon("pencil.png"); //연필 이미지 아이콘
+	private ImageIcon chainsawIcon = new ImageIcon("chainsaw.png"); //톱 이미지 아이콘
+	private ImageIcon scissorsIcon = new ImageIcon("scissors.png"); //가위 이미지 아이콘
+	
+	//무기 이미지를 저장
+	private JLabel weaponLabel; 
+	
 	
 	//게임에 대한 정보
 	private int score = 0; //점수를 저장할 변수
@@ -39,6 +54,7 @@ public class StatusPanel extends JPanel{
 	private int coin = 0; //코인을 저장할 변수 => 상점에 이용
 	private JLabel coinLabel = new JLabel(Integer.toString(coin));
 
+	
 	
 	//체력바의 이미지라벨들을 관리하기 위한 벡터 => 캐릭터마다 체력이 다르므로
 	private Vector<JLabel> healthBarVector = new Vector<JLabel>();
@@ -60,16 +76,44 @@ public class StatusPanel extends JPanel{
 		return score;
 	}
 	
+	//상점으로 현재 코인정보를 넘겨줌
 	public int getCoin() {
 		return coin;
 	}
 	
+	//무기의 공격력을 리턴
+	public int getWeaponPower() {return weaponPower;}
 	
+	//선택된 무기로 무기 변경 => 현재 무기 데미지변경
+	public void setWeapon(int selectedItem) {
+		weaponType = selectedItem; //입력받은 아이템으로 현재 무기 변경
+		//1은 연필, 2는 가위, 3은 톱
+		//무기 타입에 맞는 무기 이미지, 무기 데미지 변경
+		switch(weaponType) {
+		case PENCIL:
+			weaponLabel.setIcon(pencilIcon);
+			weaponPower = 1;
+			break;
+		case SCISSORS: 
+			weaponLabel.setIcon(scissorsIcon);
+			repaint();
+			weaponPower = 2;
+			break;
+		case CHAINSAW:
+			weaponLabel.setIcon(chainsawIcon);
+			weaponPower = 3;
+			break;
+		}
+	}
 	
 	public StatusPanel(int characterType) {
 
 		setLayout(null);
 		setSize(500,900);
+		
+		
+		//초기 무기 설정 => 초기 무기는 연필
+		weaponLabel = new JLabel(pencilIcon);
 		
 		//점수 보여주기
 		add(new JLabel("SCORE"));
