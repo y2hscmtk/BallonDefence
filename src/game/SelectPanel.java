@@ -61,6 +61,11 @@ public class SelectPanel extends JPanel {
     		//현재 진행중인 음악 종료
     		//parent.getMusicThread()
     		parent.getMusic().musicStop(); //음악 중단
+    		//음악 중단 사실을 저장
+//    		parent.
+    		
+    		//게임 음악으로 음악 변경
+    		parent.getMusic().changeMusic("gameMusic.wav");
     		
     		parent.setContentPane(game);
     		//parent.swapPanel(GameFrame.BEGINNING_PANEL);//부모의 컨텐트팬을 변경하도록 함수 호출

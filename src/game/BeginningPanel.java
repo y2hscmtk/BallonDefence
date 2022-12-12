@@ -66,10 +66,12 @@ public class BeginningPanel extends JPanel {
     
     //음악을 관리하기 위해 기존에 작성한 버튼클릭이벤트를 오버라이딩하여 새로운 기능 작성
     private class SoundButtonClickedEvent extends ButtonClickedEvent{
+    	private GameFrame parent;
     	
-    	public SoundButtonClickedEvent(ImageIcon enteredIcon, ImageIcon presentIcon) {
-    		super(enteredIcon, presentIcon); //부모 생성자에 넘겨준다.
+    	public SoundButtonClickedEvent(GameFrame parent,ImageIcon enteredIcon, ImageIcon presentIcon) {
+    		super(parent,enteredIcon, presentIcon); //부모 생성자에 넘겨준다.
     		// TODO Auto-generated constructor stub
+    		this.parent = parent;
     	}
 
 
@@ -113,7 +115,7 @@ public class BeginningPanel extends JPanel {
         JLabel soundButtonLabel = new JLabel(soundLabelIcon);
         soundButtonLabel.setSize(soundLabelIcon.getIconWidth(),soundLabelIcon.getIconHeight());
         soundButtonLabel.setLocation(20, 20);
-        soundButtonLabel.addMouseListener(new SoundButtonClickedEvent(soundLabelMuteIcon,soundLabelIcon));
+        soundButtonLabel.addMouseListener(new SoundButtonClickedEvent(parent,soundLabelMuteIcon,soundLabelIcon));
         		
 //        		new ButtonClickedEvent(parent, GameFrame.SELECT_PANEL,soundLabelMuteIcon,soundLabelIcon));
         add(soundButtonLabel);

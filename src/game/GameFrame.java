@@ -81,6 +81,13 @@ public class GameFrame extends JFrame {
     		startMusic();
     	}
     	
+    	//음악 변경
+    	public void changeMusic(String path) {
+    		this.path = path; //음악 경로 변
+    		loadAudio(path);
+    		startMusic();
+    	}
+    	
     	//로드되어있는 오디오를 실행시킨다.
     	public void startMusic() {
     		clip.start();

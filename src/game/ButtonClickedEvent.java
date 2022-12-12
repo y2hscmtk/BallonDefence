@@ -37,7 +37,8 @@ public class ButtonClickedEvent extends MouseAdapter{
 	}
 	
 	
-	public ButtonClickedEvent(ImageIcon enteredIcon,ImageIcon presentIcon) {
+	public ButtonClickedEvent(GameFrame parent,ImageIcon enteredIcon,ImageIcon presentIcon) {
+		this.parent = parent;
 		this.setEnteredIcon(enteredIcon);
 		this.setPresentIcon(presentIcon);
 	}

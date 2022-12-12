@@ -25,7 +25,7 @@ public class Balloon extends JLayeredPane{
 	//풍선 이미지 아이콘
 	//private ImageIcon blue = new ImageIcon("blue.png");
 	private ImageIcon redBalloonIcon = new ImageIcon("redBalloon.png");//빨강 풍선 아이콘
-	private ImageIcon blueBalloonIcon = new ImageIcon("ballon.png");//파랑 풍선 아이콘
+	private ImageIcon blueBalloonIcon = new ImageIcon("blueBalloon.png");//파랑 풍선 아이콘
 	private ImageIcon yellowBalloonIcon = new ImageIcon("yellowBalloon.png");//노랑 풍선 아이콘
 	//특별한 풍선 => 등장확률을 낮게 설정할것 2프로?3프로?
 	private ImageIcon coinBalloonIcon = new ImageIcon("coinBalloon.png"); //코인 풍선 => 1000코인 획득
