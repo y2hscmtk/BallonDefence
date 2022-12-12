@@ -1,13 +1,19 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Vector;
 
 import javax.sound.sampled.AudioInputStream;
@@ -32,9 +38,11 @@ public class GameRunningPanel extends JPanel {
 	private GameFrame parent;
 	//게임에 대한 특성
 	//라운드마다 생성될 풍선의 최대 개수 => 해당 풍선을 모두 지우면 다음 라운드로 넘어가도록
-	private static final int ROUND1BALLONCOUNT = 10; //1라운드에는 10개의 풍선
-	private static final int ROUND2BALLONCOUNT = 20; //2라운드에는 20개의 풍선
-	private static final int ROUND3BALLONCOUNT = 30; //3라운드에는 30개의 풍선
+	private static final int ROUND1BALLONCOUNT = 1; //1라운드에는 10개의 풍선
+	private static final int ROUND2BALLONCOUNT = 1; //2라운드에는 20개의 풍선
+	private static final int ROUND3BALLONCOUNT = 1; //3라운드에는 30개의 풍선
+	//체크포인트4
+	
 	
 	private int weaponPower; //사용중인 무기의 공격력
 	private int characterType; //사용자가 선택한 캐릭터가 무엇인지를 저장
@@ -133,6 +141,23 @@ public class GameRunningPanel extends JPanel {
 		//아이템을 구매하지 않고 넘어갈수 있으므로=> 그 경우 기초아이템의 아이템코드인 1번을 유지
 		private int selectedItem = 1; //선택된 아이템을 저장할 변수 => 이벤트 발생시 넘겨줄것\
 		private int weaponCode; //무기 코드를 저장
+		
+		//엔딩&클리어 창 생성시 아이디를 입력받을 공간 생성
+		private JTextField input = new JTextField(15); //단어을 입력받을 공간 설정
+		//버튼을 눌러서 입력한 텍스트를 저장하도록 하는 버튼
+		private JButton saveButton;
+		
+		
+		private ImageIcon deadBoardIcon = new ImageIcon("deadBoard.png");
+		
+		//배경 이미지를 바꾸기 위한 함수
+		public void setBackgroundImage(ImageIcon icon) {
+			this.backgroundImage = icon.getImage();
+			repaint(); //바뀐이미지가 보이도록 paintComponent()호출
+		}
+		
+		
+		
 		
 		//현재 무기를 판매중인지 여부
 		private boolean selling = true;
@@ -260,9 +285,12 @@ public class GameRunningPanel extends JPanel {
 			this.statusPanel = statusPanel; //스테이터스 창에 대한 참조를 가져옴 => 체력,코인 관리
 			this.gameLevel = gameLevel; //1레벨 상점부터 시작
 			this.gameMangeThread = gameMangeThread;
+			setLayout(null);
 			
 			this.selling = true; //상점이 생성되면 무기를 판매중인 상태로 전환
 			
+			
+			//아이템 코드를 결정하기 위한 코드
 			int nowCoin = statusPanel.getCoin();
 			//스테이터스 창의 금액 상황을 보고 코드 결정	
 			if(nowCoin<=0) {
@@ -283,10 +311,75 @@ public class GameRunningPanel extends JPanel {
 			//상점창을 띄울경우 어떤 아이템을 보이게 할지는 현재 코인을 보고 결정
 			setPanelElement(gameLevel);
 			
-			
-			if(gameLevel==3) {
+			if(gameLevel==-1) {
+				System.out.println("사망하였습니다!");
+				//사망칸 표시
+//				setBackgroundImage(deadBoardIcon);
+				//체크포인트 사망
+				//아이디 입력받을 텍스트공간 생성
+				input.setFont(new Font("Gothic",Font.BOLD,20));
+				input.setLocation(200,400);
+				input.setSize(400,50);
+				add(input);
+				
+				saveButton = new JButton("저장");
+				saveButton.setFont(new Font("Gothic",Font.BOLD,20));
+				saveButton.setLocation(600,400);
+				saveButton.setSize(80,80);
+				
+				//아이디 저장하는 이벤트
+				saveButton.addMouseListener(new MouseAdapter() {
+					
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						String id = input.getText();
+						//최종 점수는 잔여코인과 점수를 더한값으로
+						int finalScore = statusPanel.getScore() + statusPanel.getCoin();
+						System.out.println("새로운 플레이어 생성");
+						addPlayer(id,finalScore);
+						
+					}
+				});
+				
+				add(saveButton);
+				
+				repaint();
+				
+			}
+			else if(gameLevel==3) {
 				System.out.println("3라운드까지 완료!");
-				//이곳에 게임 엔딩창을 
+				//이곳에 게임 엔딩창에 필요한 요소들 추가
+				
+				setBackgroundImage(deadBoardIcon);
+				
+				
+				//체크포인트2
+				//아이디 입력받을 텍스트공간 생성
+				input.setFont(new Font("Gothic",Font.BOLD,20));
+				input.setLocation(200,400);
+				input.setSize(400,50);
+				add(input);
+				
+				saveButton = new JButton("저장");
+				saveButton.setFont(new Font("Gothic",Font.BOLD,20));
+				saveButton.setLocation(600,400);
+				saveButton.setSize(80,80);
+				
+				//아이디 저장하는 이벤트
+				saveButton.addMouseListener(new MouseAdapter() {
+					
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						String id = input.getText();
+						//최종 점수는 잔여코인과 점수를 더한값으로
+						int finalScore = statusPanel.getScore() + statusPanel.getCoin();
+						System.out.println("새로운 플레이어 생성");
+						addPlayer(id,finalScore);
+						
+					}
+				});
+				
+				add(saveButton);
 				
 			}
 			else { //1,2레벨 상점창 관리 => 3라운드 상점은 앤딩판넬을 보여줌=>아이디를 입력받아 저장하는 공간과, 처음화면으로 돌아가는버튼
@@ -319,6 +412,8 @@ public class GameRunningPanel extends JPanel {
 				border2.setLocation(400,100);
 				add(border2);
 				
+				
+				//다음 레벨로 넘어가는 버튼 => 누르면 라운드에 따라 라운드 이미지 출력 고려해볼것
 				JLabel nextLevelButton = new JLabel(rightArrowIcon);
 				nextLevelButton.setSize(rightArrowIcon.getIconWidth(),rightArrowIcon.getIconHeight());
 				nextLevelButton.setLocation(500,20);
@@ -350,9 +445,25 @@ public class GameRunningPanel extends JPanel {
 						//remove(this);
 //						//새로운 난이도로 풍선생성스레드 작동시작
 //						gameMangeThread
-						gameMangeThread.makeBalloonSpawnThreadAndStart(); //다음 라운드의 게임생성
-						gameMangeThread.setIsStoreOn(); //상점이 다시 안보이는 상태로 변경
 						
+						//라운드 이미지 여기서 출력?
+						
+						
+						//2초간 대기
+						try {
+							setVisible(false); //상점창 지우기
+							repaint();
+							System.out.println("1초간 대기");
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						
+						
+						gameMangeThread.makeBalloonSpawnThreadAndStart(); //다음 라운드의 게임생성
+						//gameMangeThread.setIsStoreOn(); //상점이 다시 안보이는 상태로 변경
+						gameMangeThread.setIsStoreOn(); //상점이 다시 안보이는 상태로 변경
 					}
 					
 					@Override
@@ -375,7 +486,33 @@ public class GameRunningPanel extends JPanel {
 			
 		}
 		
-		//배경 이미지 그리기
+		//새로운 플레이어를 저장하는 함수
+		public void addPlayer(String id,int finalScore) {
+			System.out.println(id +"님의 점수"+finalScore +"점 저장중");
+			try{
+	            File file = new File("Score.txt"); //스코어 파일 불러오기
+	            if (!file.exists()) //파일이 없다면 생성
+	                file.createNewFile();
+	            FileWriter fw = new FileWriter(file,true); //기존 파일에 이어쓰기
+	            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Score.txt",true), "utf-8"));
+	            //BufferedWriter writer = new BufferedWriter(fw);
+	            writer.write("\n"+Integer.toString(finalScore)+"&"+id+"&"); //다음줄에 단어 붙이기
+	            writer.close();
+	        }catch(IOException e){
+	        	 e.printStackTrace();
+	        }
+		}
+		
+		
+		
+		
+		//칠판 없애기
+		public void removeBoard() {
+			backgroundImage = 
+		}
+		
+		
+		//배경 이미지 그리기 =>칠판을 가져와서 그림
 		@Override
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
@@ -498,6 +635,8 @@ public class GameRunningPanel extends JPanel {
 			if(statusPanel.getHealth()<=0) {
 				//음악 스레드 종료 => 사망 음악 실행
 				
+				
+				
 				//풍선 생성 스레드 종료
 				ballonSpawnThread.interrupt();
 				
@@ -582,7 +721,12 @@ public class GameRunningPanel extends JPanel {
 				if(!ballonSpawnThread.getIsRun()&&balloonVector.isEmpty()&&isStoreOn==false) {
 					//게임이 3라운드까지 모두 끝났는지 확인필요
 					if(gameLevel==3) {
+						
+						//클리어 음악?
+						
 						System.out.println(gameLevel + "까지 클리어! => 엔딩창 띄우기");
+						
+						//엔딩창 생성할것
 						storeAndFinalPanel = new StoreAndFianlPanel(gameLevel,this,statusPanel); //현재 스레드에 대한 접근 권한 부여
 						storeAndFinalPanel.setBounds(100,200,800,500);
 						add(storeAndFinalPanel);
@@ -591,6 +735,7 @@ public class GameRunningPanel extends JPanel {
 						isStoreOn = true;
 					}
 					else {
+						
 						gameLevel++;
 						System.out.println(gameLevel-1 + "레벨 상점창 띄우기");//상점창에서 버튼을 눌러 다음 스테이지로 넘어가게끔
 						storeAndFinalPanel = new StoreAndFianlPanel(gameLevel-1,this,statusPanel); //현재 스레드에 대한 접근 권한 부여
@@ -650,6 +795,9 @@ public class GameRunningPanel extends JPanel {
 					//최종 결과창 출력 => 아이디 입력받기 => 다시하기 버튼, 점수보기 버튼 보여주기
 					isPlayerAlive = false; //사망처리 
 					System.out.println("플레이어 사망");
+					
+					//레벨 매개변수 대신 -1을 입력 => 사망칸 띄우기
+					storeAndFinalPanel = new StoreAndFianlPanel(-1,this,statusPanel);
 				}
 			}
 		}
@@ -852,7 +1000,7 @@ public class GameRunningPanel extends JPanel {
 
 	
 	
-	
+	//체크포인트3
 	class ControlPanel extends JPanel {
 		private JTextField input = new JTextField(15); //단어을 입력받을 공간 설정
 		private StatusPanel statusPanel;

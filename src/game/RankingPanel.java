@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.BufferedReader;
@@ -70,11 +71,13 @@ public class RankingPanel extends JPanel {
 		
 		for(int i=0;i<topTenPlayerList.length;i++) {
 			
-			topTenPlayerList[i].setSize(80,80);
-			topTenPlayerList[i].setOpaque(true);
+			//사이즈 지정
+			
+			topTenPlayerList[i].setSize(400,280);
+//			topTenPlayerList[i].setOpaque(true);
 			topTenPlayerList[i].setBackground(Color.white);
 			if(i>=5) {
-				topTenPlayerList[i].setLocation(900,-260 + (i*100));
+				topTenPlayerList[i].setLocation(840,-260 + (i*100));
 			}
 			else {
 				topTenPlayerList[i].setLocation(400,240+(i*100));
@@ -84,14 +87,16 @@ public class RankingPanel extends JPanel {
 	}
 	
 
-	//파일에서 정보를 읽어 맵에 저장하는 메소드
+	//파일에서 정보를 읽어 맵에 저장하는 메소드 => 한글 잘 읽어옴
 	public void file2Map() throws IOException {
 		
 		// TODO Auto-generated method stub
 		 
         FileInputStream input=new FileInputStream("Score.txt");
-        InputStreamReader reader=new InputStreamReader(input,"UTF-8");
+        InputStreamReader reader=new InputStreamReader(input,"utf-8");
         BufferedReader in=new BufferedReader(reader);
+        
+        //BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file),"euc-kr"));
         // 한글 깨짐 현상 해결
 
         int ch;
@@ -131,7 +136,6 @@ public class RankingPanel extends JPanel {
         	if(index>9)
         		break; //10개만 생성해야하므로
         	topTenPlayerList[index] = new ScoreLabel(key,playerMap.get(key));
-        	
         	System.out.print(index + "번 ");
             System.out.print("Key : " + key);
             System.out.println(", Val : " + playerMap.get(key));
@@ -155,21 +159,29 @@ public class RankingPanel extends JPanel {
 		
 		//생성자로 이름과 점수 입력받아 라벨 생성
 		public ScoreLabel(String name,int score) {
+			setLayout(null);
 			this.name = name;
 			this.score = score;
 			
-			//이름 라벨 생성
-			JLabel nameLabel = new JLabel(name);
-			nameLabel.setSize(100,100);
-			nameLabel.setLocation(0,0); //생성된 라벨의 왼쪽 부분에서 생성
-			add(nameLabel);
+			//플레이어 라벨 생성
+			JLabel playerLabel = new JLabel(name+" "+Integer.toString(score));
+			playerLabel.setFont(new Font("Gothic",Font.BOLD,44));
+			playerLabel.setSize(400,100);
+			playerLabel.setLocation(0,0); //생성된 라벨의 왼쪽 부분에서 생성
+			add(playerLabel);
 			
-			//점수 라벨 생성
-			JLabel scoreLabel = new JLabel(Integer.toString(score));
-			scoreLabel.setSize(100,100);
-			scoreLabel.setLocation(40,0); //생성된 라벨의 오른쪽 부분에서 생성
-			add(scoreLabel);
-			
+//			//이름 라벨 생성
+//			JLabel nameLabel = new JLabel(name);
+//			nameLabel.setSize(100,100);
+//			nameLabel.setLocation(0,0); //생성된 라벨의 왼쪽 부분에서 생성
+//			add(nameLabel);
+//			
+//			//점수 라벨 생성
+//			JLabel scoreLabel = new JLabel(Integer.toString(score));
+//			scoreLabel.setSize(100,100);
+//			scoreLabel.setLocation(40,0); //생성된 라벨의 오른쪽 부분에서 생성
+//			add(scoreLabel);
+//			
 		}
 		
 	}
