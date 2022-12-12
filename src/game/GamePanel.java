@@ -91,7 +91,7 @@ public class GamePanel extends JPanel{
 //		
 //		//왼쪽에 띄울 스테이터스 창 이미지
 	
-		statusPanel = new StatusPanel(characterType);
+		statusPanel = new StatusPanel(characterType,parent);
 		gameRunningPanel = new GameRunningPanel(statusPanel,characterType,parent);
 		
 		

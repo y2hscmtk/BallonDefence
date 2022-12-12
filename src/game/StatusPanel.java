@@ -11,9 +11,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
+
 //캐릭터의 현재 정보를 보여주기 위한 패널
 //현재 체력,점수,코인,등을 관리하고 화면에 출력한다.
 public class StatusPanel extends JPanel{
+	private GameFrame parent;
+	
 	//캐릭터에 따른 게임 상황을 변경하기 위한 변수들
 	private int characterHealth;
 	private JLabel healthLabel; 
@@ -44,6 +47,12 @@ public class StatusPanel extends JPanel{
 	private ImageIcon chainsawIcon = new ImageIcon("chainsaw.png"); //톱 이미지 아이콘
 	private ImageIcon scissorsIcon = new ImageIcon("scissors.png"); //가위 이미지 아이콘
 	
+	//음악 아이콘
+	private ImageIcon soundLabelIcon = new ImageIcon("music.png");
+    private ImageIcon soundLabelMuteIcon = new ImageIcon("mute.png");
+	
+	
+	
 	//무기 이미지를 저장
 	private JLabel weaponLabel; 
 	
@@ -59,6 +68,53 @@ public class StatusPanel extends JPanel{
 	//체력바의 이미지라벨들을 관리하기 위한 벡터 => 캐릭터마다 체력이 다르므로
 	private Vector<JLabel> healthBarVector = new Vector<JLabel>();
 	private int healthBarIndex=0;
+	
+	
+	//게임 음악을 키고 끌수 있게?
+	
+	
+	//음악을 관리하기 위해 기존에 작성한 버튼클릭이벤트를 오버라이딩하여 새로운 기능 작성
+    private class SoundButtonClickedEvent extends ButtonClickedEvent{
+    	private GameFrame parent;
+    	
+    	public SoundButtonClickedEvent(GameFrame parent,ImageIcon enteredIcon, ImageIcon presentIcon) {
+    		super(parent,enteredIcon, presentIcon); //부모 생성자에 넘겨준다.
+    		// TODO Auto-generated constructor stub
+    		this.parent = parent;
+    	}
+
+
+    	@Override //마우스가 올라갔을때의 이벤트를 무시하기 위해 오버라이딩
+    	public void mouseEntered(MouseEvent e) {
+			
+    	}
+    	
+    	
+    	@Override //마우스가 클릭되었을때 현재 음악이 작동중인지 확인하여 음악을 키고 끔
+    	public void mouseClicked(MouseEvent e) {
+    		JLabel label = (JLabel)(e.getComponent()); //이벤트가 발생한 라벨을 가져옴
+    		if(parent.isMusicOn()) {//현재 음악이 재생중이라면
+    			System.out.println("음악 재생중 -> 중지");
+    			label.setIcon(getEnteredIcon()); //x표시로 변경
+    			parent.getMusic().musicStop();
+    			parent.setMusicOnOff(false); //음악 꺼진상태로 표시
+    		}
+    			
+    		else {//현재 음악이 꺼져있는 상태라면
+    			System.out.println("음악 정지 -> 재생");
+    			label.setIcon(getPresentIcon()); //음표 표시로 변경
+    			parent.getMusic().resumeMusic();
+//    			parent.getMusic().start();//멈춘 이후부터 음악재생
+    			parent.setMusicOnOff(true); //음악 켜진상태로 표시
+    		}
+    	}
+    }
+	
+	
+	
+	
+	
+	
 	
 	
 	//선택한 캐릭터가 무엇인지에 대한 정보
@@ -106,8 +162,8 @@ public class StatusPanel extends JPanel{
 		}
 	}
 	
-	public StatusPanel(int characterType) {
-
+	public StatusPanel(int characterType, GameFrame parent) {
+		this.parent = parent;
 		setLayout(null);
 		setSize(500,900);
 		
@@ -122,6 +178,26 @@ public class StatusPanel extends JPanel{
 		//JLabel textLabel = new JLabel("점수");
 		//add(textLabel);
 		add(scoreLabel);
+		
+		
+		//소리 켜기&끄기 아이콘
+		JLabel soundButtonLabel = new JLabel(soundLabelIcon);
+        soundButtonLabel.setSize(soundLabelIcon.getIconWidth(),soundLabelIcon.getIconHeight());
+        soundButtonLabel.setLocation(20, 20);
+        soundButtonLabel.addMouseListener(new SoundButtonClickedEvent(parent,soundLabelMuteIcon,soundLabelIcon));
+        		
+//        		new ButtonClickedEvent(parent, GameFrame.SELECT_PANEL,soundLabelMuteIcon,soundLabelIcon));
+        add(soundButtonLabel);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		//코인 아이콘& x아이콘
 		JLabel coinImageLabel = new JLabel(coinIcon);

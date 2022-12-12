@@ -30,6 +30,19 @@ public class GameFrame extends JFrame {
     
     private Music music;
     
+    private boolean musicOn = true; //현재 음악이 재생중인지 여부
+    
+    //현재 음악이 나오고 있는지 확인
+    public boolean isMusicOn() {
+    	return musicOn;
+    }
+    
+    //현재 음악 재생상태를 설정
+    public void setMusicOnOff(boolean onOff) {
+    	musicOn = onOff;
+    }
+    
+    
     public Music getMusic() {
     	return music;
     }
@@ -160,4 +173,6 @@ public class GameFrame extends JFrame {
                 break;
         }
     }
+
+	
 }

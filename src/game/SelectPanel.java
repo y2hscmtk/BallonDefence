@@ -64,7 +64,7 @@ public class SelectPanel extends JPanel {
     		//음악 중단 사실을 저장
 //    		parent.
     		
-    		//게임 음악으로 음악 변경
+    		//게임 음악으로 음악 변경 => 현재 음악 플레이 상태 true로 변경해야함(비기닝 패널?)
     		parent.getMusic().changeMusic("gameMusic.wav");
     		
     		parent.setContentPane(game);
