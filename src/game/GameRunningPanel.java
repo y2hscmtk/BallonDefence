@@ -69,8 +69,6 @@ public class GameRunningPanel extends JPanel {
 	private Balloon balloon;
 	private Vector<Balloon> balloonVector = new Vector<Balloon>();
 	
-	private Vector<JLabel> wordVector = new Vector<JLabel>(); //임시로 String벡터 생성
-	//풍선이 내려가는 스레드를 벡터로 관리(해쉬맵을 사용하는 방향도 고려해볼것)
 	
 	public GameRunningPanel(StatusPanel statusPanel,int characterType,GameFrame parent) {
 		this.parent = parent;
@@ -451,6 +449,10 @@ public class GameRunningPanel extends JPanel {
 	}
 	
 	
+
+	
+	
+	
 	class ControlPanel extends JPanel {
 		private JTextField input = new JTextField(15); //단어을 입력받을 공간 설정
 		private StatusPanel statusPanel;
@@ -566,16 +568,18 @@ public class GameRunningPanel extends JPanel {
 							break;
 						case 1: //파랑풍선 300점, 200원
 							score = 300;
+							coin = 200;
 							break;
 						case 2: //노랑풍선 600점, 300원
 							score = 600;
+							coin = 300;
 							break;
 						case 3: //코인풍선의 경우
-							score = 777; //777원 획득
+							score = 77; //77점 획득
 							coin = 1000; //1000원을 획득
 						case 4: //스타풍선의 경우
-							score = 777; //777원 획득
-							coin = 77;
+							score = 77; //777원 획득
+							coin = 0; //돈은 추가 x
 							//경험치 2배 활성화
 							doublePoint = 2; //경험치 부여를 2배로 변경
 							

@@ -213,14 +213,19 @@ public class StatusPanel extends JPanel{
 	public void plusScore(int pScore) {
 		score += pScore; //점수 추가
 		//변경된 점수 표시
+		System.out.println(pScore+"점 추가");
 		scoreLabel.setText(Integer.toString(score));
 	}	
+	
+	
 	//코인을 추가하는 메소드
 	public void plusCoin(int pCoin) {
 		coin += pCoin; //점수 추가
 		//변경된 코인 표시
+		System.out.println(pCoin+"원 추가");
 		coinLabel.setText(Integer.toString(score));
 	}
+	
 	
 	//코인을 빼는 메소드 => 물건구매
 	public void minusCoin(int mCoin) {
