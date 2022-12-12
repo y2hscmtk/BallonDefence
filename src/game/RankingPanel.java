@@ -21,44 +21,30 @@ import javax.swing.JPanel;
 
 public class RankingPanel extends JPanel {
 	private GameFrame parent;//부모를 변수로 저장
-	private ImageIcon homeButtonIcon = new ImageIcon("back.png");
+	private ImageIcon homeButtonIcon = new ImageIcon("home.png");
+	private ImageIcon homeButtonEnteredIcon = new ImageIcon("homeEntered.png");
 	private ImageIcon icon = new ImageIcon("rankingPanelImage.png");
 	private Image backgroundImage = icon.getImage();
 	
 	//파일에서 플레이어 정보를 읽어와서 점수와 이름으로 저장한다.
 	//점수를 키값으로 하여 이름 저장 => 자동으로 정렬을 하기 위해 TreeMap으로 작성
 	private TreeMap<String,Integer> playerMap = new TreeMap<String,Integer>();
-	private Vector<String> playerVector = new Vector<String>();
 	
 	private static ScoreLabel[] topTenPlayerList = new ScoreLabel[10]; //탑10 플레이어를 저장할 레이블 배열
 	
-//	private int index = 0; //탑텐리스트의 인덱스 넘버
-	
-//	private String[] playerList;
-  
 	public RankingPanel(GameFrame parent){
 		this.parent = parent;//받은 부모를 전역변수로 저장한다
 		setLayout(null); //배치 관리자 제거
 		this.setBackground(Color.CYAN);
 		setSize(1500,900);
 		
-		//홈 버튼
-		JButton backButton = new JButton(homeButtonIcon);
-		backButton.setSize(200,200);
-		backButton.setLocation(1200,50);
-		backButton.addMouseListener(new ButtonClickedEvent(parent,parent.BEGINNING_PANEL));
-		add(backButton);
-		
-//		JButton show = new JButton(homeButtonIcon);
-//		show.setSize(200,200);
-//		show.setLocation(10,50);
-//		show.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				getFile() //파일 가져오기
-//			}
-//		});
-//		add(show);
+		//뒤로가기 버튼 => 다시 4가지 메뉴 창으로 되돌아간다.
+        //홈 버튼
+  		JLabel homeButton = new JLabel(homeButtonIcon);
+  		homeButton.setSize(homeButtonIcon.getIconWidth(),homeButtonIcon.getIconHeight());
+  		homeButton.setLocation(1360,20);
+  		homeButton.addMouseListener(new ButtonClickedEvent(parent,parent.BEGINNING_PANEL,homeButtonEnteredIcon,homeButtonIcon));
+  		add(homeButton);
 		
 		//점수 파일 읽어오기
 		try {
@@ -79,6 +65,7 @@ public class RankingPanel extends JPanel {
 	}
 	
 	
+	//상위 10명에 대한 정보를 현재 패널의 적절한 위치에 부착한다.
 	public void showTopTen() {
 		
 		for(int i=0;i<topTenPlayerList.length;i++) {
@@ -188,9 +175,6 @@ public class RankingPanel extends JPanel {
 	}
 	
 	
-	public void writeScoreFile() {
-		
-	}
 	
 	//배경 이미지 그리기
 	@Override

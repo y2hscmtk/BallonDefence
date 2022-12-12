@@ -26,7 +26,8 @@ import javax.swing.JTextField;
 //왼쪽에는 게임을 진행하는 패널을 띄운다.
 
 public class GamePanel extends JPanel{
-	//Container contentPane; //컨텐트펜을 다루기 위해
+	private GameFrame parent;//부모를 변수로 저장
+	
 	
 	//캐릭터 특성, 무기 특성, 풍선 속도
 	private int characterType; //사용자가 선택한 캐릭터가 무엇인지를 저장
@@ -58,7 +59,8 @@ public class GamePanel extends JPanel{
 	
 	//한 라운드가 끝나면 기존의 풍선들은 모두 제거되어야함
 	
-	public GamePanel(int characterType) {
+	public GamePanel(int characterType,GameFrame parent) {
+		this.parent = parent; //프레임의 컨텐트팬을 조작하기위해
 		setLayout(null);
 //		//this.contentPane = contentPane;
 //		this.setBackground(Color.gray);
@@ -90,7 +92,7 @@ public class GamePanel extends JPanel{
 //		//왼쪽에 띄울 스테이터스 창 이미지
 	
 		statusPanel = new StatusPanel(characterType);
-		gameRunningPanel = new GameRunningPanel(statusPanel,characterType);
+		gameRunningPanel = new GameRunningPanel(statusPanel,characterType,parent);
 		
 		
 		//설정된 정보들을 바탕으로 이미지와 정보가 우측에 보이도록

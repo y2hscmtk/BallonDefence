@@ -17,6 +17,7 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -25,8 +26,8 @@ import javax.swing.JTextField;
 //단어 편집 패널
 public class WordEditPanel extends JPanel{
 	private GameFrame parent;//부모 변수
-	private ImageIcon homeButtonIcon = new ImageIcon("back.png");
-	
+	private ImageIcon homeButtonIcon = new ImageIcon("home.png");
+	private ImageIcon homeButtonEnteredIcon = new ImageIcon("homeEntered.png");
 	private ImageIcon backgroundIcon = new ImageIcon("wordEditPanelImage.png");
 	private Image backgroundImage = backgroundIcon.getImage();
 	
@@ -42,12 +43,13 @@ public class WordEditPanel extends JPanel{
         setBackground(Color.green);
         setSize(1500,900);
 
+      //뒤로가기 버튼 => 다시 4가지 메뉴 창으로 되돌아간다.
         //홈 버튼
-  		JButton backButton = new JButton(homeButtonIcon);
-  		backButton.setSize(200,200);
-  		backButton.setLocation(1200,50);
-  		backButton.addMouseListener(new ButtonClickedEvent(parent,parent.BEGINNING_PANEL));
-  		add(backButton);
+  		JLabel homeButton = new JLabel(homeButtonIcon);
+  		homeButton.setSize(homeButtonIcon.getIconWidth(),homeButtonIcon.getIconHeight());
+  		homeButton.setLocation(1360,20);
+  		homeButton.addMouseListener(new ButtonClickedEvent(parent,parent.BEGINNING_PANEL,homeButtonEnteredIcon,homeButtonIcon));
+  		add(homeButton);
         
         //words.txt파일 읽어와서 배열 생성
   		Scanner scanner;

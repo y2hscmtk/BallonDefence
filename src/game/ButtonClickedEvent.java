@@ -58,6 +58,14 @@ public class ButtonClickedEvent extends MouseAdapter{
 		}
 	}
 	
+	@Override //마우스 버튼이 떼어질때
+	public void mouseReleased(MouseEvent e) {
+		if(authority) { //권한이 있다면 이벤트 발생
+			JLabel label = (JLabel)(e.getComponent()); //이벤트가 발생한 라벨을 가져옴
+			label.setIcon(presentIcon); //원래 이미지로 변경
+		}
+	}
+	
 	
 	
 	@Override

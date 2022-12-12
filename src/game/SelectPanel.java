@@ -18,21 +18,25 @@ import javax.swing.JTextField;
 public class SelectPanel extends JPanel {
     private GameFrame parent;//부모를 변수로 저장
    
-    private ImageIcon homeButtonIcon = new ImageIcon("back.png");
+    private ImageIcon homeButtonIcon = new ImageIcon("home.png");
+    private ImageIcon homeButtonEnteredIcon = new ImageIcon("homeEntered.png");
     
     private ImageIcon sangsangBugiIcon = new ImageIcon("sangsangbugi.png");  //상상부기 아이콘
     private ImageIcon hansungNyanIicon = new ImageIcon("hansungNyang-i.png"); //한성냥이 아이콘
     private ImageIcon kkokkokkukkuIcon = new ImageIcon("kkokkokkukku.png"); //꼬꼬&꾸꾸 아이콘
     
-    //마우스가 올라갔을때 변경되도록 할 이미지
+    //마우스가 올라갔을때 캐릭터 버튼의 변화를 주기 위해
     private ImageIcon enteredBugi = new ImageIcon("enteredBugi.png");
     
-    
+    //배경 이미지
     private ImageIcon bgImageicon = new ImageIcon("selectBackgroundImage.png");
     private Image selectBackgroundImage = bgImageicon.getImage();
     
+    
+    
+    
     private int selectType; //사용자가 선택한 캐릭터 저장
-    private boolean flag = false; //사용자가 캐릭터 선택을 했는지 확인하는 용도
+//    private boolean flag = false; //사용자가 캐릭터 선택을 했는지 확인하는 용도
     
     //캐릭터 버튼을 클릭했을때 발생할 이벤트
     //생성자로 선택한 캐릭터 타입을 입력받아서 게임패널을 생성후 패널을 변경한다.
@@ -49,7 +53,7 @@ public class SelectPanel extends JPanel {
     	
     	@Override
     	public void mouseClicked(MouseEvent e) {
-    		GamePanel game = new GamePanel(characterType); //상상부기(코드0)로 게임 생성
+    		GamePanel game = new GamePanel(characterType,parent); //상상부기(코드0)로 게임 생성
     		
     		//현재 진행중인 음악 종료
     		//parent.getMusicThread()
@@ -84,11 +88,11 @@ public class SelectPanel extends JPanel {
         //System.out.println(this.getParent().getName());
         //뒤로가기 버튼 => 다시 4가지 메뉴 창으로 되돌아간다.
         //홈 버튼
-  		JButton backButton = new JButton(homeButtonIcon);
-  		backButton.setSize(200,200);
-  		backButton.setLocation(1200,50);
-  		backButton.addMouseListener(new ButtonClickedEvent(parent,parent.BEGINNING_PANEL));
-  		add(backButton);
+  		JLabel homeButton = new JLabel(homeButtonIcon);
+  		homeButton.setSize(homeButtonIcon.getIconWidth(),homeButtonIcon.getIconHeight());
+  		homeButton.setLocation(1360,20);
+  		homeButton.addMouseListener(new ButtonClickedEvent(parent,parent.BEGINNING_PANEL,homeButtonEnteredIcon,homeButtonIcon));
+  		add(homeButton);
         
   	
   		

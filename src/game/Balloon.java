@@ -16,7 +16,7 @@ public class Balloon extends JLayeredPane{
 	private String text; //풍선에 함께 달려서 내려올 단어
 	private int ballonType; //어떤 종류의 풍선인지 정보를 저장
 	
-	private int health = 3; //풍선의 체력
+	private int health = 1; //기본 풍선의 체력
 	private int fallingSpeed; //풍선이 떨어지는 속도
 	
 	
@@ -27,6 +27,11 @@ public class Balloon extends JLayeredPane{
 	private ImageIcon redBalloonIcon = new ImageIcon("redBalloon.png");//빨강 풍선 아이콘
 	private ImageIcon blueBalloonIcon = new ImageIcon("ballon.png");//파랑 풍선 아이콘
 	private ImageIcon yellowBalloonIcon = new ImageIcon("yellowBalloon.png");//노랑 풍선 아이콘
+	//특별한 풍선 => 등장확률을 낮게 설정할것 2프로?3프로?
+	private ImageIcon coinBalloonIcon = new ImageIcon("coinBalloon.png"); //코인 풍선 => 1000코인 획득
+	private ImageIcon starBalloonIcon = new ImageIcon("starBalloon.png"); //스타 풍선 => 한 라운드간 경험치 2배 
+	
+	
 	private Image image; 
 	private BalloonFallingThread fallingThread = null; //풍선이 떨어지게 하는 스레드
 	private JButton balloonImage; //풍선 이미지
@@ -87,7 +92,6 @@ public class Balloon extends JLayeredPane{
 		//풍선의 타입에 따른 풍선 특성 결정
 		switch(ballonType) {
 		case 0: //빨강풍선의 경우
-			health = 1;
 			image = redBalloonIcon.getImage();
 			break;
 		case 1: //파랑풍선의 경우
@@ -97,6 +101,12 @@ public class Balloon extends JLayeredPane{
 		case 2: //노랑풍선의 경우
 			image = yellowBalloonIcon.getImage();
 			health = 3;
+			break;
+		case 3: //터트릴경우 1000골드를 획득하는 풍선 => 효과음도 고려해볼것
+			image = coinBalloonIcon.getImage();
+			break;
+		case 4: //터트릴경우 한 라운드동안 점수를 2배로 받는 코인
+			image = starBalloonIcon.getImage();
 			break;
 		}
 		
@@ -207,13 +217,13 @@ public class Balloon extends JLayeredPane{
 				
 				int x = balloon.getX();
 				int y = balloon.getY()+10;//10픽셀씩 아래로 이동
-				//일정 높이 이하로 떨어지면 풍선 객체 삭제c
-				if(y>=500) {
-					setVisible(false);
-					//체력을 깎아야함
-					statusPanel.getDamage(10); //캐릭터에게 데미지를 가한다.
-					break;//스레드 종료
-				}
+//				//일정 높이 이하로 떨어지면 풍선 객체 삭제c
+//				if(y>=500) {
+//					setVisible(false);
+//					//체력을 깎아야함
+//					statusPanel.getDamage(10); //캐릭터에게 데미지를 가한다.
+//					break;//스레드 종료
+//				}
 				
 				balloon.setLocation(x,y); //풍선 위치 이동
 				try {
