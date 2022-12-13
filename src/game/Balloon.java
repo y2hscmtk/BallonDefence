@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Color;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -48,14 +49,14 @@ public class Balloon extends JLayeredPane{
 			fallingThread.interrupt();
 	}
 	
-	public void waitFallingThread() {
-		fallingThread.stopBalloon(); //풍선을 잠깐 멈추게함
-	}
-	
-	public void resumeFallingThread() {
-		fallingThread.resumeBalloon(); //다시 움직이게 함
-	}
-	
+//	public void waitFallingThread() {
+//		fallingThread.stopBalloon(); //풍선을 잠깐 멈추게함
+//	}
+//	
+//	public void resumeFallingThread() {
+//		fallingThread.resumeBalloon(); //다시 움직이게 함
+//	}
+//	
 	//매개변수로 받은 아이콘의 이미지로 풍선의 이미지 변경하는 메소드
 	public void setImage(ImageIcon icon) {
 		this.image = icon.getImage();
@@ -187,43 +188,43 @@ public class Balloon extends JLayeredPane{
 		}
 		
 		
-		//현재 stopFlag상태를 리턴
-		public boolean getStopFlag() {
-			return stopFlag;
-		} 
-		
-		
-		//풍선이 내려가는것을 멈추도록 stop명령
-		public void stopBalloon() {
-	        stopFlag = true; 
-	    }
-	    
-		//풍선을 다시 움직이게 하는 메소드
-	    synchronized public void resumeBalloon() {
-	        stopFlag = false; //스탑 플래그를 false로 변경 => 멈추치 않도록
-	        this.notify(); //이 객체를 무한대기하는 쓰레드 깨우기
-	    }
-		
-		
-		//flag가 false가 될때까지 기다리는 함수
-        synchronized private void waitFlag() { //wait함수를 쓰기 위해선 synchronized 키워드를 사용해야함
-           try {
-              this.wait(); //쓰레드 무한대기 상태로 변경=>notify()가 불려지기전까지
-           } catch (InterruptedException e) {
-              // TODO Auto-generated catch block
-              e.printStackTrace();
-           } //기다리면서 중단된 상태로
-        }
-		
+//		//현재 stopFlag상태를 리턴
+//		public boolean getStopFlag() {
+//			return stopFlag;
+//		} 
+//		
+//		
+//		//풍선이 내려가는것을 멈추도록 stop명령
+//		public void stopBalloon() {
+//	        stopFlag = true; 
+//	    }
+//	    
+//		//풍선을 다시 움직이게 하는 메소드
+//	    synchronized public void resumeBalloon() {
+//	        stopFlag = false; //스탑 플래그를 false로 변경 => 멈추치 않도록
+//	        this.notify(); //이 객체를 무한대기하는 쓰레드 깨우기
+//	    }
+//		
+//		
+//		//flag가 false가 될때까지 기다리는 함수
+//        synchronized private void waitFlag() { //wait함수를 쓰기 위해선 synchronized 키워드를 사용해야함
+//           try {
+//              this.wait(); //쓰레드 무한대기 상태로 변경=>notify()가 불려지기전까지
+//           } catch (InterruptedException e) {
+//              // TODO Auto-generated catch block
+//              e.printStackTrace();
+//           } //기다리면서 중단된 상태로
+//        }
+//		
 		
 		
 		@Override
 		public void run() {
 			while(true) {
-				if(stopFlag) { //stop플래그가 올라와있다면
-					waitFlag(); //풍선 멈추게 하기
-				}
-				
+//				if(stopFlag) { //stop플래그가 올라와있다면
+//					waitFlag(); //풍선 멈추게 하기
+//				}
+//				
 				int x = balloon.getX();
 				int y = balloon.getY()+10;//10픽셀씩 아래로 이동
 //				//일정 높이 이하로 떨어지면 풍선 객체 삭제c

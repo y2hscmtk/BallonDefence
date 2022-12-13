@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Graphics;
+
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,18 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import game.GameFrame.Music;
-
-
-class TestFrame extends JFrame{
-	
-	public void TestFrame() {
-		System.out.println("새 프레임 생성");
-		setSize(200,200);
-		setLocation(200,200);
-		setVisible(true); //생성된 순간 보이도록 하기
-	}
-}
-
 
 public class BeginningPanel extends JPanel {
     private GameFrame parent;//부모 변수

@@ -28,46 +28,46 @@ import javax.swing.JTextField;
 
 
 /*
- * ¶ó¿îµå ½Ã½ºÅÛÀ¸·Î ÀÛ¼º
- * ¶ó¿îµå¸¶´Ù »ı¼ºµÉ Ç³¼±ÀÇ ¼ö°¡ Á¤ÇØÁ®ÀÖ°í, ÇØ´ç Ç³¼±À» ¸ğµÎ Ã³¸®ÇÏ¸é ¶ó¿îµå°¡ Á¾·áµÇ´Â ¹æ½ÄÀ¸·Î
- * ¶ó¿îµå°¡ Á¾·áµÇ¸é ±âÁ¸ÀÇ ½º·¹µå¸¦ Á¤Áö½ÃÅ°°í, º¤ÅÍ¸¦ ºñ¿ì°í, °ÔÀÓ Á¤º¸¸¦ ¼öÁ¤ÇÑ´Ù(Ç³¼± »ı¼º ¼Óµµ, Ç³¼± Á¾·ù)
- * ¶ó¿îµå Á¾·á ÀÌÈÄ »óÁ¡ÀÌ µîÀåÇÏ°í, °ÔÀÓ¿¡¼­ ¹ú¾îµéÀÎ µ·À» ¹ÙÅÁÀ¸·Î »óÁ¡¿¡¼­ ¹«±â¸¦ º¯°æÇÒ¼ö ÀÖµµ·ÏÇÔ 
- * 1¶ó¿îµå¿¡¼­ µ·À» ÃæºĞÈ÷ ¹úÁö ¸øÇÏ¸é ¹«±â¸¦ »çÁö ¸øÇÏµµ·Ï ¾Ë¸ÂÀº ±İ¾×À¸·Î ¼³Á¤ÇÒ°Í, ¹«±â ÀÌ¿ÜÀÇ ´Ù¸¥ ¾ÆÀÌÅÛ »ı°¢ÇØº¼°Í
+ * ë¼ìš´ë“œ ì‹œìŠ¤í…œìœ¼ë¡œ ì‘ì„±
+ * ë¼ìš´ë“œë§ˆë‹¤ ìƒì„±ë  í’ì„ ì˜ ìˆ˜ê°€ ì •í•´ì ¸ìˆê³ , í•´ë‹¹ í’ì„ ì„ ëª¨ë‘ ì²˜ë¦¬í•˜ë©´ ë¼ìš´ë“œê°€ ì¢…ë£Œë˜ëŠ” ë°©ì‹ìœ¼ë¡œ
+ * ë¼ìš´ë“œê°€ ì¢…ë£Œë˜ë©´ ê¸°ì¡´ì˜ ìŠ¤ë ˆë“œë¥¼ ì •ì§€ì‹œí‚¤ê³ , ë²¡í„°ë¥¼ ë¹„ìš°ê³ , ê²Œì„ ì •ë³´ë¥¼ ìˆ˜ì •í•œë‹¤(í’ì„  ìƒì„± ì†ë„, í’ì„  ì¢…ë¥˜)
+ * ë¼ìš´ë“œ ì¢…ë£Œ ì´í›„ ìƒì ì´ ë“±ì¥í•˜ê³ , ê²Œì„ì—ì„œ ë²Œì–´ë“¤ì¸ ëˆì„ ë°”íƒ•ìœ¼ë¡œ ìƒì ì—ì„œ ë¬´ê¸°ë¥¼ ë³€ê²½í• ìˆ˜ ìˆë„ë¡í•¨ 
+ * 1ë¼ìš´ë“œì—ì„œ ëˆì„ ì¶©ë¶„íˆ ë²Œì§€ ëª»í•˜ë©´ ë¬´ê¸°ë¥¼ ì‚¬ì§€ ëª»í•˜ë„ë¡ ì•Œë§ì€ ê¸ˆì•¡ìœ¼ë¡œ ì„¤ì •í• ê²ƒ, ë¬´ê¸° ì´ì™¸ì˜ ë‹¤ë¥¸ ì•„ì´í…œ ìƒê°í•´ë³¼ê²ƒ
 */
 
-//°ÔÀÓ ÆĞ³Î¿¡¼­ ¿ŞÂÊ¿¡ ºÙ¾î¼­ °ÔÀÓÀÌ ÁøÇàµÇ´Â ÆĞ³ÎÀ» Á¦°ø
+//ê²Œì„ íŒ¨ë„ì—ì„œ ì™¼ìª½ì— ë¶™ì–´ì„œ ê²Œì„ì´ ì§„í–‰ë˜ëŠ” íŒ¨ë„ì„ ì œê³µ
 public class GameRunningPanel extends JLayeredPane {
 	private GameFrame parent;
-	//°ÔÀÓ¿¡ ´ëÇÑ Æ¯¼º
-	//¶ó¿îµå¸¶´Ù »ı¼ºµÉ Ç³¼±ÀÇ ÃÖ´ë °³¼ö => ÇØ´ç Ç³¼±À» ¸ğµÎ Áö¿ì¸é ´ÙÀ½ ¶ó¿îµå·Î ³Ñ¾î°¡µµ·Ï
-	private static final int ROUND1BALLONCOUNT = 10; //1¶ó¿îµå¿¡´Â 10°³ÀÇ Ç³¼±
-	private static final int ROUND2BALLONCOUNT = 20; //2¶ó¿îµå¿¡´Â 20°³ÀÇ Ç³¼±
-	private static final int ROUND3BALLONCOUNT = 30; //3¶ó¿îµå¿¡´Â 30°³ÀÇ Ç³¼±
-	//Ã¼Å©Æ÷ÀÎÆ®4
+	//ê²Œì„ì— ëŒ€í•œ íŠ¹ì„±
+	//ë¼ìš´ë“œë§ˆë‹¤ ìƒì„±ë  í’ì„ ì˜ ìµœëŒ€ ê°œìˆ˜ => í•´ë‹¹ í’ì„ ì„ ëª¨ë‘ ì§€ìš°ë©´ ë‹¤ìŒ ë¼ìš´ë“œë¡œ ë„˜ì–´ê°€ë„ë¡
+	private static final int ROUND1BALLONCOUNT = 10; //1ë¼ìš´ë“œì—ëŠ” 10ê°œì˜ í’ì„ 
+	private static final int ROUND2BALLONCOUNT = 20; //2ë¼ìš´ë“œì—ëŠ” 20ê°œì˜ í’ì„ 
+	private static final int ROUND3BALLONCOUNT = 30; //3ë¼ìš´ë“œì—ëŠ” 30ê°œì˜ í’ì„ 
+	//ì²´í¬í¬ì¸íŠ¸4
 	
 	
-	private int weaponPower; //»ç¿ëÁßÀÎ ¹«±âÀÇ °ø°İ·Â
-	private int characterType; //»ç¿ëÀÚ°¡ ¼±ÅÃÇÑ Ä³¸¯ÅÍ°¡ ¹«¾ùÀÎÁö¸¦ ÀúÀå
+	private int weaponPower; //ì‚¬ìš©ì¤‘ì¸ ë¬´ê¸°ì˜ ê³µê²©ë ¥
+	private int characterType; //ì‚¬ìš©ìê°€ ì„ íƒí•œ ìºë¦­í„°ê°€ ë¬´ì—‡ì¸ì§€ë¥¼ ì €ì¥
 	
-	//Ç³¼±ÀÌ ¶³¾îÁö´Â ¼Óµµ => Ä³¸¯ÅÍ Æ¯¼º¿¡ µû¶ó ´Ş¶óÁü
-	private int ballonSpeed;//Ç³¼±ÀÌ ³»·Á¿À´Â ½Ã°£ => µô·¹ÀÌ µÇ´Â ½Ã°£(¹Ğ¸®ÃÊ´ÜÀ§)
-	//²Ù²Ù±î±î°¡ ¼±ÅÃµÉ°æ¿ì¿¡ true·Î º¯°æ
-	private boolean luckyChance = false; //²¿²¿²Ù²ÙÀÇ Æ¯¼º, true¶ó¸é ÀÏÁ¤È®·ü·Î Ç³¼±¿¡ Ãß°¡Å¸¸¦ °¡ÇÔ
+	//í’ì„ ì´ ë–¨ì–´ì§€ëŠ” ì†ë„ => ìºë¦­í„° íŠ¹ì„±ì— ë”°ë¼ ë‹¬ë¼ì§
+	private int ballonSpeed;//í’ì„ ì´ ë‚´ë ¤ì˜¤ëŠ” ì‹œê°„ => ë”œë ˆì´ ë˜ëŠ” ì‹œê°„(ë°€ë¦¬ì´ˆë‹¨ìœ„)
+	//ê¾¸ê¾¸ê¹Œê¹Œê°€ ì„ íƒë ê²½ìš°ì— trueë¡œ ë³€ê²½
+	private boolean luckyChance = false; //ê¼¬ê¼¬ê¾¸ê¾¸ì˜ íŠ¹ì„±, trueë¼ë©´ ì¼ì •í™•ë¥ ë¡œ í’ì„ ì— ì¶”ê°€íƒ€ë¥¼ ê°€í•¨
 	
-	//Ç³¼±ÀÌ ³»·Á¿À´Â ½º·¹µå
-	//Ç³¼±¿¡ ´Ş¸° ´Ü¾î°¡ ¿Ã¹Ù¸¥ ´Ü¾îÀÎÁö È®ÀÎÇÏ´Â ¸Ş¼Òµå
-	//¹è°æ ÀÌ¹ÌÁö
+	//í’ì„ ì´ ë‚´ë ¤ì˜¤ëŠ” ìŠ¤ë ˆë“œ
+	//í’ì„ ì— ë‹¬ë¦° ë‹¨ì–´ê°€ ì˜¬ë°”ë¥¸ ë‹¨ì–´ì¸ì§€ í™•ì¸í•˜ëŠ” ë©”ì†Œë“œ
+	//ë°°ê²½ ì´ë¯¸ì§€
 	private ImageIcon bgImageicon = new ImageIcon("gamePanelBackgroundImage.png");
 	private Image gamePanelBackgroundImage = bgImageicon.getImage();
 	
-	private int ballonSpawnTime; //Ç³¼± ÇÏ³ª°¡ »ı¼ºµÇ´Âµ¥ °É¸®´Â ½Ã°£
-	private WordList wordList = new WordList("words.txt"); //´Ü¾î ¸®½ºÆ® »ı¼º
+	private int ballonSpawnTime; //í’ì„  í•˜ë‚˜ê°€ ìƒì„±ë˜ëŠ”ë° ê±¸ë¦¬ëŠ” ì‹œê°„
+	private WordList wordList = new WordList("words.txt"); //ë‹¨ì–´ ë¦¬ìŠ¤íŠ¸ ìƒì„±
 	
 	
-	private BallonSpawnThread ballonSpawnThread; //Ç³¼±À» »ı¼ºÇÏ´Â ½º·¹µå
+	private BallonSpawnThread ballonSpawnThread; //í’ì„ ì„ ìƒì„±í•˜ëŠ” ìŠ¤ë ˆë“œ
 	private boolean gameOn = false;
 	
-	//ÆĞ³Î °ü¸®
+	//íŒ¨ë„ ê´€ë¦¬
 	private ControlPanel controlPanel;
 	private StatusPanel statusPanel;
 	
@@ -75,20 +75,20 @@ public class GameRunningPanel extends JLayeredPane {
 		return controlPanel;
 	}
 	
-	//Ç³¼±À» °ü¸®ÇÏ±â À§ÇÑ º¤ÅÍ
+	//í’ì„ ì„ ê´€ë¦¬í•˜ê¸° ìœ„í•œ ë²¡í„°
 	private Balloon balloon;
 	private Vector<Balloon> balloonVector = new Vector<Balloon>();
 	
-	//½ºÅ×ÀÌÅÍ½ºÃ¢¿¡ ´ëÇÑ ÂüÁ¶¸¦ ¸®ÅÏ
+	//ìŠ¤í…Œì´í„°ìŠ¤ì°½ì— ëŒ€í•œ ì°¸ì¡°ë¥¼ ë¦¬í„´
 	public StatusPanel getStatusPanel() {
 		return statusPanel;
 	}
 	
-	//¹«±âÀÇ °ø°İ·ÂÀ» ¼³Á¤
+	//ë¬´ê¸°ì˜ ê³µê²©ë ¥ì„ ì„¤ì •
 	public void setWeaponPower(int selectedItem) {
-//		weaponType = selectedItem; //ÀÔ·Â¹ŞÀº ¾ÆÀÌÅÛÀ¸·Î ÇöÀç ¹«±â º¯°æ
-//		//1Àº ¿¬ÇÊ, 2´Â °¡À§, 3Àº Åé
-//		//¹«±â Å¸ÀÔ¿¡ ¸Â´Â ¹«±â ÀÌ¹ÌÁö, ¹«±â µ¥¹ÌÁö º¯°æ
+//		weaponType = selectedItem; //ì…ë ¥ë°›ì€ ì•„ì´í…œìœ¼ë¡œ í˜„ì¬ ë¬´ê¸° ë³€ê²½
+//		//1ì€ ì—°í•„, 2ëŠ” ê°€ìœ„, 3ì€ í†±
+//		//ë¬´ê¸° íƒ€ì…ì— ë§ëŠ” ë¬´ê¸° ì´ë¯¸ì§€, ë¬´ê¸° ë°ë¯¸ì§€ ë³€ê²½
 		switch(selectedItem) {
 		case 1:
 			weaponPower = 1;
@@ -103,238 +103,221 @@ public class GameRunningPanel extends JLayeredPane {
 	}
 	
 	
-//	//»ç¸ÁÀ» °ü¸®ÇÏ´Â ÆĞ³Î
-//	private class DeadPanel extends JPanel{
-//		
-//		
-//		public DeadPanel() {
-//			
-//			setSize(500,500);
-//			setVisible(true);
-//		}
-//	}
-//	
-	
-	
-	
-	
-	
-	
-	//»óÁ¡À» °ü¸®ÇÏ´Â ÆĞ³Î
-	//°ÔÀÓ¿¡ ´ëÇÑ Á¤º¸¸¦ ¹Ş¾Æ¼­, ¸Å ¶ó¿îµå¸¶´Ù Â÷µîÇÑ »óÁ¡ »ı¼º
-	//»óÁ¡ÀÌ¿ë Á¾·áÇÏ°í ´ÙÀ½ ¶ó¿îµå·Î ³Ñ¾î°¡°Ô ÇÏ´Â ¹öÆ° ÀÛ¼º
+	//ìƒì ì„ ê´€ë¦¬í•˜ëŠ” íŒ¨ë„
+	//ê²Œì„ì— ëŒ€í•œ ì •ë³´ë¥¼ ë°›ì•„ì„œ, ë§¤ ë¼ìš´ë“œë§ˆë‹¤ ì°¨ë“±í•œ ìƒì  ìƒì„±
+	//ìƒì ì´ìš© ì¢…ë£Œí•˜ê³  ë‹¤ìŒ ë¼ìš´ë“œë¡œ ë„˜ì–´ê°€ê²Œ í•˜ëŠ” ë²„íŠ¼ ì‘ì„±
 	private class StoreAndFianlPanel extends JPanel{
-		private StatusPanel statusPanel;//¾ÆÀÌÅÛ ±¸¸Å½Ã ÄÚÀÎ°ú Ã¼·ÂÀ» Á¶ÀÛÇÏ±â À§ÇØ
+		private StatusPanel statusPanel;//ì•„ì´í…œ êµ¬ë§¤ì‹œ ì½”ì¸ê³¼ ì²´ë ¥ì„ ì¡°ì‘í•˜ê¸° ìœ„í•´
 		
-		private int gameLevel; //°ÔÀÓ ·¹º§¿¡ ´ëÇÑ Á¤º¸ ÀúÀå
-		private Clip clip; //»óÁ¡¿¡¼­ ¾ÆÀÌÅÛÀ» °í¸¦¶§ÀÇ È¿°úÀ½À» À§ÇØ
+		private int gameLevel; //ê²Œì„ ë ˆë²¨ì— ëŒ€í•œ ì •ë³´ ì €ì¥
+		private Clip clip; //ìƒì ì—ì„œ ì•„ì´í…œì„ ê³ ë¥¼ë•Œì˜ íš¨ê³¼ìŒì„ ìœ„í•´
 		
 		private GameMangeThread gameMangeThread;
 		
 		
-		//»óÁ¡Ã¢°ú ¿£µùÃ¢¿¡ ¶ç¿ï Ä¥ÆÇ ÀÌ¹ÌÁö
+		//ìƒì ì°½ê³¼ ì—”ë”©ì°½ì— ë„ìš¸ ì¹ íŒ ì´ë¯¸ì§€
 		private ImageIcon backgroundImageIcon = new ImageIcon("blackBoard.png");
 		private Image backgroundImage = backgroundImageIcon.getImage();
 		
 		private ImageIcon rightArrowIcon = new ImageIcon("rightArrow.png");
 		private ImageIcon rightArrowEnteredIcon = new ImageIcon("rightArrowEntered.png");
 		
-		//°ÔÀÓÅ¬¸®¾î ·Î°í
+		//ê²Œì„í´ë¦¬ì–´ ë¡œê³ 
 		private ImageIcon gameClearIcon = new ImageIcon("gameClearImage.png");
-		//°ÔÀÓÅ¬¸®¾î
+		//ê²Œì„í´ë¦¬ì–´
 		private JLabel gameClearLabel;
-		//°ÔÀÓ¿À¹ö ·Î°í
+		//ê²Œì„ì˜¤ë²„ ë¡œê³ 
 		private ImageIcon gameOverIcon = new ImageIcon("gameOverImage.png");
-		//°ÔÀÓ¿À¹ö ¶óº§
+		//ê²Œì„ì˜¤ë²„ ë¼ë²¨
 		private JLabel gameOverLabel;
-		//½ºÄÚ¾î ¶óº§
+		//ìŠ¤ì½”ì–´ ë¼ë²¨
 		private ImageIcon scoreImageIcon = new ImageIcon("scoreImageIcon.png");
 		private JLabel scoreLabel;
-		//³×ÀÓ ¶óº§
+		//ë„¤ì„ ë¼ë²¨
 		private ImageIcon nameImageIcon = new ImageIcon("nameImageIcon.png");
 		private JLabel nameLabel;
 		
-		//»óÁ¡Ã¢ ·Î°í
+		//ìƒì ì°½ ë¡œê³ 
 		private ImageIcon storeIcon = new ImageIcon("storeImage.png");
-		//»óÁ¡ Ã¢
+		//ìƒì  ì°½
 		private JLabel storeLabel;
 		
 		
 		
 		
 		
-		//¾ÆÀÌÅÛ ÄÚµå¹øÈ£
+		//ì•„ì´í…œ ì½”ë“œë²ˆí˜¸
 		private static final int POSTION = 1;
 		private static final int SCISSORS = 2;
 		private static final int CHAINSAW = 3;
 		
 		
-		private ImageIcon chainsawIcon = new ImageIcon("chainsaw.png"); //Åé ÀÌ¹ÌÁö ¾ÆÀÌÄÜ
-		private ImageIcon scissorsIcon = new ImageIcon("scissors.png"); //°¡À§ ÀÌ¹ÌÁö ¾ÆÀÌÄÜ
-		private ImageIcon healthPostionIcon = new ImageIcon("HealthPositon.png"); //Ã¼·ÂÈ¸º¹ ¹°¾à ¾ÆÀÌÄÜ
+		private ImageIcon chainsawIcon = new ImageIcon("chainsaw.png"); //í†± ì´ë¯¸ì§€ ì•„ì´ì½˜
+		private ImageIcon scissorsIcon = new ImageIcon("scissors.png"); //ê°€ìœ„ ì´ë¯¸ì§€ ì•„ì´ì½˜
+		private ImageIcon healthPostionIcon = new ImageIcon("HealthPositon.png"); //ì²´ë ¥íšŒë³µ ë¬¼ì•½ ì•„ì´ì½˜
 		private ImageIcon noneIcon = new ImageIcon("None.png");
 		
 		
 		private ItemLabelEvent itemSelectEvent;
-//		//¸¶Áö¸· Ã¢¿¡ º¸¿©Áö°Ô ÇÒ ¾ÆÀÌÄÜ
+//		//ë§ˆì§€ë§‰ ì°½ì— ë³´ì—¬ì§€ê²Œ í•  ì•„ì´ì½˜
 //		private ImageIcon finalImageIcon = new ImageIcon("finalImage.png");
 		
-		//¹«±â¹Ú½º ¾ÆÀÌÄÜ
+		//ë¬´ê¸°ë°•ìŠ¤ ì•„ì´ì½˜
 		private ImageIcon weaponBoxIcon = new ImageIcon("weaponBox.png");
-		//Æ÷¼Ç¹Ú½º ¾ÆÀÌÄÜ
+		//í¬ì…˜ë°•ìŠ¤ ì•„ì´ì½˜
 		private ImageIcon positonBoxIcon = new ImageIcon("positonBox.png");
 		
 //		private ImageIcon weaponBoxIcon = new ImageIcon("border.png");
 		
-		//»óÁ¡¿¡´Â 2°¡ÁöÀÇ ¾ÆÀÌÅÛ¸¸ º¸¿©ÁÙ°Í
+		//ìƒì ì—ëŠ” 2ê°€ì§€ì˜ ì•„ì´í…œë§Œ ë³´ì—¬ì¤„ê²ƒ
 		private ImageIcon item1;
 		private JLabel item1Label;
 		private ImageIcon item2;
 		private JLabel item2Label;
 		
-		//¾ÆÀÌÅÛÀ» ±¸¸ÅÇÏÁö ¾Ê°í ³Ñ¾î°¥¼ö ÀÖÀ¸¹Ç·Î=> ±× °æ¿ì ±âÃÊ¾ÆÀÌÅÛÀÇ ¾ÆÀÌÅÛÄÚµåÀÎ 1¹øÀ» À¯Áö
-		private int selectedItem = 1; //¼±ÅÃµÈ ¾ÆÀÌÅÛÀ» ÀúÀåÇÒ º¯¼ö => ÀÌº¥Æ® ¹ß»ı½Ã ³Ñ°ÜÁÙ°Í\
-		private int weaponCode; //¹«±â ÄÚµå¸¦ ÀúÀå
+		//ì•„ì´í…œì„ êµ¬ë§¤í•˜ì§€ ì•Šê³  ë„˜ì–´ê°ˆìˆ˜ ìˆìœ¼ë¯€ë¡œ=> ê·¸ ê²½ìš° ê¸°ì´ˆì•„ì´í…œì˜ ì•„ì´í…œì½”ë“œì¸ 1ë²ˆì„ ìœ ì§€
+		private int selectedItem = 1; //ì„ íƒëœ ì•„ì´í…œì„ ì €ì¥í•  ë³€ìˆ˜ => ì´ë²¤íŠ¸ ë°œìƒì‹œ ë„˜ê²¨ì¤„ê²ƒ\
+		private int weaponCode; //ë¬´ê¸° ì½”ë“œë¥¼ ì €ì¥
 		
-		//¿£µù&Å¬¸®¾î Ã¢ »ı¼º½Ã ¾ÆÀÌµğ¸¦ ÀÔ·Â¹ŞÀ» °ø°£ »ı¼º
-		private JTextField input = new JTextField(15); //´Ü¾îÀ» ÀÔ·Â¹ŞÀ» °ø°£ ¼³Á¤
-		//¹öÆ°À» ´­·¯¼­ ÀÔ·ÂÇÑ ÅØ½ºÆ®¸¦ ÀúÀåÇÏµµ·Ï ÇÏ´Â ¹öÆ°
+		//ì—”ë”©&í´ë¦¬ì–´ ì°½ ìƒì„±ì‹œ ì•„ì´ë””ë¥¼ ì…ë ¥ë°›ì„ ê³µê°„ ìƒì„±
+		private JTextField input = new JTextField(15); //ë‹¨ì–´ì„ ì…ë ¥ë°›ì„ ê³µê°„ ì„¤ì •
+		//ë²„íŠ¼ì„ ëˆŒëŸ¬ì„œ ì…ë ¥í•œ í…ìŠ¤íŠ¸ë¥¼ ì €ì¥í•˜ë„ë¡ í•˜ëŠ” ë²„íŠ¼
 		private JButton saveButton;
 		
 		
 		private ImageIcon deadBoardIcon = new ImageIcon("deadBoard.png");
-		//È¨¹öÆ° ÀÌ¹ÌÁö
+		//í™ˆë²„íŠ¼ ì´ë¯¸ì§€
 		private ImageIcon homeButtonIcon = new ImageIcon("home2.png");
 		private ImageIcon homeButtonEnteredIcon = new ImageIcon("home2Entered.png");
 		
-		//¹öÆ° ÀÌ¹ÌÁö
+		//ë²„íŠ¼ ì´ë¯¸ì§€
 		private	ImageIcon inputButtonIcon = new ImageIcon("inputButton.png");
 		private	ImageIcon inputButtonEnteredIcon = new ImageIcon("inputButtonEntered.png");
 		
 		
-//		//¹è°æ ÀÌ¹ÌÁö¸¦ ¹Ù²Ù±â À§ÇÑ ÇÔ¼ö
+//		//ë°°ê²½ ì´ë¯¸ì§€ë¥¼ ë°”ê¾¸ê¸° ìœ„í•œ í•¨ìˆ˜
 //		public void setBackgroundImage(ImageIcon icon) {
 //			this.backgroundImage = icon.getImage();
-//			repaint(); //¹Ù²ïÀÌ¹ÌÁö°¡ º¸ÀÌµµ·Ï paintComponent()È£Ãâ
+//			repaint(); //ë°”ë€ì´ë¯¸ì§€ê°€ ë³´ì´ë„ë¡ paintComponent()í˜¸ì¶œ
 //		}
 //		
 		
 		
 		
-		//ÇöÀç ¹«±â¸¦ ÆÇ¸ÅÁßÀÎÁö ¿©ºÎ
+		//í˜„ì¬ ë¬´ê¸°ë¥¼ íŒë§¤ì¤‘ì¸ì§€ ì—¬ë¶€
 		private boolean selling = true;
 		
-		//¾ÆÁ÷ ¹°°ÇÀ» ÆÇ¸ÅÁßÀÎÁö È®ÀÎ
+		//ì•„ì§ ë¬¼ê±´ì„ íŒë§¤ì¤‘ì¸ì§€ í™•ì¸
 		public boolean isSelling() {
 			return selling;
 		}
 		
-		//ÆÇ¸ÅµÈ »óÅÂ·Î º¯°æ
+		//íŒë§¤ëœ ìƒíƒœë¡œ ë³€ê²½
 		public void setSelling() {
 			selling = false;
 		}
 		
-		//¾ÆÀÌÅÛ¶óº§°ú °ü·ÃµÈ ÀÌº¥Æ® ÀÛ¼º
+		//ì•„ì´í…œë¼ë²¨ê³¼ ê´€ë ¨ëœ ì´ë²¤íŠ¸ ì‘ì„±
 		private class ItemLabelEvent extends MouseAdapter {
-			private StatusPanel statusPanel; //¾ÆÀÌÅÛ ±¸¸Å¿¡ µû¶ó ½ºÅ×ÀÌÅÍ½º Ã¢ÀÇ ÄÚÀÎÀ» ºÒ·¯¿À±âÀ§ÇØ
+			private StatusPanel statusPanel; //ì•„ì´í…œ êµ¬ë§¤ì— ë”°ë¼ ìŠ¤í…Œì´í„°ìŠ¤ ì°½ì˜ ì½”ì¸ì„ ë¶ˆëŸ¬ì˜¤ê¸°ìœ„í•´
 			private int itemCode;
 			
-			//¾ÆÀÌÅÛÄÚµå¸¦ ÀÔ·Â¹Ş¾Æ ÀúÀå
+			//ì•„ì´í…œì½”ë“œë¥¼ ì…ë ¥ë°›ì•„ ì €ì¥
 			public ItemLabelEvent(int itemCode,StatusPanel statusPanel) {
-				this.statusPanel = statusPanel; //½ºÅ×ÀÌÅÍ½ºÃ¢¿¡ ´ëÇÑ ÂüÁ¶ °¡Á®¿À±â
+				this.statusPanel = statusPanel; //ìŠ¤í…Œì´í„°ìŠ¤ì°½ì— ëŒ€í•œ ì°¸ì¡° ê°€ì ¸ì˜¤ê¸°
 				this.itemCode = itemCode;
 			}
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int itemPrice = 0; //¾ÆÀÌÅÛ °¡°İÀ» ÀúÀåÇÒ ºÎºĞ
+				int itemPrice = 0; //ì•„ì´í…œ ê°€ê²©ì„ ì €ì¥í•  ë¶€ë¶„
 
-				//½ºÅ×ÀÌÅÍ½ºÀÇ ÄÚÀÎ °¡Á®¿À±â·Î ´©¸¦¶§¸¶´Ù ÀÜ¿© °ñµå È®ÀÎ
+				//ìŠ¤í…Œì´í„°ìŠ¤ì˜ ì½”ì¸ ê°€ì ¸ì˜¤ê¸°ë¡œ ëˆ„ë¥¼ë•Œë§ˆë‹¤ ì”ì—¬ ê³¨ë“œ í™•ì¸
 				
 				switch(itemCode) {
-				case POSTION: //1¹ø (Æ÷¼Ç) ¼±ÅÃ½Ã
-					itemPrice = 300; //¾ÆÀÌÅÛ °¡°İ °¡Á®¿À±â
-					//ÇØ´ç¾ÆÀÌÅÛÀÇ °¡°İº¸´Ù ¸¹Àº µ·À» °¡Áö°í ÀÖ´ÂÁö È®ÀÎ
+				case POSTION: //1ë²ˆ (í¬ì…˜) ì„ íƒì‹œ
+					itemPrice = 300; //ì•„ì´í…œ ê°€ê²© ê°€ì ¸ì˜¤ê¸°
+					//í•´ë‹¹ì•„ì´í…œì˜ ê°€ê²©ë³´ë‹¤ ë§ì€ ëˆì„ ê°€ì§€ê³  ìˆëŠ”ì§€ í™•ì¸
 					break;
-				case SCISSORS: //°¡À§´Â Ãµ¿ø
-					itemPrice = 1000; //¾ÆÀÌÅÛ °¡°İ °¡Á®¿À±â
-					selectedItem = SCISSORS; //°¡À§¸¦ ¼±ÅÃÇÏ¿´À½À» ÀúÀå
-					setSelling(); //ÆÇ¸ÅµÊ »óÅÂ·Î ÀüÈ¯
+				case SCISSORS: //ê°€ìœ„ëŠ” ì²œì›
+					itemPrice = 1000; //ì•„ì´í…œ ê°€ê²© ê°€ì ¸ì˜¤ê¸°
+					selectedItem = SCISSORS; //ê°€ìœ„ë¥¼ ì„ íƒí•˜ì˜€ìŒì„ ì €ì¥
+					setSelling(); //íŒë§¤ë¨ ìƒíƒœë¡œ ì „í™˜
 					break;
-				case CHAINSAW: //ÅéÀº »ïÃµ¿ø
-					itemPrice = 3000; //¾ÆÀÌÅÛ °¡°İ °¡Á®¿À±â
-					selectedItem = CHAINSAW; //ÅéÀ» ¼±ÅÃÇÏ¿´À½À» ÀúÀå
-					setSelling(); //ÆÇ¸ÅµÊ »óÅÂ·Î ÀüÈ¯
+				case CHAINSAW: //í†±ì€ ì‚¼ì²œì›
+					itemPrice = 3000; //ì•„ì´í…œ ê°€ê²© ê°€ì ¸ì˜¤ê¸°
+					selectedItem = CHAINSAW; //í†±ì„ ì„ íƒí•˜ì˜€ìŒì„ ì €ì¥
+					setSelling(); //íŒë§¤ë¨ ìƒíƒœë¡œ ì „í™˜
 					break;
 				}
 				
-				//¹°°ÇÀÇ °¡°İº¸´Ù ¸¹Àº µ·À» °®°íÀÖÀ»¶§ ÀÌº¥Æ® ¹ß»ı
+				//ë¬¼ê±´ì˜ ê°€ê²©ë³´ë‹¤ ë§ì€ ëˆì„ ê°–ê³ ìˆì„ë•Œ ì´ë²¤íŠ¸ ë°œìƒ
 				if(statusPanel.getCoin()>=itemPrice) {
 					switch(selectedItem) {
-					case POSTION: //1¹ø (Æ÷¼Ç) ¼±ÅÃ½Ã
-						statusPanel.healthRecovery(30); //30ÀÇ Ã¼·ÂÀ» È¸º¹
-						statusPanel.minusCoin(300); //Æ÷¼ÇÀÇ °¡°İ ÁöºÒ
+					case POSTION: //1ë²ˆ (í¬ì…˜) ì„ íƒì‹œ
+						statusPanel.healthRecovery(30); //30ì˜ ì²´ë ¥ì„ íšŒë³µ
+						statusPanel.minusCoin(300); //í¬ì…˜ì˜ ê°€ê²© ì§€ë¶ˆ
 						break;
-					case SCISSORS: //°¡À§´Â Ãµ¿ø
-						System.out.println("°¡À§ ¼±ÅÃ");
-						System.out.println("Ãµ¿ø Â÷°¨");
-						statusPanel.minusCoin(1000); //±İ¾× ÁöºÒ
+					case SCISSORS: //ê°€ìœ„ëŠ” ì²œì›
+						System.out.println("ê°€ìœ„ ì„ íƒ");
+						System.out.println("ì²œì› ì°¨ê°");
+						statusPanel.minusCoin(1000); //ê¸ˆì•¡ ì§€ë¶ˆ
 						statusPanel.setWeapon(selectedItem);
 						break;
-					case CHAINSAW: //ÅéÀº »ïÃµ¿ø
-						System.out.println("Åé ¼±ÅÃ");
-						statusPanel.minusCoin(3000); //±İ¾× ÁöºÒ
+					case CHAINSAW: //í†±ì€ ì‚¼ì²œì›
+						System.out.println("í†± ì„ íƒ");
+						statusPanel.minusCoin(3000); //ê¸ˆì•¡ ì§€ë¶ˆ
 						System.out.println(selectedItem+","+CHAINSAW);
 						statusPanel.setWeapon(selectedItem);
 						break;
 					}	
 				}
 				else {
-					//±¸¸ÅºÒ°¡ ¼Ò¸® »ğÀÔ?
-					System.out.println("±¸¸Å ºÒ°¡");
+					//êµ¬ë§¤ë¶ˆê°€ ì†Œë¦¬ ì‚½ì…?
+					System.out.println("êµ¬ë§¤ ë¶ˆê°€");
 				}
 				
 			}
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//¹öÆ°ÀÌ ´­·ÁÁø ¼ø°£ ¼Ò¸®°¡ ³ªµµ·Ï
+				//ë²„íŠ¼ì´ ëˆŒë ¤ì§„ ìˆœê°„ ì†Œë¦¬ê°€ ë‚˜ë„ë¡
 				try {
 					clip = AudioSystem.getClip();
 					File audioFile = new File("ButtonClick.wav");
 					AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 					clip.open(audioStream);
 				}catch(Exception E) {
-					System.out.println("¿À·ù!");
+					System.out.println("ì˜¤ë¥˜!");
 				}
-				clip.start(); // ¹öÆ°À» Å¬¸¯ÇßÀ»¶§ ¼Ò¸®°¡ ³ªµµ·Ï
+				clip.start(); // ë²„íŠ¼ì„ í´ë¦­í–ˆì„ë•Œ ì†Œë¦¬ê°€ ë‚˜ë„ë¡
 			}
 			
 			
 		}
 		
 		
-		//ÇÃ·¹ÀÌ¾î »ç¸Á½Ã ÆĞ³ÎÀ» ¿£µùÆĞ³Î·Î º¸ÀÌ°Ô ÇÏ´Â ÇÔ¼ö ÀÛ¼º
+		//í”Œë ˆì´ì–´ ì‚¬ë§ì‹œ íŒ¨ë„ì„ ì—”ë”©íŒ¨ë„ë¡œ ë³´ì´ê²Œ í•˜ëŠ” í•¨ìˆ˜ ì‘ì„±
 		
 		
-		//»óÁ¡ ·¹º§¿¡ µû¶ó Á¾·áÄ­À¸·Îµµ ³Ñ¾î°¥¼ö ÀÖµµ·Ï
+		//ìƒì  ë ˆë²¨ì— ë”°ë¼ ì¢…ë£Œì¹¸ìœ¼ë¡œë„ ë„˜ì–´ê°ˆìˆ˜ ìˆë„ë¡
 		public void setPanelElement(int gameLevel) {
-			//ÇöÀç ÄÚÀÎÀ» ¹ÙÅÁÀ¸·Î ¾ÆÀÌÅÛ °áÁ¤
-			int nowCoin = statusPanel.getCoin();// ÇöÀç ±İ¾×ÀÌ ¾ó¸¶ÀÎÁö È®ÀÎ
+			//í˜„ì¬ ì½”ì¸ì„ ë°”íƒ•ìœ¼ë¡œ ì•„ì´í…œ ê²°ì •
+			int nowCoin = statusPanel.getCoin();// í˜„ì¬ ê¸ˆì•¡ì´ ì–¼ë§ˆì¸ì§€ í™•ì¸
 			if(nowCoin<1000) {
-				item1 = noneIcon; //¾Æ¹«°Íµµ ¾øµµ·Ï
-				item2 = healthPostionIcon; //Ã¼·Â¹°¾àÀ» 2¹øÂ° ¾ÆÀÌÅÛÀ¸·Î ÁöÁ¤
+				item1 = noneIcon; //ì•„ë¬´ê²ƒë„ ì—†ë„ë¡
+				item2 = healthPostionIcon; //ì²´ë ¥ë¬¼ì•½ì„ 2ë²ˆì§¸ ì•„ì´í…œìœ¼ë¡œ ì§€ì •
 			}
 			else if(1000<=nowCoin&&nowCoin<3000) {
-				item1 = scissorsIcon; //°¡À§ ¾ÆÀÌÅÛ º¸¿©ÁÖ±â
-				item2 = healthPostionIcon; //Ã¼·Â¹°¾àÀ» 2¹øÂ° ¾ÆÀÌÅÛÀ¸·Î ÁöÁ¤
+				item1 = scissorsIcon; //ê°€ìœ„ ì•„ì´í…œ ë³´ì—¬ì£¼ê¸°
+				item2 = healthPostionIcon; //ì²´ë ¥ë¬¼ì•½ì„ 2ë²ˆì§¸ ì•„ì´í…œìœ¼ë¡œ ì§€ì •
 			}
 			else {
-				item1 = chainsawIcon; //Åé ¾ÆÀÌÅÛ º¸¿©ÁÖ±â
-				item2 = healthPostionIcon; //Ã¼·Â¹°¾àÀ» 2¹øÂ° ¾ÆÀÌÅÛÀ¸·Î ÁöÁ¤
+				item1 = chainsawIcon; //í†± ì•„ì´í…œ ë³´ì—¬ì£¼ê¸°
+				item2 = healthPostionIcon; //ì²´ë ¥ë¬¼ì•½ì„ 2ë²ˆì§¸ ì•„ì´í…œìœ¼ë¡œ ì§€ì •
 			}
 			
-			//·¹º§ÀÌ 3ÀÌ¸é ¾Æ¹«°Íµµ º¸ÀÌÁö ¾Êµµ·Ï
+			//ë ˆë²¨ì´ 3ì´ë©´ ì•„ë¬´ê²ƒë„ ë³´ì´ì§€ ì•Šë„ë¡
 			if(gameLevel==3) {
 				item1 = null; 
 				item2 = null;
@@ -343,27 +326,27 @@ public class GameRunningPanel extends JLayeredPane {
 		}
 		
 		
-		//È¨È­¸éÀ¸·Î µ¹¾Æ°¥¶§, À½¾ÇÀ» ½ÃÀÛÀ½¾ÇÀ¸·Î º¯°æÇÏ±â À§ÇÑ ÀÌº¥Æ® ÀÛ¼º(¿À¹ö¶óÀÌµùÀ¸·Î)
+		//í™ˆí™”ë©´ìœ¼ë¡œ ëŒì•„ê°ˆë•Œ, ìŒì•…ì„ ì‹œì‘ìŒì•…ìœ¼ë¡œ ë³€ê²½í•˜ê¸° ìœ„í•œ ì´ë²¤íŠ¸ ì‘ì„±(ì˜¤ë²„ë¼ì´ë”©ìœ¼ë¡œ)
 		class HomeButtonClickedEvent extends ButtonClickedEvent{
 
 			public HomeButtonClickedEvent(GameFrame parent, int type, ImageIcon enteredIcon, ImageIcon presentIcon) {
-				super(parent, type, enteredIcon, presentIcon); //±âÁ¸ ±â´ÉµéÀº ¼öÇàÀÌ °¡´ÉÇÏµµ·Ï
+				super(parent, type, enteredIcon, presentIcon); //ê¸°ì¡´ ê¸°ëŠ¥ë“¤ì€ ìˆ˜í–‰ì´ ê°€ëŠ¥í•˜ë„ë¡
 				// TODO Auto-generated constructor stub
 			}
 
 
-			@Override //¸¶¿ì½º¸¦ Å¬¸¯ÇÒ¶§ À½¾ÇÀ» ¸ŞÀÎ¸Ş´º À½¾ÇÀ¸·Î º¯°æÇÏ´Â ºÎºĞ Ãß°¡
+			@Override //ë§ˆìš°ìŠ¤ë¥¼ í´ë¦­í• ë•Œ ìŒì•…ì„ ë©”ì¸ë©”ë‰´ ìŒì•…ìœ¼ë¡œ ë³€ê²½í•˜ëŠ” ë¶€ë¶„ ì¶”ê°€
 			public void mouseClicked(MouseEvent e) {
-				//ÇöÀç À½¾ÇÀ» º¯°æ
-				parent.getMusic().musicStop(); //À½¾Ç Áß´Ü
-	    		//À½¾Ç Áß´Ü »ç½ÇÀ» ÀúÀå
+				//í˜„ì¬ ìŒì•…ì„ ë³€ê²½
+				parent.getMusic().musicStop(); //ìŒì•… ì¤‘ë‹¨
+	    		//ìŒì•… ì¤‘ë‹¨ ì‚¬ì‹¤ì„ ì €ì¥
 //	    		parent.
 	    		
-	    		//½ÃÀÛÈ­¸é À½¾ÇÀ¸·Î º¯°æ
+	    		//ì‹œì‘í™”ë©´ ìŒì•…ìœ¼ë¡œ ë³€ê²½
 	    		parent.getMusic().changeMusic("openningMusic.wav");
 				
 				
-				//ÆĞ³Î º¯°æ
+				//íŒ¨ë„ ë³€ê²½
 				parent.swapPanel(getType());
 			}
 			
@@ -371,9 +354,9 @@ public class GameRunningPanel extends JLayeredPane {
 		}
 		
 		
-		//±âÁ¸¿¡ ÀÛ¼ºÇØÁá´ø ÀÌº¥Æ® ¿À¹ö¶óÀÌµùÇØ¼­ ÀÛ¼º
+		//ê¸°ì¡´ì— ì‘ì„±í•´ì¤¬ë˜ ì´ë²¤íŠ¸ ì˜¤ë²„ë¼ì´ë”©í•´ì„œ ì‘ì„±
 		class PlayerMakeEvent extends ButtonClickedEvent{
-			private boolean isMakePosible = true; //ÇÃ·¹ÀÌ¾î°¡ »ı¼ºÀÌ °¡´ÉÇÑÁö ¿©ºÎ¸¦ °áÁ¤
+			private boolean isMakePosible = true; //í”Œë ˆì´ì–´ê°€ ìƒì„±ì´ ê°€ëŠ¥í•œì§€ ì—¬ë¶€ë¥¼ ê²°ì •
 			
 						
 			public PlayerMakeEvent(GameFrame parent, ImageIcon enteredIcon, ImageIcon presentIcon) {
@@ -386,14 +369,14 @@ public class GameRunningPanel extends JLayeredPane {
 			public void mouseClicked(MouseEvent e) {
 				if(isMakePosible) {
 					String id = input.getText();
-					//ÃÖÁ¾ Á¡¼ö´Â ÀÜ¿©ÄÚÀÎ°ú Á¡¼ö¸¦ ´õÇÑ°ªÀ¸·Î
+					//ìµœì¢… ì ìˆ˜ëŠ” ì”ì—¬ì½”ì¸ê³¼ ì ìˆ˜ë¥¼ ë”í•œê°’ìœ¼ë¡œ
 					int finalScore = statusPanel.getScore() + statusPanel.getCoin();
-					System.out.println("Å×½ºÆ®");
+					System.out.println("í…ŒìŠ¤íŠ¸");
 					addPlayer(id,finalScore);
 					input.setText("");
-					isMakePosible = false;// Àç»ı¼º ºÒ°¡ÇÏ°Ô
-					input.setText("¾ÆÀÌµğ ÀúÀå¿Ï·á!");
-					input.setEnabled(false); //ÀÔ·Â ºÒ°¡´ÉÇÏ°Ô ¸¸µé±â
+					isMakePosible = false;// ì¬ìƒì„± ë¶ˆê°€í•˜ê²Œ
+					input.setText("ì•„ì´ë”” ì €ì¥ì™„ë£Œ!");
+					input.setEnabled(false); //ì…ë ¥ ë¶ˆê°€ëŠ¥í•˜ê²Œ ë§Œë“¤ê¸°
 				}
 			}
 		
@@ -401,20 +384,20 @@ public class GameRunningPanel extends JLayeredPane {
 		
 		
 		
-		//»óÁ¡ Ã¢°ú °ÔÀÓ Å¬¸®¾î Ã¢À» °ü¸®ÇÏ´Â Å¬·¡½º
-		//ÇöÀç ³­ÀÌµµ ¹Ş¾Æ¿À±â,°ÔÀÓ ¸Å´ÏÀú ½º·¹µå ÂüÁ¶°¡Á®¿À±â
+		//ìƒì  ì°½ê³¼ ê²Œì„ í´ë¦¬ì–´ ì°½ì„ ê´€ë¦¬í•˜ëŠ” í´ë˜ìŠ¤
+		//í˜„ì¬ ë‚œì´ë„ ë°›ì•„ì˜¤ê¸°,ê²Œì„ ë§¤ë‹ˆì € ìŠ¤ë ˆë“œ ì°¸ì¡°ê°€ì ¸ì˜¤ê¸°
 		public StoreAndFianlPanel(int gameLevel,GameMangeThread gameMangeThread,StatusPanel statusPanel) {
-			this.statusPanel = statusPanel; //½ºÅ×ÀÌÅÍ½º Ã¢¿¡ ´ëÇÑ ÂüÁ¶¸¦ °¡Á®¿È => Ã¼·Â,ÄÚÀÎ °ü¸®
-			this.gameLevel = gameLevel; //1·¹º§ »óÁ¡ºÎÅÍ ½ÃÀÛ
+			this.statusPanel = statusPanel; //ìŠ¤í…Œì´í„°ìŠ¤ ì°½ì— ëŒ€í•œ ì°¸ì¡°ë¥¼ ê°€ì ¸ì˜´ => ì²´ë ¥,ì½”ì¸ ê´€ë¦¬
+			this.gameLevel = gameLevel; //1ë ˆë²¨ ìƒì ë¶€í„° ì‹œì‘
 			this.gameMangeThread = gameMangeThread;
 			setLayout(null);
 			
-			this.selling = true; //»óÁ¡ÀÌ »ı¼ºµÇ¸é ¹«±â¸¦ ÆÇ¸ÅÁßÀÎ »óÅÂ·Î ÀüÈ¯
+			this.selling = true; //ìƒì ì´ ìƒì„±ë˜ë©´ ë¬´ê¸°ë¥¼ íŒë§¤ì¤‘ì¸ ìƒíƒœë¡œ ì „í™˜
 			
 			
-			//¾ÆÀÌÅÛ ÄÚµå¸¦ °áÁ¤ÇÏ±â À§ÇÑ ÄÚµå
+			//ì•„ì´í…œ ì½”ë“œë¥¼ ê²°ì •í•˜ê¸° ìœ„í•œ ì½”ë“œ
 			int nowCoin = statusPanel.getCoin();
-			//½ºÅ×ÀÌÅÍ½º Ã¢ÀÇ ±İ¾× »óÈ²À» º¸°í ÄÚµå °áÁ¤	
+			//ìŠ¤í…Œì´í„°ìŠ¤ ì°½ì˜ ê¸ˆì•¡ ìƒí™©ì„ ë³´ê³  ì½”ë“œ ê²°ì •	
 			if(nowCoin<=0) {
 				this.weaponCode = 1;
 			}
@@ -425,22 +408,22 @@ public class GameRunningPanel extends JLayeredPane {
 				this.weaponCode = 3;
 			}
 			
-//			weaponCode = gameLevel+1; //1·¹º§ »óÁ¡¿¡ µîÀåÇÏ´Â ¹«±â ÄÚµå´Â ·¹º§+1
+//			weaponCode = gameLevel+1; //1ë ˆë²¨ ìƒì ì— ë“±ì¥í•˜ëŠ” ë¬´ê¸° ì½”ë“œëŠ” ë ˆë²¨+1
 	
 			
-			//ÆÇ³Ú¿¡ º¸¿©Áö°Ô ÇÒ ³»¿ë °áÁ¤
-			//¿£µùÃ¢ÀÌ µÉ¼öµµ ÀÖ°í, Å¬¸®¾îÃ¢ÀÌ µÉ¼öµµÀÖ°í, »óÁ¡Ã¢ÀÌ µÉ¼öµµ ÀÖ´Ù
-			//»óÁ¡Ã¢À» ¶ç¿ï°æ¿ì ¾î¶² ¾ÆÀÌÅÛÀ» º¸ÀÌ°Ô ÇÒÁö´Â ÇöÀç ÄÚÀÎÀ» º¸°í °áÁ¤
+			//íŒë„¬ì— ë³´ì—¬ì§€ê²Œ í•  ë‚´ìš© ê²°ì •
+			//ì—”ë”©ì°½ì´ ë ìˆ˜ë„ ìˆê³ , í´ë¦¬ì–´ì°½ì´ ë ìˆ˜ë„ìˆê³ , ìƒì ì°½ì´ ë ìˆ˜ë„ ìˆë‹¤
+			//ìƒì ì°½ì„ ë„ìš¸ê²½ìš° ì–´ë–¤ ì•„ì´í…œì„ ë³´ì´ê²Œ í• ì§€ëŠ” í˜„ì¬ ì½”ì¸ì„ ë³´ê³  ê²°ì •
 			setPanelElement(this.gameLevel);
 			
-			//°ÔÀÓ¿À¹ö
+			//ê²Œì„ì˜¤ë²„
 			
 			if(this.gameLevel==-1||gameLevel==3) {
-				System.out.println(this.gameLevel+"»ç¸ÁÇÏ¿´½À´Ï´Ù!");
+				System.out.println(this.gameLevel+"ì‚¬ë§í•˜ì˜€ìŠµë‹ˆë‹¤!");
 				
 				repaint();
 				
-				//GFrameÀ» ¸â¹ö·Î ¹Ş´Â ÆĞ³Î¿¡¼­¸¸ °¡´É
+				//GFrameì„ ë©¤ë²„ë¡œ ë°›ëŠ” íŒ¨ë„ì—ì„œë§Œ ê°€ëŠ¥
 				JLabel homeButton = new JLabel(homeButtonIcon);
 				homeButton.setSize(homeButtonIcon.getIconWidth(),homeButtonIcon.getIconHeight());
 				homeButton.setLocation(30,10);
@@ -449,14 +432,14 @@ public class GameRunningPanel extends JLayeredPane {
 				
 				
 				if(gameLevel==-1) {
-					//°ÔÀÓ¿À¹ö ·Î°í »ı¼º
+					//ê²Œì„ì˜¤ë²„ ë¡œê³  ìƒì„±
 					gameOverLabel = new JLabel(gameOverIcon);
 					gameOverLabel.setLocation(60,80);
 					gameOverLabel.setSize(gameOverIcon.getIconWidth(),gameOverIcon.getIconHeight());
 					add(gameOverLabel);
 				}
 				else if(gameLevel==3) {
-					//°ÔÀÓ¿À¹ö ·Î°í »ı¼º
+					//ê²Œì„ì˜¤ë²„ ë¡œê³  ìƒì„±
 					gameClearLabel = new JLabel(gameClearIcon);
 					gameClearLabel.setLocation(60,74);
 					gameClearLabel.setSize(gameClearIcon.getIconWidth(),gameClearIcon.getIconHeight());
@@ -466,13 +449,13 @@ public class GameRunningPanel extends JLayeredPane {
 				
 				
 				
-				//½ºÄÚ¾î ÀÌ¹ÌÁö »ı¼º
+				//ìŠ¤ì½”ì–´ ì´ë¯¸ì§€ ìƒì„±
 				scoreLabel = new JLabel(scoreImageIcon);
 				scoreLabel.setLocation(60,210);
 				scoreLabel.setSize(scoreImageIcon.getIconWidth(),scoreImageIcon.getIconHeight());
 				add(scoreLabel);
 				
-				//³×ÀÓ ÀÌ¹ÌÁö »ı¼º
+				//ë„¤ì„ ì´ë¯¸ì§€ ìƒì„±
 				nameLabel = new JLabel(nameImageIcon);
 				nameLabel.setLocation(80,300);
 				nameLabel.setSize(nameImageIcon.getIconWidth(),nameImageIcon.getIconHeight());
@@ -480,7 +463,7 @@ public class GameRunningPanel extends JLayeredPane {
 				
 				
 				int finalScore = (statusPanel.getScore()) + (statusPanel.getCoin());
-				JLabel score = new JLabel(Integer.toString(finalScore)+ " Á¡"); //Á¡¼ö ÀúÀå
+				JLabel score = new JLabel(Integer.toString(finalScore)+ " ì "); //ì ìˆ˜ ì €ì¥
 	
 				score.setForeground(Color.WHITE);
 				score.setFont(new Font("Gothic",Font.BOLD,80));
@@ -488,7 +471,7 @@ public class GameRunningPanel extends JLayeredPane {
 				score.setLocation(320,130);
 				add(score);
 				
-//				System.out.println("¾ÆÀÌµğ ÅØ½ºÆ® ¿¡¸®¾î »ı¼º");
+//				System.out.println("ì•„ì´ë”” í…ìŠ¤íŠ¸ ì—ë¦¬ì–´ ìƒì„±");
 				input.setFont(new Font("Gothic",Font.BOLD,20));
 				input.setLocation(280,320);
 				input.setSize(320,50);
@@ -500,7 +483,7 @@ public class GameRunningPanel extends JLayeredPane {
 				
 				//InputButtonClickedEvent inputButtonClickedEvent = new InputButtonClickedEvent(input,parent,inputButtonEnterdIcon,inputButtonIcon);
 				
-				//µ¹¾Æ¿À±â
+				//ëŒì•„ì˜¤ê¸°
 				JLabel inputButton = new JLabel(inputButtonIcon);
 		  		inputButton.setSize(inputButtonIcon.getIconWidth(),inputButtonIcon.getIconHeight());
 		  		inputButton.setLocation(600,400);
@@ -508,9 +491,9 @@ public class GameRunningPanel extends JLayeredPane {
 		  		add(inputButton);
 		  		
 			}
-			else { //1,2·¹º§ »óÁ¡Ã¢ °ü¸® => 3¶ó¿îµå »óÁ¡Àº ¾ØµùÆÇ³ÚÀ» º¸¿©ÁÜ=>¾ÆÀÌµğ¸¦ ÀÔ·Â¹Ş¾Æ ÀúÀåÇÏ´Â °ø°£°ú, Ã³À½È­¸éÀ¸·Î µ¹¾Æ°¡´Â¹öÆ°
+			else { //1,2ë ˆë²¨ ìƒì ì°½ ê´€ë¦¬ => 3ë¼ìš´ë“œ ìƒì ì€ ì•¤ë”©íŒë„¬ì„ ë³´ì—¬ì¤Œ=>ì•„ì´ë””ë¥¼ ì…ë ¥ë°›ì•„ ì €ì¥í•˜ëŠ” ê³µê°„ê³¼, ì²˜ìŒí™”ë©´ìœ¼ë¡œ ëŒì•„ê°€ëŠ”ë²„íŠ¼
 				
-				//»óÁ¡Ã¢ ·Î°í »ı¼º
+				//ìƒì ì°½ ë¡œê³  ìƒì„±
 				storeLabel = new JLabel(storeIcon);
 				storeLabel.setSize(storeIcon.getIconWidth(),storeIcon.getIconHeight());
 				storeLabel.setLocation(145,12);
@@ -521,12 +504,12 @@ public class GameRunningPanel extends JLayeredPane {
 				item1Label.setSize(item1.getIconWidth(),item1.getIconHeight());
 				item1Label.setLocation(140,180);
 				
-				//¹«±â º¯°æ ÀÌº¥Æ® ÀÛ¼º => ÇÑ¹ø ±¸¸ÅµÈ ÀÌÈÄ Ãß°¡±¸¸Å°¡ ¾øµµ·Ï
+				//ë¬´ê¸° ë³€ê²½ ì´ë²¤íŠ¸ ì‘ì„± => í•œë²ˆ êµ¬ë§¤ëœ ì´í›„ ì¶”ê°€êµ¬ë§¤ê°€ ì—†ë„ë¡
 				item1Label.addMouseListener(new ItemLabelEvent(weaponCode,statusPanel));
 				add(item1Label);
 				
 				
-				//¹«±â Å×µÎ¸® ¹Ú½º
+				//ë¬´ê¸° í…Œë‘ë¦¬ ë°•ìŠ¤
 				JLabel weaponBox = new JLabel(weaponBoxIcon);
 				weaponBox.setSize(weaponBoxIcon.getIconWidth(),weaponBoxIcon.getIconHeight());
 				weaponBox.setLocation(80,120);
@@ -536,66 +519,66 @@ public class GameRunningPanel extends JLayeredPane {
 				JLabel postionItem = new JLabel(item2);
 				postionItem.setSize(item2.getIconWidth(),item2.getIconHeight());
 				postionItem.setLocation(480,180); 
-				//Æ÷¼ÇÀÇ ÄÚµå¸¦ ³Ñ°Ü¼­ ÀÌº¥Æ® ÀÛ¼º, Æ÷¼ÇÀÇ °¡°İÀº 300¿øÀ¸·Î
+				//í¬ì…˜ì˜ ì½”ë“œë¥¼ ë„˜ê²¨ì„œ ì´ë²¤íŠ¸ ì‘ì„±, í¬ì…˜ì˜ ê°€ê²©ì€ 300ì›ìœ¼ë¡œ
 				postionItem.addMouseListener(new ItemLabelEvent(POSTION,statusPanel)); 
 				//
 				
 				add(postionItem);
 				
 				
-				//¹°¾à Å×µÎ¸® ¹Ú½º
+				//ë¬¼ì•½ í…Œë‘ë¦¬ ë°•ìŠ¤
 				JLabel postionBox = new JLabel(positonBoxIcon);
 				postionBox.setSize(positonBoxIcon.getIconWidth(),positonBoxIcon.getIconHeight());
 				postionBox.setLocation(420,120);
 				add(postionBox);
 				
 				
-				//´ÙÀ½ ·¹º§·Î ³Ñ¾î°¡´Â ¹öÆ° => ´©¸£¸é ¶ó¿îµå¿¡ µû¶ó ¶ó¿îµå ÀÌ¹ÌÁö Ãâ·Â °í·ÁÇØº¼°Í
+				//ë‹¤ìŒ ë ˆë²¨ë¡œ ë„˜ì–´ê°€ëŠ” ë²„íŠ¼ => ëˆ„ë¥´ë©´ ë¼ìš´ë“œì— ë”°ë¼ ë¼ìš´ë“œ ì´ë¯¸ì§€ ì¶œë ¥ ê³ ë ¤í•´ë³¼ê²ƒ
 				JLabel nextLevelButton = new JLabel(rightArrowIcon);
 				nextLevelButton.setSize(rightArrowIcon.getIconWidth(),rightArrowIcon.getIconHeight());
 				nextLevelButton.setLocation(620,20);
 				nextLevelButton.addMouseListener(new MouseAdapter() {
 					
-					@Override //¸¶¿ì½º°¡ ÄÄÆ÷³ÍÆ® À§¿¡ ¿Ã¶ó°¥¶§ÀÇ ÀÌº¥Æ®
+					@Override //ë§ˆìš°ìŠ¤ê°€ ì»´í¬ë„ŒíŠ¸ ìœ„ì— ì˜¬ë¼ê°ˆë•Œì˜ ì´ë²¤íŠ¸
 					public void mouseEntered(MouseEvent e) {
-						JLabel label = (JLabel)(e.getComponent()); //ÀÌº¥Æ®°¡ ¹ß»ıÇÑ ¶óº§À» °¡Á®¿È
-						label.setIcon(rightArrowEnteredIcon); //¸¶¿ì½º°¡ ¿Ã¶ó°¥¶§ÀÇ ÀÌ¹ÌÁö·Î º¯°æ
+						JLabel label = (JLabel)(e.getComponent()); //ì´ë²¤íŠ¸ê°€ ë°œìƒí•œ ë¼ë²¨ì„ ê°€ì ¸ì˜´
+						label.setIcon(rightArrowEnteredIcon); //ë§ˆìš°ìŠ¤ê°€ ì˜¬ë¼ê°ˆë•Œì˜ ì´ë¯¸ì§€ë¡œ ë³€ê²½
 					}
 					
-					@Override //¸¶¿ì½º ¹öÆ°ÀÌ ¶¼¾îÁú¶§
+					@Override //ë§ˆìš°ìŠ¤ ë²„íŠ¼ì´ ë–¼ì–´ì§ˆë•Œ
 					public void mouseExited(MouseEvent e) {
-						JLabel label = (JLabel)(e.getComponent()); //ÀÌº¥Æ®°¡ ¹ß»ıÇÑ ¶óº§À» °¡Á®¿È
-						label.setIcon(rightArrowIcon); //¿ø·¡ ÀÌ¹ÌÁö·Î º¯°æ
+						JLabel label = (JLabel)(e.getComponent()); //ì´ë²¤íŠ¸ê°€ ë°œìƒí•œ ë¼ë²¨ì„ ê°€ì ¸ì˜´
+						label.setIcon(rightArrowIcon); //ì›ë˜ ì´ë¯¸ì§€ë¡œ ë³€ê²½
 						repaint();
 					}
 					
 					
-					//»óÁ¡ Å¬¸¯
+					//ìƒì  í´ë¦­
 					@Override
 					public void mouseClicked(MouseEvent e) {	
-						//»óÁ¡ÀÇ ¹«±â ±¸¸ÅÁ¤º¸¸¦ ½ºÅ×ÀÌÅÍ½ºÃ¢À¸·Î ³Ñ±â°í
+						//ìƒì ì˜ ë¬´ê¸° êµ¬ë§¤ì •ë³´ë¥¼ ìŠ¤í…Œì´í„°ìŠ¤ì°½ìœ¼ë¡œ ë„˜ê¸°ê³ 
 						//getStatusPanel().setWeapon(selectedItem);
-						//¹«±â °ø°İ·Â º¯°æ
+						//ë¬´ê¸° ê³µê²©ë ¥ ë³€ê²½
 						setWeaponPower(selectedItem);				
 						setVisible(false);
 						
-						gameMangeThread.makeBalloonSpawnThreadAndStart(); //´ÙÀ½ ¶ó¿îµåÀÇ °ÔÀÓ»ı¼º
-						//gameMangeThread.setIsStoreOn(); //»óÁ¡ÀÌ ´Ù½Ã ¾Èº¸ÀÌ´Â »óÅÂ·Î º¯°æ
-						gameMangeThread.setIsStoreOn(); //»óÁ¡ÀÌ ´Ù½Ã ¾Èº¸ÀÌ´Â »óÅÂ·Î º¯°æ
+						gameMangeThread.makeBalloonSpawnThreadAndStart(); //ë‹¤ìŒ ë¼ìš´ë“œì˜ ê²Œì„ìƒì„±
+						//gameMangeThread.setIsStoreOn(); //ìƒì ì´ ë‹¤ì‹œ ì•ˆë³´ì´ëŠ” ìƒíƒœë¡œ ë³€ê²½
+						gameMangeThread.setIsStoreOn(); //ìƒì ì´ ë‹¤ì‹œ ì•ˆë³´ì´ëŠ” ìƒíƒœë¡œ ë³€ê²½
 					}
 					
 					@Override
 					public void mousePressed(MouseEvent e) {
-						//¹öÆ°ÀÌ ´­·ÁÁø ¼ø°£ ¼Ò¸®°¡ ³ªµµ·Ï
+						//ë²„íŠ¼ì´ ëˆŒë ¤ì§„ ìˆœê°„ ì†Œë¦¬ê°€ ë‚˜ë„ë¡
 						try {
 							clip = AudioSystem.getClip();
 							File audioFile = new File("ButtonClick.wav");
 							AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 							clip.open(audioStream);
 						}catch(Exception E) {
-							System.out.println("¿À·ù!");
+							System.out.println("ì˜¤ë¥˜!");
 						}
-						clip.start(); // ¹öÆ°À» Å¬¸¯ÇßÀ»¶§ ¼Ò¸®°¡ ³ªµµ·Ï
+						clip.start(); // ë²„íŠ¼ì„ í´ë¦­í–ˆì„ë•Œ ì†Œë¦¬ê°€ ë‚˜ë„ë¡
 					}
 				});
 				add(nextLevelButton);
@@ -604,17 +587,17 @@ public class GameRunningPanel extends JLayeredPane {
 			
 		}
 		
-		//»õ·Î¿î ÇÃ·¹ÀÌ¾î¸¦ ÀúÀåÇÏ´Â ÇÔ¼ö
+		//ìƒˆë¡œìš´ í”Œë ˆì´ì–´ë¥¼ ì €ì¥í•˜ëŠ” í•¨ìˆ˜
 		public void addPlayer(String id,int finalScore) {
-			System.out.println(id +"´ÔÀÇ Á¡¼ö"+finalScore +"Á¡ ÀúÀåÁß");
+			System.out.println(id +"ë‹˜ì˜ ì ìˆ˜"+finalScore +"ì  ì €ì¥ì¤‘");
 			try{
-	            File file = new File("Score.txt"); //½ºÄÚ¾î ÆÄÀÏ ºÒ·¯¿À±â
-	            if (!file.exists()) //ÆÄÀÏÀÌ ¾ø´Ù¸é »ı¼º
+	            File file = new File("Score.txt"); //ìŠ¤ì½”ì–´ íŒŒì¼ ë¶ˆëŸ¬ì˜¤ê¸°
+	            if (!file.exists()) //íŒŒì¼ì´ ì—†ë‹¤ë©´ ìƒì„±
 	                file.createNewFile();
-	            FileWriter fw = new FileWriter(file,true); //±âÁ¸ ÆÄÀÏ¿¡ ÀÌ¾î¾²±â
+	            FileWriter fw = new FileWriter(file,true); //ê¸°ì¡´ íŒŒì¼ì— ì´ì–´ì“°ê¸°
 	            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Score.txt",true), "utf-8"));
 	            //BufferedWriter writer = new BufferedWriter(fw);
-	            writer.write("\n"+Integer.toString(finalScore)+"&"+id+"&"); //´ÙÀ½ÁÙ¿¡ ´Ü¾î ºÙÀÌ±â
+	            writer.write("\n"+Integer.toString(finalScore)+"&"+id+"&"); //ë‹¤ìŒì¤„ì— ë‹¨ì–´ ë¶™ì´ê¸°
 	            writer.close();
 	        }catch(IOException e){
 	        	 e.printStackTrace();
@@ -622,11 +605,11 @@ public class GameRunningPanel extends JLayeredPane {
 		}
 		
 
-		//¹è°æ ÀÌ¹ÌÁö ±×¸®±â =>Ä¥ÆÇÀ» °¡Á®¿Í¼­ ±×¸²
+		//ë°°ê²½ ì´ë¯¸ì§€ ê·¸ë¦¬ê¸° =>ì¹ íŒì„ ê°€ì ¸ì™€ì„œ ê·¸ë¦¼
 		@Override
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			System.out.println("È£ÃâµÊ");
+			System.out.println("í˜¸ì¶œë¨");
 			g.drawImage(backgroundImage,-10,-10,backgroundImageIcon.getIconWidth(),backgroundImageIcon.getIconHeight(),null);
 		}
 	}
@@ -637,18 +620,18 @@ public class GameRunningPanel extends JLayeredPane {
 	
 	public GameRunningPanel(StatusPanel statusPanel,int characterType,GameFrame parent) {
 		this.parent = parent;
-		this.characterType = characterType; //Ä³¸¯ÅÍ Å¸ÀÔ ÁöÁ¤
+		this.characterType = characterType; //ìºë¦­í„° íƒ€ì… ì§€ì •
 		this.statusPanel = statusPanel;
 		setLayout(null);
 		setSize(1000,900);
 		
-		weaponPower = 1; //°ÔÀÓ ÆĞ³Î »ı¼º½Ã ±âº»¹«±â·Î Àû¿ë
+		weaponPower = 1; //ê²Œì„ íŒ¨ë„ ìƒì„±ì‹œ ê¸°ë³¸ë¬´ê¸°ë¡œ ì ìš©
 		
-		//°ÔÀÓÆĞ³Î¿¡¼­ È¨ È­¸éÀ¸·Î µ¹¾Æ°¥¼ö ÀÖµµ·Ï ÇÏ±â À§ÇÔ => °ÔÀÓ Á¾·áÈÄ ´Ù½ÃÇÏ±â¿¡ »ç¿ë
-		//ÇöÀç±îÁöÀÇ ¸ğµç º¤ÅÍ¸¦ ºñ¿ì°í,½º·¹µå¸¦ ÁßÁö½ÃÅ°°í, È¨È­¸éÀ¸·Î µ¹¾Æ°¡¸é ´Ù½Ã À½¾ÇÀ» ½ÇÇà½ÃÄÑ¾ßÇÔ
+		//ê²Œì„íŒ¨ë„ì—ì„œ í™ˆ í™”ë©´ìœ¼ë¡œ ëŒì•„ê°ˆìˆ˜ ìˆë„ë¡ í•˜ê¸° ìœ„í•¨ => ê²Œì„ ì¢…ë£Œí›„ ë‹¤ì‹œí•˜ê¸°ì— ì‚¬ìš©
+		//í˜„ì¬ê¹Œì§€ì˜ ëª¨ë“  ë²¡í„°ë¥¼ ë¹„ìš°ê³ ,ìŠ¤ë ˆë“œë¥¼ ì¤‘ì§€ì‹œí‚¤ê³ , í™ˆí™”ë©´ìœ¼ë¡œ ëŒì•„ê°€ë©´ ë‹¤ì‹œ ìŒì•…ì„ ì‹¤í–‰ì‹œì¼œì•¼í•¨
 //		
-//		 //È¨ ¹öÆ°
-//  		JLabel homeButton = new JLabel("¹öÆ° Å×½ºÆ®");
+//		 //í™ˆ ë²„íŠ¼
+//  		JLabel homeButton = new JLabel("ë²„íŠ¼ í…ŒìŠ¤íŠ¸");
 //  		homeButton.setSize(100,100);
 //  		homeButton.setLocation(100,100);
 //  		homeButton.addMouseListener(new ButtonClickedEvent(parent,parent.BEGINNING_PANEL));
@@ -656,23 +639,23 @@ public class GameRunningPanel extends JLayeredPane {
 //		
 		
 		
-		//¼±ÅÃÇÑ Ä³¸¯ÅÍ¿¡ µû¸¥ °ÔÀÓ »ı¼º
+		//ì„ íƒí•œ ìºë¦­í„°ì— ë”°ë¥¸ ê²Œì„ ìƒì„±
 		switch(characterType) {
 		case 0:
 			ballonSpeed = 800;
 			break;
-		case 1: //ÇÑ¼º³ÉÀÌÀÇ °æ¿ì => µ¿Ã¼½Ã·Â
-			ballonSpeed = 1500;//Ç³¼±À» ´À¸®°Ô º»´Ù.
+		case 1: //í•œì„±ëƒ¥ì´ì˜ ê²½ìš° => ë™ì²´ì‹œë ¥
+			ballonSpeed = 1500;//í’ì„ ì„ ëŠë¦¬ê²Œ ë³¸ë‹¤.
 			break;
-		case 2: //²¿²¿²Ù²ÙÀÇ °æ¿ì => 50ÇÁ·Î È®·üÀÇ Ãß°¡Å¸
+		case 2: //ê¼¬ê¼¬ê¾¸ê¾¸ì˜ ê²½ìš° => 50í”„ë¡œ í™•ë¥ ì˜ ì¶”ê°€íƒ€
 			ballonSpeed= 200;
-			luckyChance = true; //·°Å°Âù½º È°¼ºÈ­
+			luckyChance = true; //ëŸ­í‚¤ì°¬ìŠ¤ í™œì„±í™”
 			break;
 		}
 		
 		
-		//Å×½ºÆ®¿ë
-//		JButton stopBalloon = new JButton("Ç³¼± ¸ØÃß±â");
+		//í…ŒìŠ¤íŠ¸ìš©
+//		JButton stopBalloon = new JButton("í’ì„  ë©ˆì¶”ê¸°");
 //		stopBalloon.setSize(100,100);
 //		stopBalloon.setLocation(0,800);
 //		stopBalloon.addMouseListener(new MouseAdapter() {
@@ -680,25 +663,25 @@ public class GameRunningPanel extends JLayeredPane {
 //			public void mouseClicked(MouseEvent e) {
 //				for(int i=0;i<balloonVector.size();i++) {
 //					Balloon balloon = balloonVector.get(i);
-//					balloonVector.remove(i);// º¤ÅÍ¿¡¼­ Áö¿ì±â
+//					balloonVector.remove(i);// ë²¡í„°ì—ì„œ ì§€ìš°ê¸°
 //					balloon.stopFallingThread();
 //				}
 //			}
 //		});
 //		add(stopBalloon);
 		
-		ballonSpawnTime = 2000; //Ç³¼±ÀÌ »ı¼ºµÇ´Âµ¥ °É¸®´Â ½Ã°£À» 1ÃÊ·Î ÁöÁ¤
+		ballonSpawnTime = 2000; //í’ì„ ì´ ìƒì„±ë˜ëŠ”ë° ê±¸ë¦¬ëŠ” ì‹œê°„ì„ 1ì´ˆë¡œ ì§€ì •
 		
-		//1¶ó¿îµå·Î Ç³¼± »ı¼º ½º·¹µå ½ÃÀÛ
+		//1ë¼ìš´ë“œë¡œ í’ì„  ìƒì„± ìŠ¤ë ˆë“œ ì‹œì‘
 		
-//		ballonSpawnThread.start(); //Ç³¼± »ı¼º ½ÃÀÛ => »ı¼ºµÈ ÀÌÈÄ Ç³¼±Àº ¾Æ·¡·Î ³»·Á°¡±â ½ÃÀÛ(Ç³¼± °´Ã¼ ³»ºÎ ½º·¹µå)
-		gameOn = true; //°ÔÀÓ ÀÛµ¿ÁßÀ¸·Î Ç¥½Ã
+//		ballonSpawnThread.start(); //í’ì„  ìƒì„± ì‹œì‘ => ìƒì„±ëœ ì´í›„ í’ì„ ì€ ì•„ë˜ë¡œ ë‚´ë ¤ê°€ê¸° ì‹œì‘(í’ì„  ê°ì²´ ë‚´ë¶€ ìŠ¤ë ˆë“œ)
+		gameOn = true; //ê²Œì„ ì‘ë™ì¤‘ìœ¼ë¡œ í‘œì‹œ
 		
-		//»ç¿ëÀÚ·ÎºÎÅÍ ÀÔ·Â¹ŞÀ» °ø°£ »ı¼º
+		//ì‚¬ìš©ìë¡œë¶€í„° ì…ë ¥ë°›ì„ ê³µê°„ ìƒì„±
 		controlPanel = new ControlPanel(statusPanel);	
 		add(controlPanel);
 		
-		//°ÔÀÓÃÑ°ı½º·¹µå »ı¼º
+		//ê²Œì„ì´ê´„ìŠ¤ë ˆë“œ ìƒì„±
 		GameMangeThread gameThread = new GameMangeThread();
 		gameThread.start();
 		
@@ -706,16 +689,16 @@ public class GameRunningPanel extends JLayeredPane {
 	}
 	
 	
-	//°ÔÀÓÀ» °ü¸®ÇÏ´Â ½º·¹µå ÀÛ¼º => ¶ó¿îµå °ü¸®, °ÔÀÓ¿À¹ö °ü¸®, ´ÙÀ½¶ó¿îµå·ÎÀÇ ÁøÇà,µîµî
-	//°ÔÀÓ·¯´×ÆĞ³Î Å¬·¡½º ¾È¿¡ ÀÛ¼ºÇÏ¿©, Á¤º¸µéÀ» °ü¸®ÇÒ¼ö ÀÖµµ·Ï
+	//ê²Œì„ì„ ê´€ë¦¬í•˜ëŠ” ìŠ¤ë ˆë“œ ì‘ì„± => ë¼ìš´ë“œ ê´€ë¦¬, ê²Œì„ì˜¤ë²„ ê´€ë¦¬, ë‹¤ìŒë¼ìš´ë“œë¡œì˜ ì§„í–‰,ë“±ë“±
+	//ê²Œì„ëŸ¬ë‹íŒ¨ë„ í´ë˜ìŠ¤ ì•ˆì— ì‘ì„±í•˜ì—¬, ì •ë³´ë“¤ì„ ê´€ë¦¬í• ìˆ˜ ìˆë„ë¡
 	private class GameMangeThread extends Thread{
-//		private int ballonCount = 0;//ÇöÀç »ı¼ºµÈ Ç³¼±ÀÇ °³¼ö¸¦ ÀúÀåÇÒ º¯¼ö
+//		private int ballonCount = 0;//í˜„ì¬ ìƒì„±ëœ í’ì„ ì˜ ê°œìˆ˜ë¥¼ ì €ì¥í•  ë³€ìˆ˜
 		private boolean isGameRun = true;
-		//private BallonSpawnThread spawnThread; //Ç³¼±ÀÌ »ı¼ºµÇ°Ô ÇÏ´Â ½º·¹µå
+		//private BallonSpawnThread spawnThread; //í’ì„ ì´ ìƒì„±ë˜ê²Œ í•˜ëŠ” ìŠ¤ë ˆë“œ
 		private int gameLevel = 1;
-		private boolean isPlayerAlive = true; //ÇÃ·¹ÀÌ¾îÀÇ »ıÁ¸»óÅÂ Ç¥½Ã
+		private boolean isPlayerAlive = true; //í”Œë ˆì´ì–´ì˜ ìƒì¡´ìƒíƒœ í‘œì‹œ
 		private int roundCount = 3;
-		private boolean isStoreOn = false; //»óÁ¡Ã¢ÀÌ ¶ç¿öÁ®ÀÖ´ÂÁö È®ÀÎ
+		private boolean isStoreOn = false; //ìƒì ì°½ì´ ë„ì›Œì ¸ìˆëŠ”ì§€ í™•ì¸
 		private boolean testFlag = false;
 		
 		public void startGame() {
@@ -731,58 +714,58 @@ public class GameRunningPanel extends JLayeredPane {
 		}
 		
 		public GameMangeThread() {
-			//¶ó¿îµå 1ºÎÅÍ ½ÃÀÛ
-			isPlayerAlive = true; //ÇÃ·¹ÀÌ¾îÀÇ »ıÁ¸»óÅÂ Ç¥½Ã
+			//ë¼ìš´ë“œ 1ë¶€í„° ì‹œì‘
+			isPlayerAlive = true; //í”Œë ˆì´ì–´ì˜ ìƒì¡´ìƒíƒœ í‘œì‹œ
 			ballonSpawnThread = new BallonSpawnThread(ballonSpawnTime,ballonSpeed,statusPanel, gameLevel);
 			ballonSpawnThread.start();
 		}
 		
-		//ÇÃ·¹ÀÌ¾îÀÇ Ã¼·ÂÀ» È®ÀÎÇÏ¿© Ã¼·ÂÀÌ 0 ÀÌÇÏ°¡ µÇ¾ú´Ù¸é true¸®ÅÏ
-		//±×·¸Áö ¾Ê´Ù¸é false¸®ÅÏ
+		//í”Œë ˆì´ì–´ì˜ ì²´ë ¥ì„ í™•ì¸í•˜ì—¬ ì²´ë ¥ì´ 0 ì´í•˜ê°€ ë˜ì—ˆë‹¤ë©´ trueë¦¬í„´
+		//ê·¸ë ‡ì§€ ì•Šë‹¤ë©´ falseë¦¬í„´
 		public boolean isPlayerDie() {
-			//Ä³¸¯ÅÍÀÇ Ã¼·ÂÀÌ 0ÀÌÇÏ°¡ µÇ¸é °ÔÀÓ Á¾·á
+			//ìºë¦­í„°ì˜ ì²´ë ¥ì´ 0ì´í•˜ê°€ ë˜ë©´ ê²Œì„ ì¢…ë£Œ
 			if(statusPanel.getHealth()<=0) {
-				//À½¾Ç ½º·¹µå Á¾·á => »ç¸Á À½¾Ç ½ÇÇà
+				//ìŒì•… ìŠ¤ë ˆë“œ ì¢…ë£Œ => ì‚¬ë§ ìŒì•… ì‹¤í–‰
 				
-				//»ç¸ÁÃ¢ ¶ç¿ì±â
+				//ì‚¬ë§ì°½ ë„ìš°ê¸°
 				
 				
-				//Ç³¼± »ı¼º ½º·¹µå Á¾·á
+				//í’ì„  ìƒì„± ìŠ¤ë ˆë“œ ì¢…ë£Œ
 				ballonSpawnThread.interrupt();
 				
-				//³»·Á¿À´Â Ç³¼± ½º·¹µå Á¾·á => º¤ÅÍ¸¦ µ¹¸é¼­
+				//ë‚´ë ¤ì˜¤ëŠ” í’ì„  ìŠ¤ë ˆë“œ ì¢…ë£Œ => ë²¡í„°ë¥¼ ëŒë©´ì„œ
 				for(int j=0;j<balloonVector.size();j++) {
 					
 					Balloon balloon = balloonVector.get(j);
-					balloon.stopFallingThread(); //¶³¾îÁö´Â ½º·¹µå Á¾·á
+					balloon.stopFallingThread(); //ë–¨ì–´ì§€ëŠ” ìŠ¤ë ˆë“œ ì¢…ë£Œ
 				}
 				
-				return true; //ÇÃ·¹ÀÌ¾î »ç¸Á½Ã Æ®·ç ¸®ÅÏ
+				return true; //í”Œë ˆì´ì–´ ì‚¬ë§ì‹œ íŠ¸ë£¨ ë¦¬í„´
 //				System.exit(0);
 			}
 			else return false;
 		}
 		
 		
-		//Ç³¼± »ı¼º ½º·¹µå¸¦ »ı¼ºÇÏ´Â ¸Ş¼Òµå => »óÁ¡Ã¢¿¡¼­ ´ÙÀ½ ¶ó¿îµå¸¦ »ı¼ºÇÏµµ·Ï ÇÏ±â À§ÇÔ
-		public void makeBalloonSpawnThreadAndStart() {//»ı¼ºµÇ¸é ´ÙÀ½ ·¹º§·Î °ÔÀÓÀ» »ı¼ºÇÔ
+		//í’ì„  ìƒì„± ìŠ¤ë ˆë“œë¥¼ ìƒì„±í•˜ëŠ” ë©”ì†Œë“œ => ìƒì ì°½ì—ì„œ ë‹¤ìŒ ë¼ìš´ë“œë¥¼ ìƒì„±í•˜ë„ë¡ í•˜ê¸° ìœ„í•¨
+		public void makeBalloonSpawnThreadAndStart() {//ìƒì„±ë˜ë©´ ë‹¤ìŒ ë ˆë²¨ë¡œ ê²Œì„ì„ ìƒì„±í•¨
 			ballonSpawnThread = new BallonSpawnThread(ballonSpawnTime,ballonSpeed,statusPanel,gameLevel);
 			ballonSpawnThread.start();
 		}
 		
 		
-		//»óÁ¡ÀÌ ´Ù½Ã ¾Èº¸ÀÌ´Â »óÅÂ¶ó°í º¯°æ
+		//ìƒì ì´ ë‹¤ì‹œ ì•ˆë³´ì´ëŠ” ìƒíƒœë¼ê³  ë³€ê²½
 		public void setIsStoreOn() {
 			isStoreOn = false;
 		}
 		
-		//°ÔÀÓÀÇ ÁøÇà»óÈ²¿¡ ¸ÂÃç °ÔÀÓÀ» °ü¸®
+		//ê²Œì„ì˜ ì§„í–‰ìƒí™©ì— ë§ì¶° ê²Œì„ì„ ê´€ë¦¬
 		@Override
 		public void run() {
 			while(isGameRun) {
 			
-				//Ç³¼± »èÁ¦ °ü¸®
-				//Ç³¼±ÀÌ ÀÏÁ¤³ôÀÌ ¾Æ·¡·Î ¶³¾îÁö¸é º¤ÅÍ¿¡¼­ »èÁ¦ => º¤ÅÍÀÇ ¸ğµç Ç³¼± °Ë»ç
+				//í’ì„  ì‚­ì œ ê´€ë¦¬
+				//í’ì„ ì´ ì¼ì •ë†’ì´ ì•„ë˜ë¡œ ë–¨ì–´ì§€ë©´ ë²¡í„°ì—ì„œ ì‚­ì œ => ë²¡í„°ì˜ ëª¨ë“  í’ì„  ê²€ì‚¬
 				for(int i=0;i<balloonVector.size();i++) {
 					try {
 						Balloon fallingBalloon = balloonVector.get(i);
@@ -791,22 +774,22 @@ public class GameRunningPanel extends JLayeredPane {
 						int y = fallingBalloon.getY();
 						
 						
-						//Ç³¼± À§Ä¡ °Ë»ç
-						//ÀÏÁ¤ ³ôÀÌ ÀÌÇÏ·Î ¶³¾îÁö¸é Ç³¼± °´Ã¼ »èÁ¦c
+						//í’ì„  ìœ„ì¹˜ ê²€ì‚¬
+						//ì¼ì • ë†’ì´ ì´í•˜ë¡œ ë–¨ì–´ì§€ë©´ í’ì„  ê°ì²´ ì‚­ì œc
 						if(y>=500) {
 							remove(fallingBalloon);
-							balloonVector.remove(fallingBalloon); //°´Ã¼¿¡¼­ »èÁ¦
+							balloonVector.remove(fallingBalloon); //ê°ì²´ì—ì„œ ì‚­ì œ
 							
 //							setVisible(false);
-							//Ã¼·ÂÀ» ±ğ¾Æ¾ßÇÔ
-							statusPanel.getDamage(10); //Ä³¸¯ÅÍ¿¡°Ô µ¥¹ÌÁö¸¦ °¡ÇÑ´Ù.
+							//ì²´ë ¥ì„ ê¹ì•„ì•¼í•¨
+							statusPanel.getDamage(10); //ìºë¦­í„°ì—ê²Œ ë°ë¯¸ì§€ë¥¼ ê°€í•œë‹¤.
 							
-							//ÀÌÈÄ Ã¼·ÂÀÌ 0ÀÌ µÇ¾ú´ÂÁö È®ÀÎÇØ¾ßÇÔ => Ç³¼±ÀÌ ¶³¾îÁ®¼­ »ç¸ÁÇÏ´Â °æ¿ì °í·Á
-							if(isPlayerDie()&&isPlayerAlive){ //ÇÃ·¹ÀÌ¾î°¡ ¾ÆÁ÷ »ì¾ÆÀÖ´Â°æ¿ì¿¡ ´ëÇØ¼­¸¸
-								isGameRun = false; //ÇöÀç ½º·¹µå Á¾·á
-								System.out.println("ÇÃ·¹ÀÌ¾î »ç¸Á");
-								isPlayerAlive = false; //»ç¸ÁÃ³¸®
-								//ÃÖÁ¾ °á°úÃ¢ Ãâ·Â => ¾ÆÀÌµğ ÀÔ·Â¹Ş±â => ´Ù½ÃÇÏ±â ¹öÆ°, Á¡¼öº¸±â ¹öÆ° º¸¿©ÁÖ±â
+							//ì´í›„ ì²´ë ¥ì´ 0ì´ ë˜ì—ˆëŠ”ì§€ í™•ì¸í•´ì•¼í•¨ => í’ì„ ì´ ë–¨ì–´ì ¸ì„œ ì‚¬ë§í•˜ëŠ” ê²½ìš° ê³ ë ¤
+							if(isPlayerDie()&&isPlayerAlive){ //í”Œë ˆì´ì–´ê°€ ì•„ì§ ì‚´ì•„ìˆëŠ”ê²½ìš°ì— ëŒ€í•´ì„œë§Œ
+								isGameRun = false; //í˜„ì¬ ìŠ¤ë ˆë“œ ì¢…ë£Œ
+								System.out.println("í”Œë ˆì´ì–´ ì‚¬ë§");
+								isPlayerAlive = false; //ì‚¬ë§ì²˜ë¦¬
+								//ìµœì¢… ê²°ê³¼ì°½ ì¶œë ¥ => ì•„ì´ë”” ì…ë ¥ë°›ê¸° => ë‹¤ì‹œí•˜ê¸° ë²„íŠ¼, ì ìˆ˜ë³´ê¸° ë²„íŠ¼ ë³´ì—¬ì£¼ê¸°
 								storeAndFinalPanel = new StoreAndFianlPanel(-1,this,statusPanel);
 								storeAndFinalPanel.setBounds(100,200,800,500);
 								add(storeAndFinalPanel,JLayeredPane.DRAG_LAYER);
@@ -822,50 +805,50 @@ public class GameRunningPanel extends JLayeredPane {
 			
 				
 				
-				//¶ó¿îµå&Å¬¸®¾î °ü¸®
-				//Ç³¼±ÀÌ ÀüºÎ »ı¼ºÀÌ µÇ¾ú°í,»ı¼ºµÈ Ç³¼±À» ¸ğµÎ Áö¿üÀ»¶§ => ´ÙÀ½ ¶ó¿îµå·Î ³Ñ¾î°¡°Å³ª, °ÔÀÓ Å¬¸®¾î¸¦ ¾Ë¸²
+				//ë¼ìš´ë“œ&í´ë¦¬ì–´ ê´€ë¦¬
+				//í’ì„ ì´ ì „ë¶€ ìƒì„±ì´ ë˜ì—ˆê³ ,ìƒì„±ëœ í’ì„ ì„ ëª¨ë‘ ì§€ì› ì„ë•Œ => ë‹¤ìŒ ë¼ìš´ë“œë¡œ ë„˜ì–´ê°€ê±°ë‚˜, ê²Œì„ í´ë¦¬ì–´ë¥¼ ì•Œë¦¼
 				if(!ballonSpawnThread.getIsRun()&&balloonVector.isEmpty()&&isStoreOn==false) {
-					//°ÔÀÓÀÌ 3¶ó¿îµå±îÁö ¸ğµÎ ³¡³µ´ÂÁö È®ÀÎÇÊ¿ä
+					//ê²Œì„ì´ 3ë¼ìš´ë“œê¹Œì§€ ëª¨ë‘ ëë‚¬ëŠ”ì§€ í™•ì¸í•„ìš”
 					if(gameLevel==3) {
 						
-						//Å¬¸®¾î À½¾Ç?
+						//í´ë¦¬ì–´ ìŒì•…?
 						
-						System.out.println(gameLevel + "±îÁö Å¬¸®¾î! => ¿£µùÃ¢ ¶ç¿ì±â");
+						System.out.println(gameLevel + "ê¹Œì§€ í´ë¦¬ì–´! => ì—”ë”©ì°½ ë„ìš°ê¸°");
 						
-						//¿£µùÃ¢ »ı¼ºÇÒ°Í
-						storeAndFinalPanel = new StoreAndFianlPanel(gameLevel,this,statusPanel); //ÇöÀç ½º·¹µå¿¡ ´ëÇÑ Á¢±Ù ±ÇÇÑ ºÎ¿©
+						//ì—”ë”©ì°½ ìƒì„±í• ê²ƒ
+						storeAndFinalPanel = new StoreAndFianlPanel(gameLevel,this,statusPanel); //í˜„ì¬ ìŠ¤ë ˆë“œì— ëŒ€í•œ ì ‘ê·¼ ê¶Œí•œ ë¶€ì—¬
 						storeAndFinalPanel.setBounds(100,200,800,500);
 						add(storeAndFinalPanel,JLayeredPane.DRAG_LAYER);
 						
-						repaint(); //»óÁ¡Ã¢ÀÌ º¸ÀÌµµ·Ï
+						repaint(); //ìƒì ì°½ì´ ë³´ì´ë„ë¡
 						isStoreOn = true;
 					}
 					else {
 						
 						gameLevel++;
-						System.out.println(gameLevel-1 + "·¹º§ »óÁ¡Ã¢ ¶ç¿ì±â");//»óÁ¡Ã¢¿¡¼­ ¹öÆ°À» ´­·¯ ´ÙÀ½ ½ºÅ×ÀÌÁö·Î ³Ñ¾î°¡°Ô²û
-						storeAndFinalPanel = new StoreAndFianlPanel(gameLevel-1,this,statusPanel); //ÇöÀç ½º·¹µå¿¡ ´ëÇÑ Á¢±Ù ±ÇÇÑ ºÎ¿©
+						System.out.println(gameLevel-1 + "ë ˆë²¨ ìƒì ì°½ ë„ìš°ê¸°");//ìƒì ì°½ì—ì„œ ë²„íŠ¼ì„ ëˆŒëŸ¬ ë‹¤ìŒ ìŠ¤í…Œì´ì§€ë¡œ ë„˜ì–´ê°€ê²Œë”
+						storeAndFinalPanel = new StoreAndFianlPanel(gameLevel-1,this,statusPanel); //í˜„ì¬ ìŠ¤ë ˆë“œì— ëŒ€í•œ ì ‘ê·¼ ê¶Œí•œ ë¶€ì—¬
 						storeAndFinalPanel.setBounds(100,200,800,500);
 						add(storeAndFinalPanel,JLayeredPane.DRAG_LAYER);
 						
-						repaint(); //»óÁ¡Ã¢ÀÌ º¸ÀÌµµ·Ï
+						repaint(); //ìƒì ì°½ì´ ë³´ì´ë„ë¡
 						isStoreOn = true;
 						testFlag = true;
 						
 					}
 				}
 				
-				//ÇöÀç »ì¾ÆÀÖ´Â °æ¿ì¿¡ ´ëÇØ¼­¸¸ Á×ÀÓ
+				//í˜„ì¬ ì‚´ì•„ìˆëŠ” ê²½ìš°ì— ëŒ€í•´ì„œë§Œ ì£½ì„
 				if(isPlayerDie()&&isPlayerAlive){
-					isGameRun = false; //ÇöÀç ½º·¹µå Á¾·á
-					//ÃÖÁ¾ °á°úÃ¢ Ãâ·Â => ¾ÆÀÌµğ ÀÔ·Â¹Ş±â => ´Ù½ÃÇÏ±â ¹öÆ°, Á¡¼öº¸±â ¹öÆ° º¸¿©ÁÖ±â
-					isPlayerAlive = false; //»ç¸ÁÃ³¸® 
-					System.out.println("ÇÃ·¹ÀÌ¾î »ç¸Á");
+					isGameRun = false; //í˜„ì¬ ìŠ¤ë ˆë“œ ì¢…ë£Œ
+					//ìµœì¢… ê²°ê³¼ì°½ ì¶œë ¥ => ì•„ì´ë”” ì…ë ¥ë°›ê¸° => ë‹¤ì‹œí•˜ê¸° ë²„íŠ¼, ì ìˆ˜ë³´ê¸° ë²„íŠ¼ ë³´ì—¬ì£¼ê¸°
+					isPlayerAlive = false; //ì‚¬ë§ì²˜ë¦¬ 
+					System.out.println("í”Œë ˆì´ì–´ ì‚¬ë§");
 					
-					//·¹º§ ¸Å°³º¯¼ö ´ë½Å -1À» ÀÔ·Â => »ç¸ÁÄ­ ¶ç¿ì±â
+					//ë ˆë²¨ ë§¤ê°œë³€ìˆ˜ ëŒ€ì‹  -1ì„ ì…ë ¥ => ì‚¬ë§ì¹¸ ë„ìš°ê¸°
 					storeAndFinalPanel = new StoreAndFianlPanel(-1,this,statusPanel);
 					storeAndFinalPanel.setBounds(100,200,800,500);
-					add(storeAndFinalPanel,JLayeredPane.DRAG_LAYER); //°¡Àå ÃÖ»ó´Ü ·¹ÀÌ¾î·Î »ç¸ÁÃ¢ ¶ç¿ì±â
+					add(storeAndFinalPanel,JLayeredPane.DRAG_LAYER); //ê°€ì¥ ìµœìƒë‹¨ ë ˆì´ì–´ë¡œ ì‚¬ë§ì°½ ë„ìš°ê¸°
 				}
 			}
 		}
@@ -873,18 +856,18 @@ public class GameRunningPanel extends JLayeredPane {
 	}
 	
 
-	//½º·¹µå ÀÛ¼º
+	//ìŠ¤ë ˆë“œ ì‘ì„±
 	
-	//Ç³¼± »ı¼º ½º·¹µå => ·£´ıÇÑ À§Ä¡(¾î´ÀÁ¤µµ Ç³¼±ÀÌ °ãÄ¡Áö ¾Êµµ·Ï ¼³Á¤)¿¡¼­ »ö±ò È®·ü¿¡ µû¶ó Ç³¼±À» »ı¼ºÇÑ´Ù.
-	//ÀÏÁ¤ ½Ã°£¸¶´Ù Ç³¼±À» »ı¼ºÇÏ°í ÇØ´ç Ç³¼±ÀÌ ³»·Á°¡µµ·Ï ÇÏ´Â ½º·¹µå¸¦ º°µµ·Î ºÙÀÎ´Ù.
-	//¶ó¿îµå¿¡ µû¶ó¼­ Ç³¼±ÀÇ »ö±òº° È®·üÀ» ºÎ¿©ÇÑ´Ù.
+	//í’ì„  ìƒì„± ìŠ¤ë ˆë“œ => ëœë¤í•œ ìœ„ì¹˜(ì–´ëŠì •ë„ í’ì„ ì´ ê²¹ì¹˜ì§€ ì•Šë„ë¡ ì„¤ì •)ì—ì„œ ìƒ‰ê¹” í™•ë¥ ì— ë”°ë¼ í’ì„ ì„ ìƒì„±í•œë‹¤.
+	//ì¼ì • ì‹œê°„ë§ˆë‹¤ í’ì„ ì„ ìƒì„±í•˜ê³  í•´ë‹¹ í’ì„ ì´ ë‚´ë ¤ê°€ë„ë¡ í•˜ëŠ” ìŠ¤ë ˆë“œë¥¼ ë³„ë„ë¡œ ë¶™ì¸ë‹¤.
+	//ë¼ìš´ë“œì— ë”°ë¼ì„œ í’ì„ ì˜ ìƒ‰ê¹”ë³„ í™•ë¥ ì„ ë¶€ì—¬í•œë‹¤.
 	private class BallonSpawnThread extends Thread{
-		private int spawnSpeed; //Ç³¼±ÀÌ »ı¼ºµÇ´Â ¼Óµµ => ¶ó¿îµå¸¶´Ù ´Ş¶óÁöµµ·Ï
-		private int percentage; //Ç³¼±»ı¼º È®·ü => ¶ó¿îµå¿¡ µû¶ó ´Ş¶óÁöµµ·Ï
+		private int spawnSpeed; //í’ì„ ì´ ìƒì„±ë˜ëŠ” ì†ë„ => ë¼ìš´ë“œë§ˆë‹¤ ë‹¬ë¼ì§€ë„ë¡
+		private int percentage; //í’ì„ ìƒì„± í™•ë¥  => ë¼ìš´ë“œì— ë”°ë¼ ë‹¬ë¼ì§€ë„ë¡
 		private String word;
-		private JLabel label; //ÀÓ½Ã·Î ¶óº§·Î ¼³Á¤ => Â÷ÈÄ Ç³¼± °´Ã¼·Î ¼öÁ¤
-		private int fallingSpeed; //¶³¾îÁö´Â ½Ã°£
-		private int x; //Ç³¼±ÀÌ »ı¼ºµÉ °¡·Î À§Ä¡¸¦ ÁöÁ¤
+		private JLabel label; //ì„ì‹œë¡œ ë¼ë²¨ë¡œ ì„¤ì • => ì°¨í›„ í’ì„  ê°ì²´ë¡œ ìˆ˜ì •
+		private int fallingSpeed; //ë–¨ì–´ì§€ëŠ” ì‹œê°„
+		private int x; //í’ì„ ì´ ìƒì„±ë  ê°€ë¡œ ìœ„ì¹˜ë¥¼ ì§€ì •
 		
 		private boolean isRun = true;
 		
@@ -902,54 +885,55 @@ public class GameRunningPanel extends JLayeredPane {
 		}
 		
 		
-		private int gameLevel = 3; //°ÔÀÓÀÇ ÇöÀç ¶ó¿îµå¸¦ ±â·Ï
-		//¾ÆÀÌÅÛÇ³¼±ÀÇ »ı¼ºÈ®·ü
-		private int starBalloonPercentage=5; //½ºÅ¸Ç³¼± »ı¼ºÈ®·ü 5ÆÛ¼¾Æ®
-		private int coinBalloonPercentage=3; //ÄÚÀÎÇ³¼± »ı¼ºÈ®·ü 3ÆÛ¼¾Æ®
+		private int gameLevel = 1; //ê²Œì„ì˜ í˜„ì¬ ë¼ìš´ë“œë¥¼ ê¸°ë¡
+		//ì•„ì´í…œí’ì„ ì˜ ìƒì„±í™•ë¥ 
+		private int starBalloonPercentage=5; //ìŠ¤íƒ€í’ì„  ìƒì„±í™•ë¥  5í¼ì„¼íŠ¸
+		private int coinBalloonPercentage=3; //ì½”ì¸í’ì„  ìƒì„±í™•ë¥  3í¼ì„¼íŠ¸
 		
 		
-		//°¢ »ö±òÇ³¼±ÀÇ »ı¼ºÈ®·ü
+		//ê° ìƒ‰ê¹”í’ì„ ì˜ ìƒì„±í™•ë¥ 
 		private int redBalloonPercentage;
 		private int blueBalloonPercentage;
-		//³ë¶ûÇ³¼±Àº ±× ÀÌ¿ÜÀÇ È®·üÀÌ¹Ç·Î º°µµ ÁöÁ¤x
+		//ë…¸ë‘í’ì„ ì€ ê·¸ ì´ì™¸ì˜ í™•ë¥ ì´ë¯€ë¡œ ë³„ë„ ì§€ì •x
 		private int BallonCount;
 		
-		//Ç³¼±ÀÌ ¾î´ÀÁ¤µµ ±ÕµîÇÑ À§Ä¡¿¡¼­ »ı¼ºµÇµµ·Ï ÇÏ±âÀ§ÇÔ
-		private int lastPosition = 0; //Ã¹¹øÂ°·Î »ı¼ºµÈ À§Ä¡¸¦ ÀúÀå ÀÓÀÇ·Î x·Î ÁöÁ¤
-		private int lastPosition2 = 5; //µÎ¹øÂ°·Î »ı¼ºµÈ À§Ä¡¸¦ ÀúÀå
+		//í’ì„ ì´ ì–´ëŠì •ë„ ê· ë“±í•œ ìœ„ì¹˜ì—ì„œ ìƒì„±ë˜ë„ë¡ í•˜ê¸°ìœ„í•¨
+		private int lastPosition = 0; //ì²«ë²ˆì§¸ë¡œ ìƒì„±ëœ ìœ„ì¹˜ë¥¼ ì €ì¥ ì„ì˜ë¡œ xë¡œ ì§€ì •
+		private int lastPosition2 = 5; //ë‘ë²ˆì§¸ë¡œ ìƒì„±ëœ ìœ„ì¹˜ë¥¼ ì €ì¥
 		
-		private StatusPanel statusPanel; //½ºÅ×ÀÌÅÍ½º ÆĞ³Î¿¡ ´ëÇÑ ·¡ÆÛ·£½º
+		private StatusPanel statusPanel; //ìŠ¤í…Œì´í„°ìŠ¤ íŒ¨ë„ì— ëŒ€í•œ ë˜í¼ëœìŠ¤
 		
-		//Ç³¼± »ı¼º½Ã ½ºÅ×ÀÌÅÍ½ºÃ¢¿¡ ´ëÇÑ ·¡ÆÛ·£½º¸¦ ³Ñ°ÜÁà¾ßÇÔ
-		//=>Ç³¼±ÀÌ ¶³¾îÁö´Â ½º·¹µå¿¡¼­ Ç³¼±ÀÌ ¶¥À¸·Î ¶³¾îÁö¸é ½ºÅ×ÀÌÅÍ½ºÃ¢¿¡ ¿µÇâÀ» °¡ÇÒ¼ö ÀÖµµ·Ï
+		//í’ì„  ìƒì„±ì‹œ ìŠ¤í…Œì´í„°ìŠ¤ì°½ì— ëŒ€í•œ ë˜í¼ëœìŠ¤ë¥¼ ë„˜ê²¨ì¤˜ì•¼í•¨
+		//=>í’ì„ ì´ ë–¨ì–´ì§€ëŠ” ìŠ¤ë ˆë“œì—ì„œ í’ì„ ì´ ë•…ìœ¼ë¡œ ë–¨ì–´ì§€ë©´ ìŠ¤í…Œì´í„°ìŠ¤ì°½ì— ì˜í–¥ì„ ê°€í• ìˆ˜ ìˆë„ë¡
 		public BallonSpawnThread(int spawnSpeed,int fallingSpeed,StatusPanel statusPanel,int gameLevel) {
-			this.gameLevel = gameLevel; //°ÔÀÓ ·¹º§
-			System.out.println("¶ó¿îµå : "+ gameLevel);
-			gameLevel = 3;
-			//·¹º§¿¡ ¸ÂÃç »ö±òÇ³¼± È®·ü°ú, »ı¼ºµÉ Ç³¼±ÀÇ ¼ö ÁöÁ¤
+			this.gameLevel = gameLevel; //ê²Œì„ ë ˆë²¨
+			System.out.println("ë¼ìš´ë“œ : "+ gameLevel);
+			//gameLevel = 3;
+			//ë ˆë²¨ì— ë§ì¶° ìƒ‰ê¹”í’ì„  í™•ë¥ ê³¼, ìƒì„±ë  í’ì„ ì˜ ìˆ˜ ì§€ì •
 			switch(gameLevel) {
 			case 1:
-				BallonCount = ROUND1BALLONCOUNT; //10°³
-				//¾ÆÀÌÅÛ Ç³¼± ±â´É Ãß°¡
-				//»¡°­Ç³¼± : ÆÄ¶ûÇ³¼± = ¾à 8 : 2 ºñÀ²¼³Á¤
-				redBalloonPercentage = 74;
-				blueBalloonPercentage = 18;
-				//³ë¶ûÇ³¼±Àº ±× ÀÌ¿ÜÀÇ È®·ü
+				BallonCount = ROUND1BALLONCOUNT; //10ê°œ
+				System.out.println(BallonCount);
+				//ì•„ì´í…œ í’ì„  ê¸°ëŠ¥ ì¶”ê°€
+				//ë¹¨ê°•í’ì„  : íŒŒë‘í’ì„  = ì•½ 8 : 2 ë¹„ìœ¨ì„¤ì •
+				redBalloonPercentage = 50;
+				blueBalloonPercentage = 50;
+				//ë…¸ë‘í’ì„ ì€ ê·¸ ì´ì™¸ì˜ í™•ë¥ 
 				break;
 			case 2:
-				BallonCount = ROUND2BALLONCOUNT; //20°³
-				//»¡°­Ç³¼± : ÆÄ¶ûÇ³¼± = ¾à 5 : 3 : 2 ºñÀ²¼³Á¤
+				BallonCount = ROUND2BALLONCOUNT; //20ê°œ
+				//ë¹¨ê°•í’ì„  : íŒŒë‘í’ì„  = ì•½ 5 : 3 : 2 ë¹„ìœ¨ì„¤ì •
 				redBalloonPercentage = 46;
 				blueBalloonPercentage = 27;
-				//³ë¶ûÇ³¼±Àº 19;
-				//³ë¶ûÇ³¼±Àº ±× ÀÌ¿ÜÀÇ È®·ü
+				//ë…¸ë‘í’ì„ ì€ 19;
+				//ë…¸ë‘í’ì„ ì€ ê·¸ ì´ì™¸ì˜ í™•ë¥ 
 				break;
 			case 3:
-				BallonCount = ROUND3BALLONCOUNT; //30°³
-				//»¡°­Ç³¼± : ÆÄ¶ûÇ³¼± : ³ë¶ûÇ³¼± = 3 : 4 : 3 ºñÀ² ¼³Á¤
+				BallonCount = ROUND3BALLONCOUNT; //30ê°œ
+				//ë¹¨ê°•í’ì„  : íŒŒë‘í’ì„  : ë…¸ë‘í’ì„  = 3 : 4 : 3 ë¹„ìœ¨ ì„¤ì •
 				redBalloonPercentage = 28;
 				blueBalloonPercentage = 37;
-				//³ë¶ûÇ³¼±Àº ±× ÀÌ¿ÜÀÇ È®·ü
+				//ë…¸ë‘í’ì„ ì€ ê·¸ ì´ì™¸ì˜ í™•ë¥ 
 				break;
 			}
 			
@@ -962,116 +946,116 @@ public class GameRunningPanel extends JLayeredPane {
 		@Override
 		public void run() {
 
-			//¿øÇÏ´Â ¼øÀÚ¸¸Å­ Ç³¼±À» »ı¼ºÇÏµµ·Ï => ¶ó¿îµå¸¶´Ù Á¤ÇØÁø¸¸Å­ »ı¼ºÇÏ°í »ı¼º½º·¹µå´Â Á¾·áµÊ
+			//ì›í•˜ëŠ” ìˆœìë§Œí¼ í’ì„ ì„ ìƒì„±í•˜ë„ë¡ => ë¼ìš´ë“œë§ˆë‹¤ ì •í•´ì§„ë§Œí¼ ìƒì„±í•˜ê³  ìƒì„±ìŠ¤ë ˆë“œëŠ” ì¢…ë£Œë¨
 			for(int i=0;i<BallonCount;i++) {
 				int position;
 				
-				//Ç³¼± ¹Ú½º¾È¿¡ ÀûÀıÈ÷ µé¾î°¥ ±æÀÌÀÇ ´Ü¾î·Î ·£´ı ´Ü¾î ÃßÃâ
+				//í’ì„  ë°•ìŠ¤ì•ˆì— ì ì ˆíˆ ë“¤ì–´ê°ˆ ê¸¸ì´ì˜ ë‹¨ì–´ë¡œ ëœë¤ ë‹¨ì–´ ì¶”ì¶œ
 				while(true) {
-					word = wordList.getWord(); //·£´ı ´Ü¾î ÃßÃâ
-					if(word.length()<10) //9±ÛÀÚ ÀÌÇÏÀÇ ´Ü¾îÀÇ °æ¿ì ¹İº¹¹® Å»Ãâ
+					word = wordList.getWord(); //ëœë¤ ë‹¨ì–´ ì¶”ì¶œ
+					if(word.length()<10) //9ê¸€ì ì´í•˜ì˜ ë‹¨ì–´ì˜ ê²½ìš° ë°˜ë³µë¬¸ íƒˆì¶œ
 						break;
 				}
 
-				//·£´ıÇÑ Ç³¼±¿¡ ´ëÇÑ È®·üÁ¶Á¤
+				//ëœë¤í•œ í’ì„ ì— ëŒ€í•œ í™•ë¥ ì¡°ì •
 
-				//Ç³¼±ÀÇ »ı¼º À§Ä¡ Á¶Á¤ => Ç³¼±³¢¸® Àß °ãÄ¡Áö ¾Êµµ·Ï
-				//ÀÌ¹ÌÁöÀÇ °¡·Î±æÀÌ¸¦ °¡Á®¿Í¼­ °ÔÀÓ·¯´×ÆĞ³ÎÀÇ ¿µ¿ªÀ¸·Î ³ª´©¾î ¿µ¿ªÀ» ÁöÁ¤
+				//í’ì„ ì˜ ìƒì„± ìœ„ì¹˜ ì¡°ì • => í’ì„ ë¼ë¦¬ ì˜ ê²¹ì¹˜ì§€ ì•Šë„ë¡
+				//ì´ë¯¸ì§€ì˜ ê°€ë¡œê¸¸ì´ë¥¼ ê°€ì ¸ì™€ì„œ ê²Œì„ëŸ¬ë‹íŒ¨ë„ì˜ ì˜ì—­ìœ¼ë¡œ ë‚˜ëˆ„ì–´ ì˜ì—­ì„ ì§€ì •
 				while(true) {
-					position = (int)(Math.random()*10);//0~9±îÁöÀÇ ³­¼ö »ı¼º => Ç³¼±ÀÌ »ı¼ºµÉ À§Ä¡¸¦ ÀÓÀÇ·Î ÁöÁ¤ÇÏ±â À§ÇÔ
-					if(position!=lastPosition&&position!=lastPosition2) {//ÀÌÀü 2°³ÀÇ À§Ä¡°¡ ¾Æ´Ñ°÷¿¡ »ı¼º
-						lastPosition2 = lastPosition; //Ã¹¹øÂ° »ı¼ºÀ§Ä¡¸¦ µÎ¹øÂ° »ı¼ºÀ§Ä¡·Î ¿Å±â°í
-						lastPosition = position; //ÇöÀç »ı¼ºµÈ À§Ä¡¸¦ ÀúÀå => ÀÌÈÄ 2°³ÀÇ À§Ä¡°¡ ¾Æ´Ñ°÷¿¡ »ı¼ºµÇ°ÔÇÔ
+					position = (int)(Math.random()*10);//0~9ê¹Œì§€ì˜ ë‚œìˆ˜ ìƒì„± => í’ì„ ì´ ìƒì„±ë  ìœ„ì¹˜ë¥¼ ì„ì˜ë¡œ ì§€ì •í•˜ê¸° ìœ„í•¨
+					if(position!=lastPosition&&position!=lastPosition2) {//ì´ì „ 2ê°œì˜ ìœ„ì¹˜ê°€ ì•„ë‹Œê³³ì— ìƒì„±
+						lastPosition2 = lastPosition; //ì²«ë²ˆì§¸ ìƒì„±ìœ„ì¹˜ë¥¼ ë‘ë²ˆì§¸ ìƒì„±ìœ„ì¹˜ë¡œ ì˜®ê¸°ê³ 
+						lastPosition = position; //í˜„ì¬ ìƒì„±ëœ ìœ„ì¹˜ë¥¼ ì €ì¥ => ì´í›„ 2ê°œì˜ ìœ„ì¹˜ê°€ ì•„ë‹Œê³³ì— ìƒì„±ë˜ê²Œí•¨
 						//System.out.println(position);
-						break; //Å»Ãâ
+						break; //íƒˆì¶œ
 					}
 						
 				}	
 				
-				//Æ÷Áö¼ÇÀ» ÅëÇØ Ç³¼±ÀÇ xÁÂÇ¥ ÁöÁ¤
-				x = (int)(Math.random()*100) + (70*position); //ÀÌÀü¿¡ »ı¼ºµÇ¾ú´ø 2°÷ÀÇ À§Ä¡¿¡ »ı¼ºµÇÁö¾Êµµ·Ï
-				//Ç³¼±ÀÌ »ı¼ºµÉ À§Ä¡ °áÁ¤
-				int y = -100; //ÀÓ½Ã·Î 0À§Ä¡¿¡¼­ »ı¼ºµÇµµ·Ï
+				//í¬ì§€ì…˜ì„ í†µí•´ í’ì„ ì˜ xì¢Œí‘œ ì§€ì •
+				x = (int)(Math.random()*100) + (70*position); //ì´ì „ì— ìƒì„±ë˜ì—ˆë˜ 2ê³³ì˜ ìœ„ì¹˜ì— ìƒì„±ë˜ì§€ì•Šë„ë¡
+				//í’ì„ ì´ ìƒì„±ë  ìœ„ì¹˜ ê²°ì •
+				int y = -100; //ì„ì‹œë¡œ 0ìœ„ì¹˜ì—ì„œ ìƒì„±ë˜ë„ë¡
 				
-				//Ç³¼± »ö È®·üÁ¶Á¤
-				int random = (int)(Math.random()*100)+1; //0~100±îÁöÀÇ ³­¼ö »ı¼º
-				int ballonType; //Ç³¼±ÀÌ »ı¼ºµÉ Å¸ÀÔ ÁöÁ¤
-//				System.out.println("³­¼ö : "+random); È®ÀÎ¿ë
-				//0~3»çÀÌÀÇ ³­¼ö => 3ÆÛ¼¾Æ®
-				if(0<=random&&random<coinBalloonPercentage) //3ÆÛ¼¾Æ® È®·ü·Î ÄÚÀÎÇ³¼± µîÀå
-					ballonType = 3; //ÄÚÀÎÇ³¼±
-				else if(coinBalloonPercentage<=random&&random<coinBalloonPercentage+starBalloonPercentage) //5ÆÛ¼¾Æ® È®·ü·Î ½ºÅ¸Ç³¼±(°æÇèÄ¡2¹è)µîÀå
-					ballonType = 4; //½ºÅ¸ÄÚÀÎ
+				//í’ì„  ìƒ‰ í™•ë¥ ì¡°ì •
+				int random = (int)(Math.random()*100)+1; //0~100ê¹Œì§€ì˜ ë‚œìˆ˜ ìƒì„±
+				int ballonType; //í’ì„ ì´ ìƒì„±ë  íƒ€ì… ì§€ì •
+//				System.out.println("ë‚œìˆ˜ : "+random); í™•ì¸ìš©
+				//0~3ì‚¬ì´ì˜ ë‚œìˆ˜ => 3í¼ì„¼íŠ¸
+				if(0<=random&&random<coinBalloonPercentage) //3í¼ì„¼íŠ¸ í™•ë¥ ë¡œ ì½”ì¸í’ì„  ë“±ì¥
+					ballonType = 3; //ì½”ì¸í’ì„ 
+				else if(coinBalloonPercentage<=random&&random<coinBalloonPercentage+starBalloonPercentage) //5í¼ì„¼íŠ¸ í™•ë¥ ë¡œ ìŠ¤íƒ€í’ì„ (ê²½í—˜ì¹˜2ë°°)ë“±ì¥
+					ballonType = 4; //ìŠ¤íƒ€ì½”ì¸
 				else if(coinBalloonPercentage+starBalloonPercentage<=random&&random<coinBalloonPercentage+starBalloonPercentage+redBalloonPercentage)
-					ballonType = 0; //»¡°­
+					ballonType = 0; //ë¹¨ê°•
 				else if(coinBalloonPercentage+starBalloonPercentage+redBalloonPercentage<=random&&random<=coinBalloonPercentage+starBalloonPercentage+redBalloonPercentage+blueBalloonPercentage)
-					ballonType = 1; //ÆÄ¶ûÇ³¼±
-				else //³ª¸ÓÁö´Â ³ë¶û»ö
+					ballonType = 1; //íŒŒë‘í’ì„ 
+				else //ë‚˜ë¨¸ì§€ëŠ” ë…¸ë‘ìƒ‰
 					ballonType = 2; 
 				
 				
-				//Ç³¼± »ı¼º => (Ç³¼± Å¸ÀÔ, ´Ü¾î)
-				//Ç³¼± »ı¼º½Ã ½ºÅ×ÀÌÅÍ½º ÆĞ³Î¿¡ ´ëÇÑ ÂüÁ¶¸¦ ³Ñ±è => ½ºÅ×ÀÌÅÍ½º ÆĞ³Î¿¡ ¿µÇâÀ» °¡ÇÒ¼ö ÀÖµµ·Ï
+				//í’ì„  ìƒì„± => (í’ì„  íƒ€ì…, ë‹¨ì–´)
+				//í’ì„  ìƒì„±ì‹œ ìŠ¤í…Œì´í„°ìŠ¤ íŒ¨ë„ì— ëŒ€í•œ ì°¸ì¡°ë¥¼ ë„˜ê¹€ => ìŠ¤í…Œì´í„°ìŠ¤ íŒ¨ë„ì— ì˜í–¥ì„ ê°€í• ìˆ˜ ìˆë„ë¡
 				balloon = new Balloon(ballonType,word,fallingSpeed,statusPanel);
 				balloon.setVisible(true);
 				balloon.setSize(300,300);
 				balloon.setLocation(x,y);
-				add(balloon); //ÆĞ³Î¿¡ ºÙÀÌ±â
-				balloonVector.add(balloon);//º¤ÅÍ¿¡ Ç³¼± »ğÀÔ
+				add(balloon); //íŒ¨ë„ì— ë¶™ì´ê¸°
+				balloonVector.add(balloon);//ë²¡í„°ì— í’ì„  ì‚½ì…
 				//System.out.println(x+","+y);
 		
 				try {
 					Thread.sleep(spawnSpeed);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
-					//ÀÎÅÍ·ì ¹ß»ı½Ã
-					break; //½º·¹µå Á¾·á
+					//ì¸í„°ë£¹ ë°œìƒì‹œ
+					break; //ìŠ¤ë ˆë“œ ì¢…ë£Œ
 				}
 			}
 			
-			System.out.println("½º·¹µå Á¾·á");
+			System.out.println("ìŠ¤ë ˆë“œ ì¢…ë£Œ");
 			isRun = false;
-			//¶ó¿îµå Á¾·á ÀÌÈÄ
-			controlPanel.initDoublePoint(); //°æÇèÄ¡ 2¹è=>1¹è·Î ÃÊ±âÈ­
+			//ë¼ìš´ë“œ ì¢…ë£Œ ì´í›„
+			controlPanel.initDoublePoint(); //ê²½í—˜ì¹˜ 2ë°°=>1ë°°ë¡œ ì´ˆê¸°í™”
 
 		}
 	}
 	
 	
-	//Ã¼Å©Æ÷ÀÎÆ®3
-	//´Ü¾î¸¦ ÀÔ·Â¹Ş°í, ¿£ÅÍ¸¦ Ä¡¸é ¿Ã¹Ù¸¥ ´Ü¾îÀÎÁö È®ÀÎÇÏ¿© Á¡¼ö¸¦ ºÎ¿©ÇÏ°Å³ª Ã¼·ÂÀ» ±ğ´Â ¿ªÇÒ
+	//ì²´í¬í¬ì¸íŠ¸3
+	//ë‹¨ì–´ë¥¼ ì…ë ¥ë°›ê³ , ì—”í„°ë¥¼ ì¹˜ë©´ ì˜¬ë°”ë¥¸ ë‹¨ì–´ì¸ì§€ í™•ì¸í•˜ì—¬ ì ìˆ˜ë¥¼ ë¶€ì—¬í•˜ê±°ë‚˜ ì²´ë ¥ì„ ê¹ëŠ” ì—­í• 
 	private class ControlPanel extends JPanel {
-		private JTextField input = new JTextField(15); //´Ü¾îÀ» ÀÔ·Â¹ŞÀ» °ø°£ ¼³Á¤
+		private JTextField input = new JTextField(15); //ë‹¨ì–´ì„ ì…ë ¥ë°›ì„ ê³µê°„ ì„¤ì •
 		private StatusPanel statusPanel;
-		private int doublePoint = 1; //½ºÅ¸Ç³¼±À» ÅÍÆ®·ÈÀ»¶§ ÇÑ ¶ó¿îµå µ¿¾È °æÇèÄ¡¸¦ 2¹è·Î ¹Şµµ·Ï ÇÏ±âÀ§ÇÔ
+		private int doublePoint = 1; //ìŠ¤íƒ€í’ì„ ì„ í„°íŠ¸ë ¸ì„ë•Œ í•œ ë¼ìš´ë“œ ë™ì•ˆ ê²½í—˜ì¹˜ë¥¼ 2ë°°ë¡œ ë°›ë„ë¡ í•˜ê¸°ìœ„í•¨
 		private Clip clip;
 		
 		
 		private ImageIcon icon = new ImageIcon("controlPanelImage.png");
 		private Image controlPanelImage = icon.getImage();
 		
-		//°æÇèÄ¡2¹è => 1¹è·Î ÃÊ±âÈ­
+		//ê²½í—˜ì¹˜2ë°° => 1ë°°ë¡œ ì´ˆê¸°í™”
 		public void initDoublePoint() {
 			doublePoint = 1; 
 		}
 		
-		//ÀÔ·ÂÃ¢ ºñÈ°¼ºÈ­
+		//ì…ë ¥ì°½ ë¹„í™œì„±í™”
 		public void enableInput() {
 			input.setEnabled(false);
 		}
 		
-		//ÀÔ·ÂÃ¢ È°¼ºÈ­
+		//ì…ë ¥ì°½ í™œì„±í™”
 		public void ableInput() {
 			input.setEnabled(true);
 		}
 		
-		//»ı¼ºÀÚ 
+		//ìƒì„±ì 
 		public ControlPanel(StatusPanel statusPanel) {
 			this.statusPanel = statusPanel;
 			setLayout(null);
-			//ÆĞ³ÎÀÌ »ı¼ºµÉ À§Ä¡ Á¶Á¤
-			setBounds(0,800,1000,100); //0,800ÀÇ À§Ä¡¿¡¼­ 800x100Å©±âÀÇ ÄÁÆ®·Ñ ÆĞ³Î ºÎÂø
-			setBackground(Color.cyan); //Àß ºÎÂøµÇ¾ú´ÂÁö È®ÀÎÇÏ±â À§ÇÑ ÀÓ½Ã»ö»ó ÁöÁ¤
+			//íŒ¨ë„ì´ ìƒì„±ë  ìœ„ì¹˜ ì¡°ì •
+			setBounds(0,800,1000,100); //0,800ì˜ ìœ„ì¹˜ì—ì„œ 800x100í¬ê¸°ì˜ ì»¨íŠ¸ë¡¤ íŒ¨ë„ ë¶€ì°©
+			setBackground(Color.cyan); //ì˜ ë¶€ì°©ë˜ì—ˆëŠ”ì§€ í™•ì¸í•˜ê¸° ìœ„í•œ ì„ì‹œìƒ‰ìƒ ì§€ì •
 			
 //			this.setLayout(new FlowLayout());
 //			this.setBackground(Color.LIGHT_GRAY);
@@ -1080,152 +1064,155 @@ public class GameRunningPanel extends JLayeredPane {
 			input.setSize(965,50);
 			add(input);
 			
-			//¿£ÅÍÅ°¸¦ ÃÆÀ»¶§ ÀÌº¥Æ® ¹ß»ı
+			//ì—”í„°í‚¤ë¥¼ ì³¤ì„ë•Œ ì´ë²¤íŠ¸ ë°œìƒ
 			input.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					JTextField tf = (JTextField)e.getSource();
-					String text = tf.getText(); //ÅØ½ºÆ®¿¡ ÀÔ·ÂµÈ ´Ü¾î°¡ ¹«¾ùÀÎÁö °¡Á®¿È
+					String text = tf.getText(); //í…ìŠ¤íŠ¸ì— ì…ë ¥ëœ ë‹¨ì–´ê°€ ë¬´ì—‡ì¸ì§€ ê°€ì ¸ì˜´
 
 					//System.out.println(text);
-					//´Ü¾î°¡ ÀÏÄ¡ÇÑ´Ù¸é => ÇØ´ç ´Ü¾î¿¡ ´ëÇÑ ½º·¹µå Á¾·á,»èÁ¦	
+					//ë‹¨ì–´ê°€ ì¼ì¹˜í•œë‹¤ë©´ => í•´ë‹¹ ë‹¨ì–´ì— ëŒ€í•œ ìŠ¤ë ˆë“œ ì¢…ë£Œ,ì‚­ì œ	
 					if(isMatch(text)) {
-						//Á¤´ä½Ã È¿°úÀ½ ³ªµµ·Ï
+						//ì •ë‹µì‹œ íš¨ê³¼ìŒ ë‚˜ë„ë¡
 						try {
 							clip = AudioSystem.getClip();
 							File audioFile = new File("Correct.wav");
 							AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 							clip.open(audioStream);
 						}catch(Exception E) {
-							System.out.println("Á¤´ä À½¿ø ÃßÃâ ¿À·ù!");
+							System.out.println("ì •ë‹µ ìŒì› ì¶”ì¶œ ì˜¤ë¥˜!");
 						}
-						clip.start(); // ¹öÆ°À» Å¬¸¯ÇßÀ»¶§ ¼Ò¸®°¡ ³ªµµ·Ï
+						clip.start(); // ë²„íŠ¼ì„ í´ë¦­í–ˆì„ë•Œ ì†Œë¦¬ê°€ ë‚˜ë„ë¡
 					}
-					else { //Á¤´äÀÌ ¾Æ´Ò½Ã => Ã¼·ÂÀ» 5±ğÀ½
+					else { //ì •ë‹µì´ ì•„ë‹ì‹œ => ì²´ë ¥ì„ 5ê¹ìŒ
 						try {
 							clip = AudioSystem.getClip();
 							File audioFile = new File("Wrong.wav");
 							AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 							clip.open(audioStream);
 						}catch(Exception E) {
-							System.out.println("¿À´ä À½¿ø ÃßÃâ ¿À·ù!");
+							System.out.println("ì˜¤ë‹µ ìŒì› ì¶”ì¶œ ì˜¤ë¥˜!");
 						}
-						clip.start(); // ¹öÆ°À» Å¬¸¯ÇßÀ»¶§ ¼Ò¸®°¡ ³ªµµ·Ï
-						statusPanel.getDamage(5); //¿À´ä½Ã 5ÀÇ µ¥¹ÌÁö
+						clip.start(); // ë²„íŠ¼ì„ í´ë¦­í–ˆì„ë•Œ ì†Œë¦¬ê°€ ë‚˜ë„ë¡
+						statusPanel.getDamage(5); //ì˜¤ë‹µì‹œ 5ì˜ ë°ë¯¸ì§€
 					}
-					tf.setText(""); //ÅØ½ºÆ® »óÀÚ¿¡ ÀûÈù ±ÛÀÚ Áö¿ì±â => ´Ü¾î°¡ ¾ø¾îÁö´Â È¿°ú(ÀÓ½Ã·Î)				
+					tf.setText(""); //í…ìŠ¤íŠ¸ ìƒìì— ì íŒ ê¸€ì ì§€ìš°ê¸° => ë‹¨ì–´ê°€ ì—†ì–´ì§€ëŠ” íš¨ê³¼(ì„ì‹œë¡œ)				
 				}
 			});
 		}
 		
 		
-		//Ã¼Å©Æ÷ÀÎÆ®
-		//Ç³¼±º¤ÅÍ ¾È¿¡ ÀÖ´Â ´Ü¾îÀÎÁö È®ÀÎÇÏ´Â ¸Ş¼Òµå
+		//ì²´í¬í¬ì¸íŠ¸
+		//í’ì„ ë²¡í„° ì•ˆì— ìˆëŠ” ë‹¨ì–´ì¸ì§€ í™•ì¸í•˜ëŠ” ë©”ì†Œë“œ
 		@SuppressWarnings("unlikely-arg-type")
 		public boolean isMatch(String text) {
 			for(int i=0;i<balloonVector.size();i++) {
 				
 				Balloon balloon = balloonVector.get(i);
-				if(balloon.getWord().equals(text)) { //º¤ÅÍ ¾ÈÀÇ ´Ü¾î¿Í ÀÏÄ¡ÇÑ´Ù¸é
-//					System.out.println("´Ü¾î ÀÏÄ¡");
+				if(balloon.getWord().equals(text)) { //ë²¡í„° ì•ˆì˜ ë‹¨ì–´ì™€ ì¼ì¹˜í•œë‹¤ë©´
+//					System.out.println("ë‹¨ì–´ ì¼ì¹˜");
 					
-					if(luckyChance) { //·°Å°Âù½º È¿°ú°¡ È°¼ºÈ­ µÇ¾îÀÖ´Ù¸é
-						//50ÆÛ¼¾Æ®ÀÇ È®·ü·Î Ãß°¡ °ø°İÀ» °¡ÇÑ´Ù.
+					if(luckyChance) { //ëŸ­í‚¤ì°¬ìŠ¤ íš¨ê³¼ê°€ í™œì„±í™” ë˜ì–´ìˆë‹¤ë©´
+						//50í¼ì„¼íŠ¸ì˜ í™•ë¥ ë¡œ ì¶”ê°€ ê³µê²©ì„ ê°€í•œë‹¤.
 
 						int random = (int)(Math.random()*100);
 						System.out.println(random);
 						if(random%2!=0) {
-							//Ç³¼±¿¡ Ãß°¡ °ø°İÀ» °¡ÇÑ´Ù.(²¿²¿°¡ °ø°İÇÏ¸é ²Ù²Ùµµ °ø°İ)
-							System.out.println("Ãß°¡°ø°İ!");
+							//í’ì„ ì— ì¶”ê°€ ê³µê²©ì„ ê°€í•œë‹¤.(ê¼¬ê¼¬ê°€ ê³µê²©í•˜ë©´ ê¾¸ê¾¸ë„ ê³µê²©)
+							System.out.println("ì¶”ê°€ê³µê²©!");
 							balloon.getDamage(weaponPower+1);
 							
-							//²¿²¿ °ø°İ ¼Ò¸® »ğÀÔ
+							//ê¼¬ê¼¬ ê³µê²© ì†Œë¦¬ ì‚½ì…
 							
 						}
 						else
 							balloon.getDamage(weaponPower); 
 //						
 					}
-					else //²¿²¿²Ù²Ù°¡ ¾Æ´Ñ°æ¿ì¿¡´Â luckyChance ºñÈ°¼ºÈ­, ¹«±â¸¸Å­ µ¥¹ÌÁö¸¦ °¡ÇÑ´Ù.
-						balloon.getDamage(weaponPower); //¹«±âÀÇ µ¥¹ÌÁö ¸¸Å­ Ç³¼±¿¡ ÇÇÇØ¸¦ °¡ÇÑ´Ù.
+					else //ê¼¬ê¼¬ê¾¸ê¾¸ê°€ ì•„ë‹Œê²½ìš°ì—ëŠ” luckyChance ë¹„í™œì„±í™”, ë¬´ê¸°ë§Œí¼ ë°ë¯¸ì§€ë¥¼ ê°€í•œë‹¤.
+						balloon.getDamage(weaponPower); //ë¬´ê¸°ì˜ ë°ë¯¸ì§€ ë§Œí¼ í’ì„ ì— í”¼í•´ë¥¼ ê°€í•œë‹¤.
 					
-					//ÀÌÈÄ Ç³¼±ÀÇ Ã¼·ÂÀ» °¡Á®¿Í¼­ È®ÀÎ
+					//ì´í›„ í’ì„ ì˜ ì²´ë ¥ì„ ê°€ì ¸ì™€ì„œ í™•ì¸
 					int ballonHealth = balloon.getHealth();
 					
-					//Ç³¼±ÀÇ Ã¼·ÂÀÌ 0ÀÌÇÏ°¡ µÇ¸é Ç³¼±À» »èÁ¦ÇÑ´Ù. => Ç³¼±ÀÇ Á¾·ù¿¡ µû¶ó ´Ù¸¥ Á¡¼ö¸¦ ºÎ¿©ÇÑ´Ù.
+					//í’ì„ ì˜ ì²´ë ¥ì´ 0ì´í•˜ê°€ ë˜ë©´ í’ì„ ì„ ì‚­ì œí•œë‹¤. => í’ì„ ì˜ ì¢…ë¥˜ì— ë”°ë¼ ë‹¤ë¥¸ ì ìˆ˜ë¥¼ ë¶€ì—¬í•œë‹¤.
 					if(ballonHealth<=0) {
-						//Ç³¼±ÀÇ Ã¼·ÂÀÌ 0ÀÌÇÏ°¡µÇ¸é Á¡¼ö Ãß°¡
-						//Ç³¼± Á¾·ùº°·Î Â÷µîÇÑ Á¡¼ö¸¦ ºÎ¿©ÇÑ´Ù.
-						//»¡°­Ç³¼±(0+100Á¡), ÆÄ¶ûÇ³¼±(100+100Á¡), ³ë¶ûÇ³¼±(200+100Á¡)
-						int balloonType = balloon.getBalloonType(); //ÇöÀç Ç³¼±ÀÌ ¾î¶²Å¸ÀÔÀÎÁöÃ¼Å©
-						//Ç³¼±ÀÇ Á¾·ù¿¡ µû¸¥ Â÷µî Á¡¼ö¿Í ÄÚÀÎÀ» ºÎ¿©
+						System.out.println(balloon.getBalloonType()+"ì œê±°ë¨");
+						//í’ì„ ì˜ ì²´ë ¥ì´ 0ì´í•˜ê°€ë˜ë©´ ì ìˆ˜ ì¶”ê°€
+						//í’ì„  ì¢…ë¥˜ë³„ë¡œ ì°¨ë“±í•œ ì ìˆ˜ë¥¼ ë¶€ì—¬í•œë‹¤.
+						//ë¹¨ê°•í’ì„ (0+100ì ), íŒŒë‘í’ì„ (100+100ì ), ë…¸ë‘í’ì„ (200+100ì )
+						int balloonType = balloon.getBalloonType(); //í˜„ì¬ í’ì„ ì´ ì–´ë–¤íƒ€ì…ì¸ì§€ì²´í¬
+						//í’ì„ ì˜ ì¢…ë¥˜ì— ë”°ë¥¸ ì°¨ë“± ì ìˆ˜ì™€ ì½”ì¸ì„ ë¶€ì—¬
 						int score = 0; 
 						int coin = 0;
 						switch(balloonType) {
-						case 0: //»¡°­Ç³¼± 150Á¡, 100¿ø
+						case 0: //ë¹¨ê°•í’ì„  150ì , 100ì›
 							score = 150;
 							coin = 100;
 							break;
-						case 1: //ÆÄ¶ûÇ³¼± 300Á¡, 200¿ø
+						case 1: //íŒŒë‘í’ì„  300ì , 200ì›
 							score = 300;
 							coin = 200;
 							break;
-						case 2: //³ë¶ûÇ³¼± 600Á¡, 300¿ø
+						case 2: //ë…¸ë‘í’ì„  600ì , 300ì›
 							score = 600;
 							coin = 300;
 							break;
-						case 3: //ÄÚÀÎÇ³¼±ÀÇ °æ¿ì
-							score = 77; //77Á¡ È¹µæ
-							coin = 1000; //1000¿øÀ» È¹µæ
-						case 4: //½ºÅ¸Ç³¼±ÀÇ °æ¿ì
-							score = 77; //777¿ø È¹µæ
-							coin = 0; //µ·Àº Ãß°¡ x
-							//°æÇèÄ¡ 2¹è È°¼ºÈ­
-							doublePoint = 2; //°æÇèÄ¡ ºÎ¿©¸¦ 2¹è·Î º¯°æ
+						case 3: //ì½”ì¸í’ì„ ì˜ ê²½ìš°
+							System.out.println(coin);
+							score = 77; //77ì  íšë“
+							coin = 1000; //1000ì›ì„ íšë“
+							break;
+						case 4: //ìŠ¤íƒ€í’ì„ ì˜ ê²½ìš°
+							score = 77; //777ì› íšë“
+							coin = 0; //ëˆì€ ì¶”ê°€ x
+							//ê²½í—˜ì¹˜ 2ë°° í™œì„±í™”
+							doublePoint = 2; //ê²½í—˜ì¹˜ ë¶€ì—¬ë¥¼ 2ë°°ë¡œ ë³€ê²½
 							
 						}
 						
 						if(doublePoint==2) {
-							System.out.println("°æÇèÄ¡ 2¹èÈ¿°ú Àû¿ëÁß");
+							System.out.println("ê²½í—˜ì¹˜ 2ë°°íš¨ê³¼ ì ìš©ì¤‘");
 						}
 						else
-							System.out.println("±âº» °æÇèÄ¡·Î Àû¿ëÁß");
+							System.out.println("ê¸°ë³¸ ê²½í—˜ì¹˜ë¡œ ì ìš©ì¤‘");
 						
-						//ÄÚÀÎ°ú Á¡¼ö¸¦ ´õÇÑ´Ù.
-						statusPanel.plusScore(score*doublePoint);//½ºÅ¸Ç³¼± ÅÍÆ®¸®±âÀü¿¡´Â doublePoint°¡ 1
+						//ì½”ì¸ê³¼ ì ìˆ˜ë¥¼ ë”í•œë‹¤.
+						statusPanel.plusScore(score*doublePoint);//ìŠ¤íƒ€í’ì„  í„°íŠ¸ë¦¬ê¸°ì „ì—ëŠ” doublePointê°€ 1
 						statusPanel.plusCoin(coin);
 						
-						balloon.setVisible(false); //¾Èº¸ÀÌµµ·Ï Ã³¸®
-						balloon.stopFallingThread(); //Ç³¼± ¸ØÃß±â
-						balloonVector.remove(balloon); //º¤ÅÍ¿¡¼­ Ç³¼±Á¦°Å
+						balloon.setVisible(false); //ì•ˆë³´ì´ë„ë¡ ì²˜ë¦¬
+						balloon.stopFallingThread(); //í’ì„  ë©ˆì¶”ê¸°
+						balloonVector.remove(balloon); //ë²¡í„°ì—ì„œ í’ì„ ì œê±°
 						
-						remove(balloon); //ÆĞ³Î¿¡ ´Ş¸° Ç³¼±°´Ã¼¸¦ Áö¿î´Ù.
+						remove(balloon); //íŒ¨ë„ì— ë‹¬ë¦° í’ì„ ê°ì²´ë¥¼ ì§€ìš´ë‹¤.
 					}
-					return true; //Á¤´äÀÌ ÀÏÄ¡ÇÒ°æ¿ì true¸¦ ¸®ÅÏÇÑ´Ù
+					return true; //ì •ë‹µì´ ì¼ì¹˜í• ê²½ìš° trueë¥¼ ë¦¬í„´í•œë‹¤
 				}
 			}
-			//¹İº¹ÈÄ¿¡µµ ´Ü¾î°¡ ¾ø´Ù¸é
-//			System.out.println("´Ü¾î ºÒÀÏÄ¡");
-			return false; //Æ²¸° ´äÀ» ÀÔ·ÂÇÒ°æ¿ì fasle¸¦ ¸®ÅÏÇÑ´Ù.
+			//ë°˜ë³µí›„ì—ë„ ë‹¨ì–´ê°€ ì—†ë‹¤ë©´
+//			System.out.println("ë‹¨ì–´ ë¶ˆì¼ì¹˜");
+			return false; //í‹€ë¦° ë‹µì„ ì…ë ¥í• ê²½ìš° fasleë¥¼ ë¦¬í„´í•œë‹¤.
 		}
 		
-		//ÄÁÀ¸·ÑÆĞ³ÎÀÇ µÚ¹è°æ ±×¸®±â
-		//°ÔÀÓ·¯´×ÆĞ³ÎÀÇ ¹é±×¶ó¿îµå ÀÌ¹ÌÁö ±×¸®±â
+		//ì»¨ìœ¼ë¡¤íŒ¨ë„ì˜ ë’¤ë°°ê²½ ê·¸ë¦¬ê¸°
+		//ê²Œì„ëŸ¬ë‹íŒ¨ë„ì˜ ë°±ê·¸ë¼ìš´ë“œ ì´ë¯¸ì§€ ê·¸ë¦¬ê¸°
 		@Override
 	    public void paintComponent(Graphics g) {
-	       super.paintComponent(g); //±×·¡ÇÈ ÄÄÆ÷³ÍÆ® ¼³Á¤
-	       //¹è°æ ÀÌ¹ÌÁö
-	       g.drawImage(controlPanelImage, 0, 0, this.getWidth(),this.getHeight(),null); //ÀÌ¹ÌÁö°¡ ±×·ÁÁö´Â ½ÃÁ¡ ¾Ë¸²¹ŞÁö ¾Ê±â
+	       super.paintComponent(g); //ê·¸ë˜í”½ ì»´í¬ë„ŒíŠ¸ ì„¤ì •
+	       //ë°°ê²½ ì´ë¯¸ì§€
+	       g.drawImage(controlPanelImage, 0, 0, this.getWidth(),this.getHeight(),null); //ì´ë¯¸ì§€ê°€ ê·¸ë ¤ì§€ëŠ” ì‹œì  ì•Œë¦¼ë°›ì§€ ì•Šê¸°
 	    }
 		
 	}
 	
-	//°ÔÀÓ·¯´×ÆĞ³ÎÀÇ ¹é±×¶ó¿îµå ÀÌ¹ÌÁö ±×¸®±â
+	//ê²Œì„ëŸ¬ë‹íŒ¨ë„ì˜ ë°±ê·¸ë¼ìš´ë“œ ì´ë¯¸ì§€ ê·¸ë¦¬ê¸°
 	@Override
     public void paintComponent(Graphics g) {
-       super.paintComponent(g); //±×·¡ÇÈ ÄÄÆ÷³ÍÆ® ¼³Á¤
-       //¹è°æ ÀÌ¹ÌÁö
-       g.drawImage(gamePanelBackgroundImage, 0, 0, this.getWidth(),this.getHeight(),null); //ÀÌ¹ÌÁö°¡ ±×·ÁÁö´Â ½ÃÁ¡ ¾Ë¸²¹ŞÁö ¾Ê±â
+       super.paintComponent(g); //ê·¸ë˜í”½ ì»´í¬ë„ŒíŠ¸ ì„¤ì •
+       //ë°°ê²½ ì´ë¯¸ì§€
+       g.drawImage(gamePanelBackgroundImage, 0, 0, this.getWidth(),this.getHeight(),null); //ì´ë¯¸ì§€ê°€ ê·¸ë ¤ì§€ëŠ” ì‹œì  ì•Œë¦¼ë°›ì§€ ì•Šê¸°
     }
 }

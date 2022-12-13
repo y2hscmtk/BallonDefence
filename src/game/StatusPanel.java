@@ -64,9 +64,9 @@ public class StatusPanel extends JPanel{
 	
 	
 	//게임에 대한 정보
-	private int score = 28000; //점수를 저장할 변수
+	private int score = 0; //점수를 저장할 변수
 	private JLabel scoreLabel = new JLabel(Integer.toString(score));
-	private int coin = 4000; //코인을 저장할 변수 => 상점에 이용
+	private int coin = 0; //코인을 저장할 변수 => 상점에 이용
 	private JLabel coinLabel = new JLabel(Integer.toString(coin));
 
 	
