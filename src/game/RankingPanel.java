@@ -24,7 +24,8 @@ public class RankingPanel extends JPanel {
 	private GameFrame parent;//부모를 변수로 저장
 	private ImageIcon homeButtonIcon = new ImageIcon("home.png");
 	private ImageIcon homeButtonEnteredIcon = new ImageIcon("homeEntered.png");
-	private ImageIcon icon = new ImageIcon("rankingPanelImage.png");
+	
+	private ImageIcon icon = new ImageIcon("topTenBackgroundImage.png");
 	private Image backgroundImage = icon.getImage();
 	
 	//파일에서 플레이어 정보를 읽어와서 점수와 이름으로 저장한다.
@@ -171,7 +172,8 @@ public class RankingPanel extends JPanel {
 			
 			//플레이어 라벨 생성
 			JLabel playerLabel = new JLabel(name+" "+Integer.toString(score));
-			playerLabel.setFont(new Font("Gothic",Font.BOLD,44));
+			playerLabel.setForeground(Color.WHITE);
+			playerLabel.setFont(new Font("Gothic",Font.BOLD,40));
 			playerLabel.setSize(400,100);
 			playerLabel.setLocation(0,0); //생성된 라벨의 왼쪽 부분에서 생성
 			add(playerLabel);
@@ -199,6 +201,6 @@ public class RankingPanel extends JPanel {
     public void paintComponent(Graphics g) {
        super.paintComponent(g); //그래픽 컴포넌트 설정
        //배경 이미지
-       g.drawImage(backgroundImage, 0, 0, this.getWidth(),this.getHeight(),null); //이미지가 그려지는 시점 알림받지 않기
+       g.drawImage(backgroundImage, 0, 0, icon.getIconWidth() ,icon.getIconHeight() ,null); //이미지가 그려지는 시점 알림받지 않기
     }
 }

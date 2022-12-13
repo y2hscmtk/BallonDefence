@@ -30,18 +30,26 @@ public class BeginningPanel extends JPanel {
     //배경 이미지
     private ImageIcon bgImageicon = new ImageIcon("background.png");
     private Image backgroundPanelImage = bgImageicon.getImage();
+    
+    
     //게임 시작 버튼(레이블) 이미지
     private ImageIcon selectLabelicon = new ImageIcon("goGame.png");
     private ImageIcon selectLabelEnteredicon = new ImageIcon("goGameEntered.png");
     //private Image gameStartLabelImage = selectLabelicon.getImage();
     //게임 설명 버튼(레이블) 이미지
     private ImageIcon ruleLabelIcon = new ImageIcon("goRule.png");
+    private ImageIcon ruleLabelEnteredicon = new ImageIcon("goRuleEntered.png");
+    
     //private Image ruleLabelImage = ruleLabelIcon.getImage();
     //랭킹 보기 버튼(레이블) 이미지
     private ImageIcon langkingLabelIcon = new ImageIcon("goRangking.png");
+    private ImageIcon langkingLabelEnteredIcon = new ImageIcon("goRangkingEntered.png");
+    
     //private Image showRangkingLabelImage = langkingLabelIcon.getImage();
     //단어 편집 버튼(레이블) 이미지
     private ImageIcon editLabelIcon = new ImageIcon("goEdit.png");
+    private ImageIcon editLabelEnteredicon = new ImageIcon("goEditEntered.png");
+    
     //private Image EditButtonImage = editLabelIcon.getImage();
     
     private ImageIcon soundLabelIcon = new ImageIcon("music.png");
@@ -80,6 +88,10 @@ public class BeginningPanel extends JPanel {
 			
     	}
     	
+    	@Override //마우스 벗어날때 효과 무시 오버라이딩
+    	public void mouseExited(MouseEvent e) {
+    		
+    	}
     	
     	@Override //마우스가 클릭되었을때 현재 음악이 작동중인지 확인하여 음악을 키고 끔
     	public void mouseClicked(MouseEvent e) {
@@ -125,7 +137,7 @@ public class BeginningPanel extends JPanel {
         //=> 버튼을 누르면 프레임의 패널을 선택 패널로 이동, 기존 패널은 프레임에서 제거
         JLabel startButtonLabel = new JLabel(selectLabelicon);
         startButtonLabel.setSize(selectLabelicon.getIconWidth(),selectLabelicon.getIconHeight());
-        startButtonLabel.setLocation(398, 200);
+        startButtonLabel.setLocation(398, 220);
         startButtonLabel.addMouseListener(new ButtonClickedEvent(parent, GameFrame.SELECT_PANEL,selectLabelEnteredicon,selectLabelicon));
         add(startButtonLabel);		
         
@@ -133,24 +145,24 @@ public class BeginningPanel extends JPanel {
         //=> 버튼을 누르면 프레임의 패널을 규칙설명패널로 이동, 기존 패널은 프레임에서 제거
         JLabel ruleButtonLabel = new JLabel(ruleLabelIcon);
         ruleButtonLabel.setSize(ruleLabelIcon.getIconWidth(),ruleLabelIcon.getIconHeight());
-        ruleButtonLabel.setLocation(398, 328);
-        ruleButtonLabel.addMouseListener(new ButtonClickedEvent(parent, GameFrame.RULE_PANEL));
+        ruleButtonLabel.setLocation(398, 348);
+        ruleButtonLabel.addMouseListener(new ButtonClickedEvent(parent, GameFrame.RULE_PANEL,ruleLabelEnteredicon,ruleLabelIcon));
         add(ruleButtonLabel);
 
         //3. 단어 편집 버튼
         //=> 버튼을 누르면 프레임의 패널을 단어편집패널로 이동, 기존 패널은 프레임에서 제거
         JLabel wordEditButtonLabel = new JLabel(editLabelIcon);
         wordEditButtonLabel.setSize(editLabelIcon.getIconWidth(),editLabelIcon.getIconHeight());
-        wordEditButtonLabel.setLocation(398, 458);
-        wordEditButtonLabel.addMouseListener(new ButtonClickedEvent(parent, GameFrame.EDIT_PANEL));
+        wordEditButtonLabel.setLocation(398, 478);
+        wordEditButtonLabel.addMouseListener(new ButtonClickedEvent(parent, GameFrame.EDIT_PANEL,editLabelEnteredicon,editLabelIcon));
         add(wordEditButtonLabel);
 
         //4. 순위 보기 버튼
         //=> 버튼을 누르면 프레임의 패널을 랭킹패널로 이동, 기존 패널은 프레임에서 제거
         JLabel showLankingButtonLabel = new JLabel(langkingLabelIcon);
-        showLankingButtonLabel.setSize(editLabelIcon.getIconWidth(),editLabelIcon.getIconHeight());
-        showLankingButtonLabel.setLocation(398, 593);
-        showLankingButtonLabel.addMouseListener(new ButtonClickedEvent(parent, GameFrame.RANKING_PANEL));
+        showLankingButtonLabel.setSize(langkingLabelIcon.getIconWidth(),langkingLabelIcon.getIconHeight());
+        showLankingButtonLabel.setLocation(398, 613);
+        showLankingButtonLabel.addMouseListener(new ButtonClickedEvent(parent, GameFrame.RANKING_PANEL,langkingLabelEnteredIcon,langkingLabelIcon));
         add(showLankingButtonLabel);
 
         
@@ -181,7 +193,7 @@ public class BeginningPanel extends JPanel {
     public void paintComponent(Graphics g) {
        super.paintComponent(g); //그래픽 컴포넌트 설정
        //배경 이미지
-       g.drawImage(backgroundPanelImage, 0, 0, this.getWidth(),this.getHeight(),null); //이미지가 그려지는 시점 알림받지 않기
+       g.drawImage(backgroundPanelImage, 0, 0, bgImageicon.getIconWidth(),bgImageicon.getIconHeight(),null); //이미지가 그려지는 시점 알림받지 않기
     }
     
     

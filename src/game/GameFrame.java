@@ -211,6 +211,7 @@ public class GameFrame extends JFrame {
                 setContentPane(beginningPanel);
                 break;
             case RULE_PANEL:
+//            	rulePanel.initRuleImage();
                 setContentPane(rulePanel);
                 break;
             case SELECT_PANEL:

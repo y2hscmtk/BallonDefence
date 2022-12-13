@@ -1,7 +1,9 @@
 package game;
 
 import java.awt.Color;
-import java.awt.Point;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
@@ -37,6 +39,10 @@ public class StatusPanel extends JPanel{
     private ImageIcon kkukkuKkakka = new ImageIcon("character2.png");
 	private ImageIcon selectedCharacater;
 	
+	
+	private ImageIcon bgIcon = new ImageIcon("statusPanelImage.png");
+	private Image bgImage = bgIcon.getImage();
+	
 	//코인 아이콘, 엑스 아이콘
 	private ImageIcon coinIcon = new ImageIcon("coinImage.png");
 	private ImageIcon xIcon = new ImageIcon("xImage.png");
@@ -48,8 +54,8 @@ public class StatusPanel extends JPanel{
 	private ImageIcon scissorsIcon = new ImageIcon("scissors.png"); //가위 이미지 아이콘
 	
 	//음악 아이콘
-	private ImageIcon soundLabelIcon = new ImageIcon("music.png");
-    private ImageIcon soundLabelMuteIcon = new ImageIcon("mute.png");
+	private ImageIcon soundLabelIcon = new ImageIcon("whiteMusic.png");
+    private ImageIcon soundLabelMuteIcon = new ImageIcon("whiteMute.png");
 	
 	
 	
@@ -60,7 +66,7 @@ public class StatusPanel extends JPanel{
 	//게임에 대한 정보
 	private int score = 28000; //점수를 저장할 변수
 	private JLabel scoreLabel = new JLabel(Integer.toString(score));
-	private int coin = 2000; //코인을 저장할 변수 => 상점에 이용
+	private int coin = 4000; //코인을 저장할 변수 => 상점에 이용
 	private JLabel coinLabel = new JLabel(Integer.toString(coin));
 
 	
@@ -87,6 +93,11 @@ public class StatusPanel extends JPanel{
     	@Override //마우스가 올라갔을때의 이벤트를 무시하기 위해 오버라이딩
     	public void mouseEntered(MouseEvent e) {
 			
+    	}
+    	
+    	@Override //기존 이벤트 무시
+    	public void mouseExited(MouseEvent e) {
+    		
     	}
     	
     	
@@ -167,8 +178,13 @@ public class StatusPanel extends JPanel{
 		
 		//점수 보여주기
 		add(new JLabel("SCORE"));
+		
+		
+		
+		scoreLabel.setForeground(Color.WHITE);
+		scoreLabel.setFont(new Font("Gothic",Font.BOLD,40));
 		scoreLabel.setSize(300,300);
-		scoreLabel.setLocation(0,0);
+		scoreLabel.setLocation(120,-35);
 		//JLabel textLabel = new JLabel("점수");
 		//add(textLabel);
 		add(scoreLabel);
@@ -177,7 +193,7 @@ public class StatusPanel extends JPanel{
 		//소리 켜기&끄기 아이콘
 		JLabel soundButtonLabel = new JLabel(soundLabelIcon);
         soundButtonLabel.setSize(soundLabelIcon.getIconWidth(),soundLabelIcon.getIconHeight());
-        soundButtonLabel.setLocation(20, 20);
+        soundButtonLabel.setLocation(385, 35);
         soundButtonLabel.addMouseListener(new SoundButtonClickedEvent(parent,soundLabelMuteIcon,soundLabelIcon));
         		
 //        		new ButtonClickedEvent(parent, GameFrame.SELECT_PANEL,soundLabelMuteIcon,soundLabelIcon));
@@ -194,14 +210,17 @@ public class StatusPanel extends JPanel{
 				healthRecovery(30); //누를때마다 30의 체력이 회복
 			}
 		});
+		
+		coinLabel.setForeground(Color.WHITE);
+		coinLabel.setFont(new Font("Gothic",Font.BOLD,40));
 		coinLabel.setSize(300,300);
-		coinLabel.setLocation(280,350);
+		coinLabel.setLocation(264,354);
 		add(coinLabel);
 		
 		
 		JLabel xImageLabel = new JLabel(xIcon);
 		xImageLabel.setSize(xIcon.getIconWidth(),xIcon.getIconHeight());
-		xImageLabel.setLocation(200,500);
+		xImageLabel.setLocation(210,493);
 		add(coinImageLabel);
 		add(xImageLabel);
 		
@@ -235,12 +254,12 @@ public class StatusPanel extends JPanel{
 //			System.out.println("체력바 추가"); 확인용
 			JLabel healthBar = new JLabel(healthBarIcon);
 			healthBar.setSize(healthBarIcon.getIconWidth(),healthBarIcon.getIconHeight());
-			healthBar.setLocation(64+(i*10),420);
+			healthBar.setLocation(80+(i*10),430);
 			add(healthBar);
 			healthBarVector.add(healthBar);
 		}
 		
-		healthBarIndex = 64+(i*10); //가장 오른쪽 위치를 가리키게함
+		healthBarIndex = 80+(i*10); //가장 오른쪽 위치를 가리키게함
 //		int x = healthBarVector.get(healthBarVector.size()-1).getX();
 //		int y = healthBarVector.get(healthBarVector.size()-1).getY();
 //		lastHealthBarPosition.x = x;
@@ -248,11 +267,11 @@ public class StatusPanel extends JPanel{
 		//오른쪽 끝의 체력바의 위치 저장 => 체력추가 등에 사용하기 위해
 		
 		
-		//체력 텍스트 표시
-		healthLabel = new JLabel(Integer.toString(characterHealth));
-		healthLabel.setSize(200,200);
-		healthLabel.setLocation(65,500);
-		add(healthLabel);
+//		//체력 텍스트 표시
+//		healthLabel = new JLabel(Integer.toString(characterHealth));
+//		healthLabel.setSize(200,200);
+//		healthLabel.setLocation(65,500);
+//		add(healthLabel);
 //		JLabel  = new JLabel("체력 : "+Integer.toString(characterHealth));
 //		health.setSize(200,200);
 //		health.setLocation(65,500);
@@ -261,7 +280,7 @@ public class StatusPanel extends JPanel{
 		//캐릭터 아이콘
 		JLabel character = new JLabel(selectedCharacater);
 		character.setSize(selectedCharacater.getIconWidth(),selectedCharacater.getIconHeight());
-		character.setLocation(65,140);
+		character.setLocation(140,215);
 		add(character);
 		
 		
@@ -269,7 +288,7 @@ public class StatusPanel extends JPanel{
 		//초기 무기 설정 => 초기 무기는 연필
 		weaponLabel = weaponLabel = new JLabel(pencilIcon);
 		weaponLabel.setSize(pencilIcon.getIconWidth(),pencilIcon.getIconHeight());
-		weaponLabel.setLocation(65,560);
+		weaponLabel.setLocation(150,580);
 		add(weaponLabel);
 		
 		
@@ -287,27 +306,32 @@ public class StatusPanel extends JPanel{
 	public void getDamage(int damage) {
 		//데미지 % 5만큼의 체력바를 없애야함 
 		//=> 남아있는 체력바가 5인데,10을 깎을경우에 대한예외처리 필요
-		System.out.println("현재 체력"+characterHealth);
-		System.out.println("체력바 체력"+healthBarVector.size()*5);
+//		System.out.println("현재 체력"+characterHealth);
+//		System.out.println("체력바 체력"+healthBarVector.size()*5);
 		//가장 끝에 있는 체력바 라벨에 대한 참조를 가져와서 visible을 fasle로 변경
 		//오른쪽 끝의 체력바 라벨에 대한 참조를 가져옴
-		//데미지만큼 지워야 하므로 반복문 이용
-		for(int i=0;i<damage/5;i++) {
-			if(characterHealth<=5)
-				break; //체력이 5일때 10의 데미지를 주는 경우에 대해서
-			//현재 체력바의 가장 오른쪽 체력바라벨의 위치를 저장해둔다.
-			JLabel finalHealthBar = healthBarVector.get(healthBarVector.size()-1); 
-			finalHealthBar.setVisible(false); //안보이게 만들고
-			healthBarVector.remove(healthBarVector.size()-1); //벡터에서도 제거
-			//지워지고 난뒤, 가장 오른쪽 끝의 체력바라벨의 위치를 가져온다.
-			healthBarIndex = healthBarVector.get(healthBarVector.size()-1).getX()+10;
+		//데미지만큼 지워야 하므로 반복문 이용, 체력바 라벨이 존재할때만
+		if(healthBarVector.isEmpty()==false) {
+			for(int i=0;i<damage/5;i++) {
+				if(characterHealth<=5)
+					break; //체력이 5일때 10의 데미지를 주는 경우에 대해서
+				//현재 체력바의 가장 오른쪽 체력바라벨의 위치를 저장해둔다.
+				JLabel finalHealthBar = healthBarVector.get(healthBarVector.size()-1); 
+				finalHealthBar.setVisible(false); //안보이게 만들고
+				healthBarVector.remove(healthBarVector.size()-1); //벡터에서도 제거
+				//지워지고 난뒤, 가장 오른쪽 끝의 체력바라벨의 위치를 가져온다.
+				if(healthBarVector.isEmpty()==false) //체력이 남아있는경우에 대해서만
+					healthBarIndex = healthBarVector.get(healthBarVector.size()-1).getX()+10;
+			}
+			characterHealth -= damage;
 		}
+		
 //		//characterHealth/10*2 => 체력바의 개수
 //		healthBarVector.remove((characterHealth/10*2));
 //		
-		characterHealth -= damage;
-		//변경된 체력 표시
-		healthLabel.setText(Integer.toString(characterHealth));
+		
+//		//변경된 체력 표시
+//		healthLabel.setText(Integer.toString(characterHealth));
 	}
 	
 	//캐릭터의 체력을 더한다.
@@ -319,17 +343,17 @@ public class StatusPanel extends JPanel{
 			JLabel healthBar = new JLabel(healthBarIcon);
 			healthBar.setSize(healthBarIcon.getIconWidth(),healthBarIcon.getIconHeight());
 			//이전 체력바의 x좌표를 얻을방법 고안
-			healthBar.setLocation(healthBarIndex+i*10,420);
+			healthBar.setLocation(healthBarIndex+i*10,430);
 			add(healthBar);
 			repaint(); //그려진것이 보여지도록
 			healthBarVector.add(healthBar);
 		}
 		//x좌표 값 변경
-		healthBarIndex = healthBarIndex+(i-1)*10;
-		
+		healthBarIndex = healthBarIndex+(i-1)*10;		
 		characterHealth += pHealth;
-		//변경된 체력 표시
-		healthLabel.setText(Integer.toString(characterHealth));
+		
+//		//변경된 체력 표시
+//		healthLabel.setText(Integer.toString(characterHealth));
 	}
 	
 	
@@ -358,6 +382,14 @@ public class StatusPanel extends JPanel{
 		//변경된 코인 표시
 		coinLabel.setText(Integer.toString(coin));
 	}
+	
+	//배경 그리기
+	@Override
+    public void paintComponent(Graphics g) {
+       super.paintComponent(g); //그래픽 컴포넌트 설정
+       //배경 이미지
+       g.drawImage(bgImage, 0, 0,bgIcon.getIconWidth(),bgIcon.getIconHeight(),null); //이미지가 그려지는 시점 알림받지 않기
+    }
 	
 	
 	

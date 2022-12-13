@@ -22,6 +22,7 @@ import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -34,7 +35,7 @@ import javax.swing.JTextField;
 */
 
 //게임 패널에서 왼쪽에 붙어서 게임이 진행되는 패널을 제공
-public class GameRunningPanel extends JPanel {
+public class GameRunningPanel extends JLayeredPane {
 	private GameFrame parent;
 	//게임에 대한 특성
 	//라운드마다 생성될 풍선의 최대 개수 => 해당 풍선을 모두 지우면 다음 라운드로 넘어가도록
@@ -97,17 +98,17 @@ public class GameRunningPanel extends JPanel {
 	}
 	
 	
-	//사망을 관리하는 패널
-	private class DeadPanel extends JPanel{
-		
-		
-		public DeadPanel() {
-			
-			setSize(500,500);
-			setVisible(true);
-		}
-	}
-	
+//	//사망을 관리하는 패널
+//	private class DeadPanel extends JPanel{
+//		
+//		
+//		public DeadPanel() {
+//			
+//			setSize(500,500);
+//			setVisible(true);
+//		}
+//	}
+//	
 	
 	
 	
@@ -125,7 +126,9 @@ public class GameRunningPanel extends JPanel {
 		
 		private GameMangeThread gameMangeThread;
 		
-		private ImageIcon backgroundImageIcon = new ImageIcon("StoreBoard.png");
+		
+		//상점창과 엔딩창에 띄울 칠판 이미지
+		private ImageIcon backgroundImageIcon = new ImageIcon("blackBoard.png");
 		private Image backgroundImage = backgroundImageIcon.getImage();
 		
 		private ImageIcon rightArrowIcon = new ImageIcon("rightArrow.png");
@@ -171,12 +174,12 @@ public class GameRunningPanel extends JPanel {
 		private ImageIcon homeButtonEnteredIcon = new ImageIcon("homeEntered.png");
 		
 		
-		//배경 이미지를 바꾸기 위한 함수
-		public void setBackgroundImage(ImageIcon icon) {
-			this.backgroundImage = icon.getImage();
-			repaint(); //바뀐이미지가 보이도록 paintComponent()호출
-		}
-		
+//		//배경 이미지를 바꾸기 위한 함수
+//		public void setBackgroundImage(ImageIcon icon) {
+//			this.backgroundImage = icon.getImage();
+//			repaint(); //바뀐이미지가 보이도록 paintComponent()호출
+//		}
+//		
 		
 		
 		
@@ -394,13 +397,13 @@ public class GameRunningPanel extends JPanel {
 				repaint();
 				
 
-				System.out.println("아이디 텍스트 에리어 생성");
+//				System.out.println("아이디 텍스트 에리어 생성");
 				input.setFont(new Font("Gothic",Font.BOLD,20));
 				input.setLocation(200,400);
 				input.setSize(400,50);
 				add(input);
 				
-				System.out.println("입력 버튼 생성");
+//				System.out.println("입력 버튼 생성");
 				saveButton = new JButton("저장");
 				saveButton.setFont(new Font("Gothic",Font.BOLD,20));
 				saveButton.setLocation(600,400);
@@ -600,6 +603,8 @@ public class GameRunningPanel extends JPanel {
 //		}
 		
 		
+		//칠판 그리기
+		
 		//배경 이미지 그리기 =>칠판을 가져와서 그림
 		@Override
 		public void paintComponent(Graphics g) {
@@ -626,14 +631,14 @@ public class GameRunningPanel extends JPanel {
 		
 		//게임패널에서 홈 화면으로 돌아갈수 있도록 하기 위함 => 게임 종료후 다시하기에 사용
 		//현재까지의 모든 벡터를 비우고,스레드를 중지시키고, 홈화면으로 돌아가면 다시 음악을 실행시켜야함
-		
-		 //홈 버튼
-  		JLabel homeButton = new JLabel("버튼 테스트");
-  		homeButton.setSize(100,100);
-  		homeButton.setLocation(100,100);
-  		homeButton.addMouseListener(new ButtonClickedEvent(parent,parent.BEGINNING_PANEL));
-  		add(homeButton);
-		
+//		
+//		 //홈 버튼
+//  		JLabel homeButton = new JLabel("버튼 테스트");
+//  		homeButton.setSize(100,100);
+//  		homeButton.setLocation(100,100);
+//  		homeButton.addMouseListener(new ButtonClickedEvent(parent,parent.BEGINNING_PANEL));
+//  		add(homeButton);
+//		
 		
 		
 		//선택한 캐릭터에 따른 게임 생성
@@ -651,21 +656,21 @@ public class GameRunningPanel extends JPanel {
 		}
 		
 		
-		
-		JButton stopBalloon = new JButton("풍선 멈추기");
-		stopBalloon.setSize(100,100);
-		stopBalloon.setLocation(0,800);
-		stopBalloon.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				for(int i=0;i<balloonVector.size();i++) {
-					Balloon balloon = balloonVector.get(i);
-					balloonVector.remove(i);// 벡터에서 지우기
-					balloon.stopFallingThread();
-				}
-			}
-		});
-		add(stopBalloon);
+		//테스트용
+//		JButton stopBalloon = new JButton("풍선 멈추기");
+//		stopBalloon.setSize(100,100);
+//		stopBalloon.setLocation(0,800);
+//		stopBalloon.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				for(int i=0;i<balloonVector.size();i++) {
+//					Balloon balloon = balloonVector.get(i);
+//					balloonVector.remove(i);// 벡터에서 지우기
+//					balloon.stopFallingThread();
+//				}
+//			}
+//		});
+//		add(stopBalloon);
 		
 		ballonSpawnTime = 2000; //풍선이 생성되는데 걸리는 시간을 1초로 지정
 		
@@ -724,6 +729,7 @@ public class GameRunningPanel extends JPanel {
 			if(statusPanel.getHealth()<=0) {
 				//음악 스레드 종료 => 사망 음악 실행
 				
+				//사망창 띄우기
 				
 				
 				//풍선 생성 스레드 종료
@@ -759,6 +765,8 @@ public class GameRunningPanel extends JPanel {
 		@Override
 		public void run() {
 			while(isGameRun) {
+			
+				//풍선 삭제 관리
 				//풍선이 일정높이 아래로 떨어지면 벡터에서 삭제 => 벡터의 모든 풍선 검사
 				for(int i=0;i<balloonVector.size();i++) {
 					try {
@@ -786,6 +794,7 @@ public class GameRunningPanel extends JPanel {
 								//최종 결과창 출력 => 아이디 입력받기 => 다시하기 버튼, 점수보기 버튼 보여주기
 								storeAndFinalPanel = new StoreAndFianlPanel(-1,this,statusPanel);
 								storeAndFinalPanel.setBounds(100,200,800,500);
+								add(storeAndFinalPanel,JLayeredPane.DRAG_LAYER);
 								break;	
 							}
 							
@@ -798,14 +807,7 @@ public class GameRunningPanel extends JPanel {
 			
 				
 				
-//				//라운드가 4로 넘어가면 클리어!
-//				if(gameLevel>3&&isStoreOn==false&&testFlag == false) {
-//					System.out.println("게임 성공! 아이디를 입력하세요!!");
-//					//작동중인 스레드는 GameMangeThread이외에는 없게 될것이므로 해당 스레드만 종료시키면됨
-//					isGameRun = false;
-//					break; //while문 break;
-//				}
-				
+				//라운드&클리어 관리
 				//풍선이 전부 생성이 되었고,생성된 풍선을 모두 지웠을때 => 다음 라운드로 넘어가거나, 게임 클리어를 알림
 				if(!ballonSpawnThread.getIsRun()&&balloonVector.isEmpty()&&isStoreOn==false) {
 					//게임이 3라운드까지 모두 끝났는지 확인필요
@@ -818,7 +820,7 @@ public class GameRunningPanel extends JPanel {
 						//엔딩창 생성할것
 						storeAndFinalPanel = new StoreAndFianlPanel(gameLevel,this,statusPanel); //현재 스레드에 대한 접근 권한 부여
 						storeAndFinalPanel.setBounds(100,200,800,500);
-						add(storeAndFinalPanel);
+						add(storeAndFinalPanel,JLayeredPane.DRAG_LAYER);
 						
 						repaint(); //상점창이 보이도록
 						isStoreOn = true;
@@ -829,52 +831,13 @@ public class GameRunningPanel extends JPanel {
 						System.out.println(gameLevel-1 + "레벨 상점창 띄우기");//상점창에서 버튼을 눌러 다음 스테이지로 넘어가게끔
 						storeAndFinalPanel = new StoreAndFianlPanel(gameLevel-1,this,statusPanel); //현재 스레드에 대한 접근 권한 부여
 						storeAndFinalPanel.setBounds(100,200,800,500);
-						add(storeAndFinalPanel);
+						add(storeAndFinalPanel,JLayeredPane.DRAG_LAYER);
 						
 						repaint(); //상점창이 보이도록
 						isStoreOn = true;
 						testFlag = true;
 						
-//						if(gameLevel==3&&balloonVector.isEmpty()) {
-//							System.out.println("게임 클리어!");
-//							break;
-//						}
 					}
-//					if(gameLevel>3) {
-//						//아이디 입력받는 패널 띄우기 => 메인화면으로 돌아가기 버튼을 부착할것
-//						System.out.println("게임 성공! 아이디를 입력하세요!!");
-//						//작동중인 스레드는 GameMangeThread이외에는 없게 될것이므로 해당 스레드만 종료시키면됨
-//						isGameRun = false;
-//					}
-//					else { //3라운드 이하의 라운드에서만 상점과 새로운 풍선스레드를 동작
-//						if(isStoreOn!=true&&gameLevel<=2) {
-//							System.out.println(roundCount);
-//							gameLevel++;
-//							System.out.println(gameLevel-1 + "레벨 상점창 띄우기");//상점창에서 버튼을 눌러 다음 스테이지로 넘어가게끔
-//							storePanel = new StorePanel(gameLevel-1,this); //현재 스레드에 대한 접근 권한 부여
-//							storePanel.setBounds(100,200,800,500);
-//							
-//							add(storePanel);
-//							
-//							repaint(); //상점창이 보이도록
-//							isStoreOn = true;
-//							testFlag = true;
-//							
-//							if(gameLevel==3&&balloonVector.isEmpty()) {
-//								System.out.println("게임 클리어!");
-//								break;
-//							}
-							
-							
-//						}
-						
-						//벡터 비우기
-
-//						//아래 내용을 상점창의 버튼으로 옮길것
-//						gameLevel+=1;
-//						ballonSpawnThread = new BallonSpawnThread(ballonSpawnTime,ballonSpeed,statusPanel,gameLevel);
-//						ballonSpawnThread.start();
-					
 				}
 				
 				//현재 살아있는 경우에 대해서만 죽임
@@ -887,16 +850,17 @@ public class GameRunningPanel extends JPanel {
 					//레벨 매개변수 대신 -1을 입력 => 사망칸 띄우기
 					storeAndFinalPanel = new StoreAndFianlPanel(-1,this,statusPanel);
 					storeAndFinalPanel.setBounds(100,200,800,500);
-					add(storeAndFinalPanel);
+					add(storeAndFinalPanel,JLayeredPane.DRAG_LAYER); //가장 최상단 레이어로 사망창 띄우기
 				}
 			}
 		}
 			
 	}
 	
-	
-	
+
 	//스레드 작성
+	
+	//풍선 생성 스레드 => 랜덤한 위치(어느정도 풍선이 겹치지 않도록 설정)에서 색깔 확률에 따라 풍선을 생성한다.
 	//일정 시간마다 풍선을 생성하고 해당 풍선이 내려가도록 하는 스레드를 별도로 붙인다.
 	//라운드에 따라서 풍선의 색깔별 확률을 부여한다.
 	private class BallonSpawnThread extends Thread{
@@ -946,7 +910,7 @@ public class GameRunningPanel extends JPanel {
 		public BallonSpawnThread(int spawnSpeed,int fallingSpeed,StatusPanel statusPanel,int gameLevel) {
 			this.gameLevel = gameLevel; //게임 레벨
 			System.out.println("라운드 : "+ gameLevel);
-//			gameLevel = 3;
+			gameLevel = 3;
 			//레벨에 맞춰 색깔풍선 확률과, 생성될 풍선의 수 지정
 			switch(gameLevel) {
 			case 1:
@@ -982,15 +946,8 @@ public class GameRunningPanel extends JPanel {
 		
 		@Override
 		public void run() {
-			
-			
-			//게임 오프닝 메시지
-			
-			
-//			while(true) {
-//				
-//			}
-			//원하는 순자만큼 풍선을 생성하도록
+
+			//원하는 순자만큼 풍선을 생성하도록 => 라운드마다 정해진만큼 생성하고 생성스레드는 종료됨
 			for(int i=0;i<BallonCount;i++) {
 				int position;
 				
@@ -1000,11 +957,9 @@ public class GameRunningPanel extends JPanel {
 					if(word.length()<10) //9글자 이하의 단어의 경우 반복문 탈출
 						break;
 				}
-				
-				
+
 				//랜덤한 풍선에 대한 확률조정
-				
-				
+
 				//풍선의 생성 위치 조정 => 풍선끼리 잘 겹치지 않도록
 				//이미지의 가로길이를 가져와서 게임러닝패널의 영역으로 나누어 영역을 지정
 				while(true) {
@@ -1049,23 +1004,7 @@ public class GameRunningPanel extends JPanel {
 				add(balloon); //패널에 붙이기
 				balloonVector.add(balloon);//벡터에 풍선 삽입
 				//System.out.println(x+","+y);
-				//풍선 생성시 풍선 생성자에 매개변수로 랜덤한 숫자와 단어를 넣어서 보냄
-				
-				//풍선 객체에서는 해당 숫자를 보고 생성될 풍선의 타입(빨강,파랑,노랑,etc)을 결정
-				
-//				//테스트용으로 JLabel에 작성
-//				label = new JLabel(word); //랜덤 단어를 붙여서 생성
-//				label.setSize(100,100);
-//						
-//				label.setLocation(x,y); //해당 위치에 생성
-//				add(label); //패널에 붙이기
-				//wordVector.add(label);//벡터에 단어 삽입
-				
-				//풍선에 대한 위치가 변경되도록 하는 스레드 작성
-				//풍선이 떨어지게 하는 스레드에는 풍선이 떨어지는 속도와, 해당 라벨에 대한 참조를 넘겨줌
-//				fallingThread = new ballonFallingThread(label,700);
-//				fallingThread.start();
-				
+		
 				try {
 					Thread.sleep(spawnSpeed);
 				} catch (InterruptedException e) {
@@ -1075,27 +1014,26 @@ public class GameRunningPanel extends JPanel {
 				}
 			}
 			
-			
 			System.out.println("스레드 종료");
 			isRun = false;
 			//라운드 종료 이후
 			controlPanel.initDoublePoint(); //경험치 2배=>1배로 초기화
-//			while(true) {
-//				
-//			}
+
 		}
 	}
 	
 	
-
-	
-	
 	//체크포인트3
-	class ControlPanel extends JPanel {
+	//단어를 입력받고, 엔터를 치면 올바른 단어인지 확인하여 점수를 부여하거나 체력을 깎는 역할
+	private class ControlPanel extends JPanel {
 		private JTextField input = new JTextField(15); //단어을 입력받을 공간 설정
 		private StatusPanel statusPanel;
 		private int doublePoint = 1; //스타풍선을 터트렸을때 한 라운드 동안 경험치를 2배로 받도록 하기위함
 		private Clip clip;
+		
+		
+		private ImageIcon icon = new ImageIcon("controlPanelImage.png");
+		private Image controlPanelImage = icon.getImage();
 		
 		//경험치2배 => 1배로 초기화
 		public void initDoublePoint() {
@@ -1112,8 +1050,9 @@ public class GameRunningPanel extends JPanel {
 			
 //			this.setLayout(new FlowLayout());
 //			this.setBackground(Color.LIGHT_GRAY);
-			input.setLocation(10,10);
-			input.setSize(800,50);
+			input.setFont(new Font("Gothic",Font.BOLD,30));
+			input.setLocation(15,5);
+			input.setSize(965,50);
 			add(input);
 			
 			//엔터키를 쳤을때 이벤트 발생
@@ -1137,12 +1076,6 @@ public class GameRunningPanel extends JPanel {
 							System.out.println("정답 음원 추출 오류!");
 						}
 						clip.start(); // 버튼을 클릭했을때 소리가 나도록
-						
-						//풍선의 체력이 0이되었을때만 점수추가
-//						statusPanel.plusScore(10); //점수 추가
-						
-//						System.out.println("단어 일치함");
-						
 					}
 					else { //정답이 아닐시 => 체력을 5깎음
 						try {
@@ -1181,6 +1114,9 @@ public class GameRunningPanel extends JPanel {
 							//풍선에 추가 공격을 가한다.(꼬꼬가 공격하면 꾸꾸도 공격)
 							System.out.println("추가공격!");
 							balloon.getDamage(weaponPower+1);
+							
+							//꼬꼬 공격 소리 삽입
+							
 						}
 						else
 							balloon.getDamage(weaponPower); 
@@ -1248,6 +1184,16 @@ public class GameRunningPanel extends JPanel {
 //			System.out.println("단어 불일치");
 			return false; //틀린 답을 입력할경우 fasle를 리턴한다.
 		}
+		
+		//컨으롤패널의 뒤배경 그리기
+		//게임러닝패널의 백그라운드 이미지 그리기
+		@Override
+	    public void paintComponent(Graphics g) {
+	       super.paintComponent(g); //그래픽 컴포넌트 설정
+	       //배경 이미지
+	       g.drawImage(controlPanelImage, 0, 0, this.getWidth(),this.getHeight(),null); //이미지가 그려지는 시점 알림받지 않기
+	    }
+		
 	}
 	
 	//게임러닝패널의 백그라운드 이미지 그리기

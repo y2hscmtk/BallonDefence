@@ -37,6 +37,10 @@ public class WordEditPanel extends JPanel{
 	private JScrollPane scrollPane;
 	
 	
+	 //배경 이미지
+    private ImageIcon bgImageicon = new ImageIcon("background.png");
+    private Image backgroundPanelImage = bgImageicon.getImage();
+	
 	
 	public WordEditPanel (GameFrame parent) {
         this.parent = parent;//부모를 입력받아 변수에 저장
@@ -118,11 +122,11 @@ public class WordEditPanel extends JPanel{
 	}
 	
 	
-	//배경 이미지 그리기
-  	@Override
-  	public void paintComponent(Graphics g) {
-  		super.paintComponent(g); //그래픽 컴포넌트 설정
-  		//배경 이미지
-  		g.drawImage(backgroundImage, 0, 0, this.getWidth(),this.getHeight(),null); //이미지가 그려지는 시점 알림받지 않기
-  	}
+	 @Override
+	    public void paintComponent(Graphics g) {
+	       super.paintComponent(g); //그래픽 컴포넌트 설정
+	       //배경 이미지
+	       g.drawImage(backgroundPanelImage, 0, 0, bgImageicon.getIconWidth(),bgImageicon.getIconHeight(),null); //이미지가 그려지는 시점 알림받지 않기
+	    }
+	    
 }
