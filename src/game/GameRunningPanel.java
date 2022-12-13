@@ -1,4 +1,4 @@
-package game;
+package game; 
 
 import java.awt.Color;
 import java.awt.Font;
@@ -70,6 +70,10 @@ public class GameRunningPanel extends JLayeredPane {
 	private ControlPanel controlPanel;
 	private StatusPanel statusPanel;
 	
+	public ControlPanel getControlPanel() {
+		return controlPanel;
+	}
+	
 	//풍선을 관리하기 위한 벡터
 	private Balloon balloon;
 	private Vector<Balloon> balloonVector = new Vector<Balloon>();
@@ -134,6 +138,25 @@ public class GameRunningPanel extends JLayeredPane {
 		private ImageIcon rightArrowIcon = new ImageIcon("rightArrow.png");
 		private ImageIcon rightArrowEnteredIcon = new ImageIcon("rightArrowEntered.png");
 		
+		//게임클리어 로고
+		private ImageIcon gameClearIcon = new ImageIcon("gameClearImage.png");
+		//게임클리어
+		private JLabel gameClearLabel;
+		//게임오버 로고
+		private ImageIcon gameOverIcon = new ImageIcon("gameOverImage.png");
+		//게임오버 라벨
+		private JLabel gameOverLabel;
+		//스코어 라벨
+		private ImageIcon scoreImageIcon = new ImageIcon("scoreImageIcon.png");
+		private JLabel scoreLabel;
+		//네임 라벨
+		private ImageIcon nameImageIcon = new ImageIcon("nameImageIcon.png");
+		private JLabel nameLabel;
+		
+		
+		
+		
+		
 		//아이템 코드번호
 		private static final int POSTION = 1;
 		private static final int SCISSORS = 2;
@@ -150,7 +173,12 @@ public class GameRunningPanel extends JLayeredPane {
 //		//마지막 창에 보여지게 할 아이콘
 //		private ImageIcon finalImageIcon = new ImageIcon("finalImage.png");
 		
-		private ImageIcon borderIcon = new ImageIcon("border.png");
+		//무기박스 아이콘
+		private ImageIcon weaponBoxIcon = new ImageIcon("weaponBox.png");
+		//포션박스 아이콘
+		private ImageIcon positonBoxIcon = new ImageIcon("positonBox.png");
+		
+//		private ImageIcon weaponBoxIcon = new ImageIcon("border.png");
 		
 		//상점에는 2가지의 아이템만 보여줄것
 		private ImageIcon item1;
@@ -170,8 +198,8 @@ public class GameRunningPanel extends JLayeredPane {
 		
 		private ImageIcon deadBoardIcon = new ImageIcon("deadBoard.png");
 		//홈버튼 이미지
-		private ImageIcon homeButtonIcon = new ImageIcon("home.png");
-		private ImageIcon homeButtonEnteredIcon = new ImageIcon("homeEntered.png");
+		private ImageIcon homeButtonIcon = new ImageIcon("home2.png");
+		private ImageIcon homeButtonEnteredIcon = new ImageIcon("home2Entered.png");
 		
 		
 //		//배경 이미지를 바꾸기 위한 함수
@@ -390,131 +418,117 @@ public class GameRunningPanel extends JLayeredPane {
 			//상점창을 띄울경우 어떤 아이템을 보이게 할지는 현재 코인을 보고 결정
 			setPanelElement(this.gameLevel);
 			
-			if(this.gameLevel==-1) {
+			//게임오버
+			
+			if(this.gameLevel==-1||gameLevel==3) {
 				System.out.println(this.gameLevel+"사망하였습니다!");
-				
 				
 				repaint();
 				
-
+				//GFrame을 멤버로 받는 패널에서만 가능
+				JLabel homeButton = new JLabel(homeButtonIcon);
+				homeButton.setSize(homeButtonIcon.getIconWidth(),homeButtonIcon.getIconHeight());
+				homeButton.setLocation(30,10);
+				homeButton.addMouseListener(new HomeButtonClickedEvent(parent,parent.BEGINNING_PANEL,homeButtonEnteredIcon,homeButtonIcon));
+				add(homeButton);
+				
+				
+				if(gameLevel==-1) {
+					//게임오버 로고 생성
+					gameOverLabel = new JLabel(gameOverIcon);
+					gameOverLabel.setLocation(60,80);
+					gameOverLabel.setSize(gameOverIcon.getIconWidth(),gameOverIcon.getIconHeight());
+					add(gameOverLabel);
+				}
+				else if(gameLevel==3) {
+					//게임오버 로고 생성
+					gameClearLabel = new JLabel(gameClearIcon);
+					gameClearLabel.setLocation(60,74);
+					gameClearLabel.setSize(gameClearIcon.getIconWidth(),gameClearIcon.getIconHeight());
+					add(gameClearLabel);
+					
+				}
+				
+				
+				
+				//스코어 이미지 생성
+				scoreLabel = new JLabel(scoreImageIcon);
+				scoreLabel.setLocation(60,210);
+				scoreLabel.setSize(scoreImageIcon.getIconWidth(),scoreImageIcon.getIconHeight());
+				add(scoreLabel);
+				
+				//네임 이미지 생성
+				nameLabel = new JLabel(nameImageIcon);
+				nameLabel.setLocation(80,300);
+				nameLabel.setSize(nameImageIcon.getIconWidth(),nameImageIcon.getIconHeight());
+				add(nameLabel);
+				
+				
+				int finalScore = (statusPanel.getScore()) + (statusPanel.getCoin());
+				JLabel score = new JLabel(Integer.toString(finalScore)+ " 점"); //점수 저장
+	
+				score.setForeground(Color.WHITE);
+				score.setFont(new Font("Gothic",Font.BOLD,80));
+				score.setSize(440,250);
+				score.setLocation(320,130);
+				add(score);
+				
 //				System.out.println("아이디 텍스트 에리어 생성");
 				input.setFont(new Font("Gothic",Font.BOLD,20));
-				input.setLocation(200,400);
-				input.setSize(400,50);
+				input.setLocation(280,320);
+				input.setSize(320,50);
+				input.getFocusAccelerator();
 				add(input);
+				
+				PlayerMakeEvent playerMakeEvent = new PlayerMakeEvent();
 				
 //				System.out.println("입력 버튼 생성");
 				saveButton = new JButton("저장");
 				saveButton.setFont(new Font("Gothic",Font.BOLD,20));
 				saveButton.setLocation(600,400);
 				saveButton.setSize(80,80);
-				
-				PlayerMakeEvent playerMakeEvent = new PlayerMakeEvent();
-				
-				//아이디 저장하는 이벤트
 				saveButton.addMouseListener(playerMakeEvent);
-//						new MouseAdapter() {
-//					
-//					@Override
-//					public void mouseClicked(MouseEvent e) {
-//						String id = input.getText();
-//						//최종 점수는 잔여코인과 점수를 더한값으로
-//						int finalScore = statusPanel.getScore() + statusPanel.getCoin();
-//						System.out.println("새로운 플레이어 생성");
-//						addPlayer(id,finalScore);
-//						
-//					}
-//				});
-				
 				add(saveButton);
-				
-				//repaint();
-				
-			} //엔딩 체크포인트
-			else if(gameLevel==3) {
-				System.out.println("3라운드까지 완료!");
-				//이곳에 게임 엔딩창에 필요한 요소들 추가
-				
-				//setBackgroundImage(deadBoardIcon);
-				
-				
-				//GFrame을 멤버로 받는 패널에서만 가능
-				JLabel homeButton = new JLabel(homeButtonIcon);
-				homeButton.setSize(homeButtonIcon.getIconWidth(),homeButtonIcon.getIconHeight());
-				homeButton.setLocation(0,0);
-				homeButton.addMouseListener(new HomeButtonClickedEvent(parent,parent.BEGINNING_PANEL,homeButtonEnteredIcon,homeButtonIcon));
-				add(homeButton);
-				
-						
-				
-				//체크포인트2
-				//아이디 입력받을 텍스트공간 생성
-				input.setFont(new Font("Gothic",Font.BOLD,20));
-				input.setLocation(200,400);
-				input.setSize(400,50);
-				add(input);
-				
-				saveButton = new JButton("저장");
-				saveButton.setFont(new Font("Gothic",Font.BOLD,20));
-				saveButton.setLocation(600,400);
-				saveButton.setSize(80,80);
-				
-				//중복저장을 안하기 위해
-				PlayerMakeEvent playerMakeEvent = new PlayerMakeEvent();
-				//아이디 저장하는 이벤트
-				saveButton.addMouseListener(playerMakeEvent);
-						
-//						new MouseAdapter() {
-//					
-//					@Override
-//					public void mouseClicked(MouseEvent e) {
-//						String id = input.getText();
-//						//최종 점수는 잔여코인과 점수를 더한값으로
-//						int finalScore = statusPanel.getScore() + statusPanel.getCoin();
-//						System.out.println("새로운 플레이어 생성");
-//						addPlayer(id,finalScore);
-//						
-//					}
-//				});
-				
-				add(saveButton);
-				
 			}
 			else { //1,2레벨 상점창 관리 => 3라운드 상점은 앤딩판넬을 보여줌=>아이디를 입력받아 저장하는 공간과, 처음화면으로 돌아가는버튼
 				item1Label = new JLabel(item1);
 				
 				item1Label.setSize(item1.getIconWidth(),item1.getIconHeight());
-				item1Label.setLocation(140,150);
+				item1Label.setLocation(140,180);
 				
 				//무기 변경 이벤트 작성 => 한번 구매된 이후 추가구매가 없도록
 				item1Label.addMouseListener(new ItemLabelEvent(weaponCode,statusPanel));
 				add(item1Label);
 				
-				JLabel border1 = new JLabel(borderIcon);
-				border1.setSize(borderIcon.getIconWidth(),borderIcon.getIconHeight());
-				border1.setLocation(60,100);
-				add(border1);
+				
+				//무기 테두리 박스
+				JLabel weaponBox = new JLabel(weaponBoxIcon);
+				weaponBox.setSize(weaponBoxIcon.getIconWidth(),weaponBoxIcon.getIconHeight());
+				weaponBox.setLocation(80,120);
+				add(weaponBox);
 				
 				
 				JLabel postionItem = new JLabel(item2);
 				postionItem.setSize(item2.getIconWidth(),item2.getIconHeight());
-				postionItem.setLocation(420,150); 
+				postionItem.setLocation(480,180); 
 				//포션의 코드를 넘겨서 이벤트 작성, 포션의 가격은 300원으로
 				postionItem.addMouseListener(new ItemLabelEvent(POSTION,statusPanel)); 
 				//
 				
 				add(postionItem);
 				
-				JLabel border2 = new JLabel(borderIcon);
-				border2.setSize(borderIcon.getIconWidth(),borderIcon.getIconHeight());
-				border2.setLocation(400,100);
-				add(border2);
+				
+				//물약 테두리 박스
+				JLabel postionBox = new JLabel(positonBoxIcon);
+				postionBox.setSize(positonBoxIcon.getIconWidth(),positonBoxIcon.getIconHeight());
+				postionBox.setLocation(420,120);
+				add(postionBox);
 				
 				
 				//다음 레벨로 넘어가는 버튼 => 누르면 라운드에 따라 라운드 이미지 출력 고려해볼것
 				JLabel nextLevelButton = new JLabel(rightArrowIcon);
 				nextLevelButton.setSize(rightArrowIcon.getIconWidth(),rightArrowIcon.getIconHeight());
-				nextLevelButton.setLocation(500,20);
+				nextLevelButton.setLocation(620,20);
 				nextLevelButton.addMouseListener(new MouseAdapter() {
 					
 					@Override //마우스가 컴포넌트 위에 올라갈때의 이벤트
@@ -524,9 +538,10 @@ public class GameRunningPanel extends JLayeredPane {
 					}
 					
 					@Override //마우스 버튼이 떼어질때
-					public void mouseReleased(MouseEvent e) {
+					public void mouseExited(MouseEvent e) {
 						JLabel label = (JLabel)(e.getComponent()); //이벤트가 발생한 라벨을 가져옴
 						label.setIcon(rightArrowIcon); //원래 이미지로 변경
+						repaint();
 					}
 					
 					
@@ -538,19 +553,6 @@ public class GameRunningPanel extends JLayeredPane {
 						//무기 공격력 변경
 						setWeaponPower(selectedItem);				
 						setVisible(false);
-						
-						
-//						//2초간 대기
-//						try {
-//							setVisible(false); //상점창 지우기
-//							repaint();
-//							System.out.println("1초간 대기");
-//							Thread.sleep(1000);
-//						} catch (InterruptedException e1) {
-//							// TODO Auto-generated catch block
-//							e1.printStackTrace();
-//						}
-//						
 						
 						gameMangeThread.makeBalloonSpawnThreadAndStart(); //다음 라운드의 게임생성
 						//gameMangeThread.setIsStoreOn(); //상점이 다시 안보이는 상태로 변경
@@ -594,26 +596,14 @@ public class GameRunningPanel extends JLayeredPane {
 	        }
 		}
 		
-		
-		
-		
-//		//칠판 없애기
-//		public void removeBoard() {
-//			backgroundImage = 
-//		}
-		
-		
-		//칠판 그리기
-		
+
 		//배경 이미지 그리기 =>칠판을 가져와서 그림
 		@Override
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			System.out.println("호출됨");
-			g.drawImage(backgroundImage,0,0,backgroundImageIcon.getIconWidth(),backgroundImageIcon.getIconHeight(),null);
+			g.drawImage(backgroundImage,-10,-10,backgroundImageIcon.getIconWidth(),backgroundImageIcon.getIconHeight(),null);
 		}
-		
-		
 	}
 	
 	
@@ -1038,6 +1028,16 @@ public class GameRunningPanel extends JLayeredPane {
 		//경험치2배 => 1배로 초기화
 		public void initDoublePoint() {
 			doublePoint = 1; 
+		}
+		
+		//입력창 비활성화
+		public void enableInput() {
+			input.setEnabled(false);
+		}
+		
+		//입력창 활성화
+		public void ableInput() {
+			input.setEnabled(true);
 		}
 		
 		//생성자 

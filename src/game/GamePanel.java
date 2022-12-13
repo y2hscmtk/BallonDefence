@@ -49,6 +49,10 @@ public class GamePanel extends JPanel{
 	private boolean gameOn = false;
 	
 	
+	public GameRunningPanel getGammeRunningPanel() {
+		return gameRunningPanel;
+	}
+	
 //	private WordList wordList; //단어를 관리하기 위한 용도
 //	private ControlPanel controlPanel;
 	

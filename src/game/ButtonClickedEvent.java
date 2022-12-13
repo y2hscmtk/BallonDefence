@@ -86,14 +86,14 @@ public class ButtonClickedEvent extends MouseAdapter{
 //		label.setIcon(presentIcon); //원래 이미지로 변경
 		//버튼이 눌려진 순간 소리가 나도록
 		try {
-			clip = AudioSystem.getClip();
+			setClip(AudioSystem.getClip());
 			File audioFile = new File("ButtonClick.wav");
 			AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-			clip.open(audioStream);
+			getClip().open(audioStream);
 		}catch(Exception E) {
 			System.out.println("오류!");
 		}
-		clip.start(); // 버튼을 클릭했을때 소리가 나도록
+		getClip().start(); // 버튼을 클릭했을때 소리가 나도록
 	}
 
 	public ImageIcon getEnteredIcon() {
@@ -118,5 +118,13 @@ public class ButtonClickedEvent extends MouseAdapter{
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	public Clip getClip() {
+		return clip;
+	}
+
+	public void setClip(Clip clip) {
+		this.clip = clip;
 	}
 }

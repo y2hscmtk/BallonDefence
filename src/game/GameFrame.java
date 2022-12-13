@@ -36,6 +36,18 @@ public class GameFrame extends JFrame {
     
     private TreeMap<String,Integer> playerMap = new TreeMap<String,Integer>();
     
+    private boolean flag = false;
+    
+    
+    public GamePanel getGamePanel() {
+    	return gamePanel;
+    }
+    
+    
+    //재클릭 활성화
+    public void setFlag() {
+    	flag = true;
+    }
     
     private Music music;
     
@@ -221,7 +233,8 @@ public class GameFrame extends JFrame {
                 setContentPane(wordEditPanel);
                 break;
             case RANKING_PANEL:
-            	
+            	if(flag) //다시 업데이트 하는경우
+            		rankingPanel.initShow(); //화면에 현재 보여지고 있던 내용을 초기화
             	//파일 내용 업데이트
             	try {
         			file2Map();

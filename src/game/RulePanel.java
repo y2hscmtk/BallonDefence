@@ -3,9 +3,11 @@ package game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -56,15 +58,34 @@ public class RulePanel extends JPanel {
 			// TODO Auto-generated constructor stub
 		}
 		
+		@Override //이벤트 무시
+		public void mouseClicked(MouseEvent e) {
+			
+		}
+		
 		//마우스클릭 이벤트만 오버라이딩
 		@Override
-		public void mouseClicked(MouseEvent e) {
+		public void mousePressed(MouseEvent e) {
 			ruleLabel.setIcon(rules[index]);
 			
 			index++; //클릭하면 다음 인덱스로 넘어가도록
 			if(index>=5) {
 				index%=5; //모듈러연산 =>처음으로 돌아가게
 			}
+			
+			JLabel label = (JLabel)(e.getComponent()); //이벤트가 발생한 라벨을 가져옴
+//			label.setIcon(presentIcon); //원래 이미지로 변경
+			//버튼이 눌려진 순간 소리가 나도록
+			try {
+				setClip(AudioSystem.getClip());
+				File audioFile = new File("ButtonClick.wav");
+				AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+				getClip().open(audioStream);
+			}catch(Exception E) {
+				System.out.println("오류!");
+			}
+			getClip().start(); // 버튼을 클릭했을때 소리가 나도록
+			
 		}
     	
     }

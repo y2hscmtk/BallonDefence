@@ -78,12 +78,23 @@ public class RankingPanel extends JPanel {
 //			topTenPlayerList[i].setOpaque(true);
 			topTenPlayerList[i].setBackground(Color.white);
 			if(i>=5) {
-				topTenPlayerList[i].setLocation(840,-260 + (i*100));
+				topTenPlayerList[i].setLocation(865,-327 + (i*110));
 			}
 			else {
-				topTenPlayerList[i].setLocation(400,240+(i*100));
+				topTenPlayerList[i].setLocation(400,220+(i*110));
 			}
 			add(topTenPlayerList[i]);
+			
+		}
+		parent.setFlag(); //재클릭여부를 알림
+	}
+	
+	//화면에 보여지고 있는 랭킹순위들을 초기화한다.
+	public void initShow() {
+		for(int i=0;i<topTenPlayerList.length;i++) {
+			
+			//제거
+			remove(topTenPlayerList[i]);
 		}
 	}
 	
