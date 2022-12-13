@@ -2,7 +2,13 @@ package game;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -28,6 +34,9 @@ public class GameFrame extends JFrame {
     private RulePanel rulePanel;
     private GamePanel gamePanel;
     
+    private TreeMap<String,Integer> playerMap = new TreeMap<String,Integer>();
+    
+    
     private Music music;
     
     private boolean musicOn = true; //현재 음악이 재생중인지 여부
@@ -50,6 +59,15 @@ public class GameFrame extends JFrame {
     
     public GameFrame() {
     	setTitle("BallonDefense");
+    	
+    	
+    	try {
+			file2Map();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
     	
     	//패널 생성 => 자기 자신을 생성자로 넘겨줘서 부모를 설정해줌
     	selectPanel = new SelectPanel(this);
@@ -151,6 +169,39 @@ public class GameFrame extends JFrame {
     }
     
    
+  //파일에서 정보를 읽어 맵에 저장하는 메소드 => 한글 잘 읽어옴
+  	public void file2Map() throws IOException {
+  		
+  		// TODO Auto-generated method stub
+  		 
+          FileInputStream input=new FileInputStream("Score.txt");
+          InputStreamReader reader=new InputStreamReader(input,"utf-8");
+          BufferedReader in=new BufferedReader(reader);
+          
+          //BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file),"euc-kr"));
+          // 한글 깨짐 현상 해결
+
+          int ch;
+          //String test = in.readLine();
+          String token;
+          while((token=in.readLine())!=null) { //한줄씩 읽어와서 맵에 삽입
+          	StringTokenizer st= new StringTokenizer(token,"&");
+          	int score = Integer.parseInt(st.nextToken());
+          	String name = st.nextToken();
+          	
+          	//점수를 키값으로 하여 이름 저장
+          	playerMap.put(name,score); //맵에 플레이어 정보 삽입
+          
+          }
+          
+          System.out.println(playerMap.size());
+          in.close(); 
+          //파일을 닫아줌 
+  	}
+    
+    
+    
+    
     
     //사용자의 버튼 클릭에 따라 컨텐트펜을 다르게 붙여가며 화면을 변화시키는 메소드
     public void swapPanel(int type){
@@ -169,6 +220,20 @@ public class GameFrame extends JFrame {
                 setContentPane(wordEditPanel);
                 break;
             case RANKING_PANEL:
+            	
+            	//파일 내용 업데이트
+            	try {
+        			file2Map();
+        		} catch (IOException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+            	
+            	rankingPanel.uploadMap(playerMap); //데이터 복사
+            	//탑텐리스트 라벨 생성
+        		rankingPanel.makeLabelList();
+            	rankingPanel.showTopTen();
+            	
             	setContentPane(rankingPanel);
                 break;
         }

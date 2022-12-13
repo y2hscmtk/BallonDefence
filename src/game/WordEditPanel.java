@@ -37,6 +37,7 @@ public class WordEditPanel extends JPanel{
 	private JScrollPane scrollPane;
 	
 	
+	
 	public WordEditPanel (GameFrame parent) {
         this.parent = parent;//부모를 입력받아 변수에 저장
         setLayout(null); //배치 관리자 제거
@@ -98,6 +99,8 @@ public class WordEditPanel extends JPanel{
 
     }
 	
+	
+
 	//단어를 매개변수로 받아서 words.txt에 저장
 	public void addWord(String word) {
 		System.out.println(word +"저장중");

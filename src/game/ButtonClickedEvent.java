@@ -23,7 +23,7 @@ public class ButtonClickedEvent extends MouseAdapter{
 	
 	public ButtonClickedEvent(GameFrame parent,int type){
 		this.parent = parent;
-		this.type = type; //사용자로부터 이동할 메뉴를 생성자로 입력받음
+		this.setType(type); //사용자로부터 이동할 메뉴를 생성자로 입력받음
 		//버튼클릭 효과음 실행
 	}
 	
@@ -31,7 +31,7 @@ public class ButtonClickedEvent extends MouseAdapter{
 	public ButtonClickedEvent(GameFrame parent,int type,ImageIcon enteredIcon,ImageIcon presentIcon) {
 		authority = true; //entered이벤트와 exited이벤트 발생 권한 부여
 		this.parent = parent;
-		this.type = type; //사용자로부터 이동할 메뉴를 생성자로 입력받음
+		this.setType(type); //사용자로부터 이동할 메뉴를 생성자로 입력받음
 		this.setEnteredIcon(enteredIcon);
 		this.setPresentIcon(presentIcon);
 	}
@@ -76,7 +76,7 @@ public class ButtonClickedEvent extends MouseAdapter{
 //		if(isMusicButton)
 //			System.out.println("뮤직버튼");
 //		else //뮤직버튼이 아니면 패널을 변경하는 모드로
-		parent.swapPanel(type);
+		parent.swapPanel(getType());
 	}
 	
 	@Override
@@ -109,5 +109,13 @@ public class ButtonClickedEvent extends MouseAdapter{
 
 	public void setPresentIcon(ImageIcon presentIcon) {
 		this.presentIcon = presentIcon;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 }

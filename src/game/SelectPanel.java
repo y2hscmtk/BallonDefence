@@ -18,6 +18,8 @@ import javax.swing.JTextField;
 public class SelectPanel extends JPanel {
     private GameFrame parent;//부모를 변수로 저장
    
+    
+    //홈버튼에 사용알 아이콘
     private ImageIcon homeButtonIcon = new ImageIcon("home.png");
     private ImageIcon homeButtonEnteredIcon = new ImageIcon("homeEntered.png");
     

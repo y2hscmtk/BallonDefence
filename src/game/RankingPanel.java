@@ -47,20 +47,20 @@ public class RankingPanel extends JPanel {
   		homeButton.addMouseListener(new ButtonClickedEvent(parent,parent.BEGINNING_PANEL,homeButtonEnteredIcon,homeButtonIcon));
   		add(homeButton);
 		
-		//점수 파일 읽어오기
-		try {
-			file2Map(); //지난 플레이어 정보를 읽어와서 맵에작성
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		//점수 파일 읽어오기
+//		try {
+//			file2Map(); //지난 플레이어 정보를 읽어와서 맵에작성
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
-		//탑텐리스트 라벨 생성
-		makeLabelList();
-		
-//		//생성한 라벨들을 붙이기
+//		//탑텐리스트 라벨 생성
+//		makeLabelList();
 //		
-		showTopTen();
+////		//생성한 라벨들을 붙이기
+////		
+//		showTopTen();
 		
 		setVisible(true);
 	}
@@ -141,6 +141,12 @@ public class RankingPanel extends JPanel {
             System.out.println(", Val : " + playerMap.get(key));
             index++;
         }
+	}
+	
+	
+	public void uploadMap(TreeMap<String,Integer> playerMap) {
+		System.out.println("데이터 복사중");
+		this.playerMap = playerMap;
 	}
 	
 	//점수를 보여주기 위한 라벨

@@ -97,6 +97,23 @@ public class GameRunningPanel extends JPanel {
 	}
 	
 	
+	//사망을 관리하는 패널
+	private class DeadPanel extends JPanel{
+		
+		
+		public DeadPanel() {
+			
+			setSize(500,500);
+			setVisible(true);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
 	//상점을 관리하는 패널
 	//게임에 대한 정보를 받아서, 매 라운드마다 차등한 상점 생성
 	//상점이용 종료하고 다음 라운드로 넘어가게 하는 버튼 작성
@@ -149,6 +166,10 @@ public class GameRunningPanel extends JPanel {
 		
 		
 		private ImageIcon deadBoardIcon = new ImageIcon("deadBoard.png");
+		//홈버튼 이미지
+		private ImageIcon homeButtonIcon = new ImageIcon("home.png");
+		private ImageIcon homeButtonEnteredIcon = new ImageIcon("homeEntered.png");
+		
 		
 		//배경 이미지를 바꾸기 위한 함수
 		public void setBackgroundImage(ImageIcon icon) {
@@ -279,6 +300,61 @@ public class GameRunningPanel extends JPanel {
 			}
 				
 		}
+		
+		
+		//홈화면으로 돌아갈때, 음악을 시작음악으로 변경하기 위한 이벤트 작성(오버라이딩으로)
+		class HomeButtonClickedEvent extends ButtonClickedEvent{
+
+			public HomeButtonClickedEvent(GameFrame parent, int type, ImageIcon enteredIcon, ImageIcon presentIcon) {
+				super(parent, type, enteredIcon, presentIcon); //기존 기능들은 수행이 가능하도록
+				// TODO Auto-generated constructor stub
+			}
+
+
+			@Override //마우스를 클릭할때 음악을 메인메뉴 음악으로 변경하는 부분 추가
+			public void mouseClicked(MouseEvent e) {
+				//현재 음악을 변경
+				parent.getMusic().musicStop(); //음악 중단
+	    		//음악 중단 사실을 저장
+//	    		parent.
+	    		
+	    		//시작화면 음악으로 변경
+	    		parent.getMusic().changeMusic("openningMusic.wav");
+				
+				
+				//패널 변경
+				parent.swapPanel(getType());
+			}
+			
+			
+		}
+		
+		
+		class PlayerMakeEvent extends MouseAdapter{
+			private boolean isMakePosible = true; //플레이어가 생성이 가능한지 여부를 결정
+			
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(isMakePosible) {
+					String id = input.getText();
+					//최종 점수는 잔여코인과 점수를 더한값으로
+					int finalScore = statusPanel.getScore() + statusPanel.getCoin();
+					System.out.println("테스트");
+					addPlayer(id,finalScore);
+					input.setText("");
+					isMakePosible = false;// 재생성 불가하게
+					input.setText("아이디 저장완료!");
+					input.setEnabled(false); //입력 불가능하게 만들기
+				}
+			}
+		}
+		
+		
+		
+		
+		
+		
 		//상점 창과 게임 클리어 창을 관리하는 클래스
 		//현재 난이도 받아오기,게임 매니저 스레드 참조가져오기
 		public StoreAndFianlPanel(int gameLevel,GameMangeThread gameMangeThread,StatusPanel statusPanel) {
@@ -309,49 +385,64 @@ public class GameRunningPanel extends JPanel {
 			//판넬에 보여지게 할 내용 결정
 			//엔딩창이 될수도 있고, 클리어창이 될수도있고, 상점창이 될수도 있다
 			//상점창을 띄울경우 어떤 아이템을 보이게 할지는 현재 코인을 보고 결정
-			setPanelElement(gameLevel);
+			setPanelElement(this.gameLevel);
 			
-			if(gameLevel==-1) {
-				System.out.println("사망하였습니다!");
-				//사망칸 표시
-//				setBackgroundImage(deadBoardIcon);
-				//체크포인트 사망
-				//아이디 입력받을 텍스트공간 생성
+			if(this.gameLevel==-1) {
+				System.out.println(this.gameLevel+"사망하였습니다!");
+				
+				
+				repaint();
+				
+
+				System.out.println("아이디 텍스트 에리어 생성");
 				input.setFont(new Font("Gothic",Font.BOLD,20));
 				input.setLocation(200,400);
 				input.setSize(400,50);
 				add(input);
 				
+				System.out.println("입력 버튼 생성");
 				saveButton = new JButton("저장");
 				saveButton.setFont(new Font("Gothic",Font.BOLD,20));
 				saveButton.setLocation(600,400);
 				saveButton.setSize(80,80);
 				
+				PlayerMakeEvent playerMakeEvent = new PlayerMakeEvent();
+				
 				//아이디 저장하는 이벤트
-				saveButton.addMouseListener(new MouseAdapter() {
-					
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						String id = input.getText();
-						//최종 점수는 잔여코인과 점수를 더한값으로
-						int finalScore = statusPanel.getScore() + statusPanel.getCoin();
-						System.out.println("새로운 플레이어 생성");
-						addPlayer(id,finalScore);
-						
-					}
-				});
+				saveButton.addMouseListener(playerMakeEvent);
+//						new MouseAdapter() {
+//					
+//					@Override
+//					public void mouseClicked(MouseEvent e) {
+//						String id = input.getText();
+//						//최종 점수는 잔여코인과 점수를 더한값으로
+//						int finalScore = statusPanel.getScore() + statusPanel.getCoin();
+//						System.out.println("새로운 플레이어 생성");
+//						addPlayer(id,finalScore);
+//						
+//					}
+//				});
 				
 				add(saveButton);
 				
-				repaint();
+				//repaint();
 				
-			}
+			} //엔딩 체크포인트
 			else if(gameLevel==3) {
 				System.out.println("3라운드까지 완료!");
 				//이곳에 게임 엔딩창에 필요한 요소들 추가
 				
-				setBackgroundImage(deadBoardIcon);
+				//setBackgroundImage(deadBoardIcon);
 				
+				
+				//GFrame을 멤버로 받는 패널에서만 가능
+				JLabel homeButton = new JLabel(homeButtonIcon);
+				homeButton.setSize(homeButtonIcon.getIconWidth(),homeButtonIcon.getIconHeight());
+				homeButton.setLocation(0,0);
+				homeButton.addMouseListener(new HomeButtonClickedEvent(parent,parent.BEGINNING_PANEL,homeButtonEnteredIcon,homeButtonIcon));
+				add(homeButton);
+				
+						
 				
 				//체크포인트2
 				//아이디 입력받을 텍스트공간 생성
@@ -365,19 +456,23 @@ public class GameRunningPanel extends JPanel {
 				saveButton.setLocation(600,400);
 				saveButton.setSize(80,80);
 				
+				//중복저장을 안하기 위해
+				PlayerMakeEvent playerMakeEvent = new PlayerMakeEvent();
 				//아이디 저장하는 이벤트
-				saveButton.addMouseListener(new MouseAdapter() {
-					
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						String id = input.getText();
-						//최종 점수는 잔여코인과 점수를 더한값으로
-						int finalScore = statusPanel.getScore() + statusPanel.getCoin();
-						System.out.println("새로운 플레이어 생성");
-						addPlayer(id,finalScore);
+				saveButton.addMouseListener(playerMakeEvent);
 						
-					}
-				});
+//						new MouseAdapter() {
+//					
+//					@Override
+//					public void mouseClicked(MouseEvent e) {
+//						String id = input.getText();
+//						//최종 점수는 잔여코인과 점수를 더한값으로
+//						int finalScore = statusPanel.getScore() + statusPanel.getCoin();
+//						System.out.println("새로운 플레이어 생성");
+//						addPlayer(id,finalScore);
+//						
+//					}
+//				});
 				
 				add(saveButton);
 				
@@ -442,24 +537,17 @@ public class GameRunningPanel extends JPanel {
 						setVisible(false);
 						
 						
-						//remove(this);
-//						//새로운 난이도로 풍선생성스레드 작동시작
-//						gameMangeThread
-						
-						//라운드 이미지 여기서 출력?
-						
-						
-						//2초간 대기
-						try {
-							setVisible(false); //상점창 지우기
-							repaint();
-							System.out.println("1초간 대기");
-							Thread.sleep(1000);
-						} catch (InterruptedException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						
+//						//2초간 대기
+//						try {
+//							setVisible(false); //상점창 지우기
+//							repaint();
+//							System.out.println("1초간 대기");
+//							Thread.sleep(1000);
+//						} catch (InterruptedException e1) {
+//							// TODO Auto-generated catch block
+//							e1.printStackTrace();
+//						}
+//						
 						
 						gameMangeThread.makeBalloonSpawnThreadAndStart(); //다음 라운드의 게임생성
 						//gameMangeThread.setIsStoreOn(); //상점이 다시 안보이는 상태로 변경
@@ -506,16 +594,17 @@ public class GameRunningPanel extends JPanel {
 		
 		
 		
-		//칠판 없애기
-		public void removeBoard() {
-			backgroundImage = 
-		}
+//		//칠판 없애기
+//		public void removeBoard() {
+//			backgroundImage = 
+//		}
 		
 		
 		//배경 이미지 그리기 =>칠판을 가져와서 그림
 		@Override
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
+			System.out.println("호출됨");
 			g.drawImage(backgroundImage,0,0,backgroundImageIcon.getIconWidth(),backgroundImageIcon.getIconHeight(),null);
 		}
 		
@@ -694,10 +783,10 @@ public class GameRunningPanel extends JPanel {
 								isGameRun = false; //현재 스레드 종료
 								System.out.println("플레이어 사망");
 								isPlayerAlive = false; //사망처리
-								break;
 								//최종 결과창 출력 => 아이디 입력받기 => 다시하기 버튼, 점수보기 버튼 보여주기
-								
-								
+								storeAndFinalPanel = new StoreAndFianlPanel(-1,this,statusPanel);
+								storeAndFinalPanel.setBounds(100,200,800,500);
+								break;	
 							}
 							
 						}
@@ -740,7 +829,6 @@ public class GameRunningPanel extends JPanel {
 						System.out.println(gameLevel-1 + "레벨 상점창 띄우기");//상점창에서 버튼을 눌러 다음 스테이지로 넘어가게끔
 						storeAndFinalPanel = new StoreAndFianlPanel(gameLevel-1,this,statusPanel); //현재 스레드에 대한 접근 권한 부여
 						storeAndFinalPanel.setBounds(100,200,800,500);
-						
 						add(storeAndFinalPanel);
 						
 						repaint(); //상점창이 보이도록
@@ -798,6 +886,8 @@ public class GameRunningPanel extends JPanel {
 					
 					//레벨 매개변수 대신 -1을 입력 => 사망칸 띄우기
 					storeAndFinalPanel = new StoreAndFianlPanel(-1,this,statusPanel);
+					storeAndFinalPanel.setBounds(100,200,800,500);
+					add(storeAndFinalPanel);
 				}
 			}
 		}
