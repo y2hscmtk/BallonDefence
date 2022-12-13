@@ -26,6 +26,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+
 /*
  * 라운드 시스템으로 작성
  * 라운드마다 생성될 풍선의 수가 정해져있고, 해당 풍선을 모두 처리하면 라운드가 종료되는 방식으로
@@ -39,9 +40,9 @@ public class GameRunningPanel extends JLayeredPane {
 	private GameFrame parent;
 	//게임에 대한 특성
 	//라운드마다 생성될 풍선의 최대 개수 => 해당 풍선을 모두 지우면 다음 라운드로 넘어가도록
-	private static final int ROUND1BALLONCOUNT = 1; //1라운드에는 10개의 풍선
-	private static final int ROUND2BALLONCOUNT = 1; //2라운드에는 20개의 풍선
-	private static final int ROUND3BALLONCOUNT = 1; //3라운드에는 30개의 풍선
+	private static final int ROUND1BALLONCOUNT = 10; //1라운드에는 10개의 풍선
+	private static final int ROUND2BALLONCOUNT = 20; //2라운드에는 20개의 풍선
+	private static final int ROUND3BALLONCOUNT = 30; //3라운드에는 30개의 풍선
 	//체크포인트4
 	
 	
@@ -153,6 +154,11 @@ public class GameRunningPanel extends JLayeredPane {
 		private ImageIcon nameImageIcon = new ImageIcon("nameImageIcon.png");
 		private JLabel nameLabel;
 		
+		//상점창 로고
+		private ImageIcon storeIcon = new ImageIcon("storeImage.png");
+		//상점 창
+		private JLabel storeLabel;
+		
 		
 		
 		
@@ -200,6 +206,10 @@ public class GameRunningPanel extends JLayeredPane {
 		//홈버튼 이미지
 		private ImageIcon homeButtonIcon = new ImageIcon("home2.png");
 		private ImageIcon homeButtonEnteredIcon = new ImageIcon("home2Entered.png");
+		
+		//버튼 이미지
+		private	ImageIcon inputButtonIcon = new ImageIcon("inputButton.png");
+		private	ImageIcon inputButtonEnteredIcon = new ImageIcon("inputButtonEntered.png");
 		
 		
 //		//배경 이미지를 바꾸기 위한 함수
@@ -361,9 +371,16 @@ public class GameRunningPanel extends JLayeredPane {
 		}
 		
 		
-		class PlayerMakeEvent extends MouseAdapter{
+		//기존에 작성해줬던 이벤트 오버라이딩해서 작성
+		class PlayerMakeEvent extends ButtonClickedEvent{
 			private boolean isMakePosible = true; //플레이어가 생성이 가능한지 여부를 결정
 			
+						
+			public PlayerMakeEvent(GameFrame parent, ImageIcon enteredIcon, ImageIcon presentIcon) {
+				super(parent, enteredIcon, presentIcon);
+				// TODO Auto-generated constructor stub
+			}
+
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -379,10 +396,8 @@ public class GameRunningPanel extends JLayeredPane {
 					input.setEnabled(false); //입력 불가능하게 만들기
 				}
 			}
+		
 		}
-		
-		
-		
 		
 		
 		
@@ -480,17 +495,27 @@ public class GameRunningPanel extends JLayeredPane {
 				input.getFocusAccelerator();
 				add(input);
 				
-				PlayerMakeEvent playerMakeEvent = new PlayerMakeEvent();
+				PlayerMakeEvent playerMakeEvent = new PlayerMakeEvent(parent,inputButtonEnteredIcon,inputButtonIcon);
 				
-//				System.out.println("입력 버튼 생성");
-				saveButton = new JButton("저장");
-				saveButton.setFont(new Font("Gothic",Font.BOLD,20));
-				saveButton.setLocation(600,400);
-				saveButton.setSize(80,80);
-				saveButton.addMouseListener(playerMakeEvent);
-				add(saveButton);
+				
+				//InputButtonClickedEvent inputButtonClickedEvent = new InputButtonClickedEvent(input,parent,inputButtonEnterdIcon,inputButtonIcon);
+				
+				//돌아오기
+				JLabel inputButton = new JLabel(inputButtonIcon);
+		  		inputButton.setSize(inputButtonIcon.getIconWidth(),inputButtonIcon.getIconHeight());
+		  		inputButton.setLocation(600,400);
+		  		inputButton.addMouseListener(playerMakeEvent);
+		  		add(inputButton);
+		  		
 			}
 			else { //1,2레벨 상점창 관리 => 3라운드 상점은 앤딩판넬을 보여줌=>아이디를 입력받아 저장하는 공간과, 처음화면으로 돌아가는버튼
+				
+				//상점창 로고 생성
+				storeLabel = new JLabel(storeIcon);
+				storeLabel.setSize(storeIcon.getIconWidth(),storeIcon.getIconHeight());
+				storeLabel.setLocation(145,12);
+				add(storeLabel);
+				
 				item1Label = new JLabel(item1);
 				
 				item1Label.setSize(item1.getIconWidth(),item1.getIconHeight());

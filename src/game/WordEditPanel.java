@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.TextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
@@ -28,6 +29,7 @@ public class WordEditPanel extends JPanel{
 	private GameFrame parent;//부모 변수
 	private ImageIcon homeButtonIcon = new ImageIcon("home.png");
 	private ImageIcon homeButtonEnteredIcon = new ImageIcon("homeEntered.png");
+	
 	private ImageIcon backgroundIcon = new ImageIcon("wordEditPanelImage.png");
 	private Image backgroundImage = backgroundIcon.getImage();
 	
@@ -36,11 +38,41 @@ public class WordEditPanel extends JPanel{
 	private JList<String> scrollList; 
 	private JScrollPane scrollPane;
 	
+	//버튼 아이콘
+
+	private	ImageIcon inputButtonIcon = new ImageIcon("inputButton.png");
+	private	ImageIcon inputButtonEnterdIcon = new ImageIcon("inputButtonEntered.png");
 	
-	 //배경 이미지
-    private ImageIcon bgImageicon = new ImageIcon("background.png");
-    private Image backgroundPanelImage = bgImageicon.getImage();
 	
+	
+//	 //배경 이미지
+//    private ImageIcon bgImageicon = new ImageIcon("background.png");
+//    private Image backgroundPanelImage = bgImageicon.getImage();
+//	
+    
+    //입력버튼 누를때의 이벤트 오버라이딩
+    private class InputButtonClickedEvent extends ButtonClickedEvent{
+    	private JTextField tf;
+    	
+    	
+		public InputButtonClickedEvent(JTextField tf,GameFrame parent, ImageIcon enteredIcon, ImageIcon presentIcon) {
+			super(parent, enteredIcon, presentIcon);
+			this.tf = tf; //텍스트 영역에 대한 참고 가져오기
+			// TODO Auto-generated constructor stub
+		}
+		
+		
+		@Override //마우스 클릭이벤트
+		public void mouseClicked(MouseEvent e) {
+			//단어 저장
+			addWord(tf.getText()); //해당 단어를 저장한다
+			tf.setText(""); //내용을 지운다.
+		}
+    	
+    	
+    }
+    
+    
 	
 	public WordEditPanel (GameFrame parent) {
         this.parent = parent;//부모를 입력받아 변수에 저장
@@ -73,29 +105,29 @@ public class WordEditPanel extends JPanel{
   		
   		//단어를 입력받기 위한 텍스트 박스와 단어를 입력하기 위한 버튼 생성
   		JTextField tf = new JTextField(10);
-  		tf.setSize(450,50);
-  		tf.setLocation(500,280);
+  		tf.setFont(new Font("Gothic",Font.BOLD,30));
+  		tf.setSize(550,50);
+  		tf.setLocation(380,230);
   		add(tf);
   		
-  		JButton addButton = new JButton("입력");
-  		addButton.setSize(130,50);
-  		addButton.setLocation(970,280);
-  		addButton.addMouseListener(new MouseAdapter() {
-  			@Override
-  			public void mouseClicked(MouseEvent e) {
-  				addWord(tf.getText());
-  				tf.setText(""); //텍스트 내용 지우기
-  			}
-  		});
-  		add(addButton);
+  		
+  		//입력버튼 칸
+  		InputButtonClickedEvent inputButtonClickedEvent = new InputButtonClickedEvent(tf,parent,inputButtonEnterdIcon,inputButtonIcon);
+  		
+  		
+  		JLabel inputButton = new JLabel(inputButtonIcon);
+  		inputButton.setSize(inputButtonIcon.getIconWidth(),inputButtonIcon.getIconHeight());
+  		inputButton.setLocation(950,210);
+  		inputButton.addMouseListener(inputButtonClickedEvent); //이벤트 달기
+  		add(inputButton);
   		
   		
   		//현재 저장된 단어들을 스크롤을 통해 확인할수 있도록하는 창 생성
   		scrollList = new JList<String>(wordVector);
   		scrollPane = new JScrollPane(scrollList);
   		
-  		scrollPane.setSize(450,350);
-  		scrollPane.setLocation(500,400);
+  		scrollPane.setSize(700,400);
+  		scrollPane.setLocation(380,315);
   		add(scrollPane);
   		
         
@@ -126,7 +158,7 @@ public class WordEditPanel extends JPanel{
 	    public void paintComponent(Graphics g) {
 	       super.paintComponent(g); //그래픽 컴포넌트 설정
 	       //배경 이미지
-	       g.drawImage(backgroundPanelImage, 0, 0, bgImageicon.getIconWidth(),bgImageicon.getIconHeight(),null); //이미지가 그려지는 시점 알림받지 않기
+	       g.drawImage(backgroundImage, 0, 0,  backgroundIcon.getIconWidth(), backgroundIcon.getIconHeight(),null); //이미지가 그려지는 시점 알림받지 않기
 	    }
 	    
 }
