@@ -154,19 +154,20 @@
 
 게임이 클리어 된 모습 => 사용자로부터 이름을 입력받아 Score.txt에 저장한다.
 
-![image-20221216170007585](C:\Users\alfm7\AppData\Roaming\Typora\typora-user-images\image-20221216170007585.png)
+![image-20221216170007585](https://user-images.githubusercontent.com/109474668/208294437-c94bcc08-00aa-4489-87f4-4f6d205a84eb.png)
 
 
 
 플레이어는 입력한 점수와 아이디가 우수한 성적에 들었다면 메인메뉴에서 확인할수 있다.
 
-![image-20221216170104077](C:\Users\alfm7\AppData\Roaming\Typora\typora-user-images\image-20221216170104077.png)
+![image-20221216170104077](https://user-images.githubusercontent.com/109474668/208294445-876dbcab-f958-4a43-b1f0-e4c1f1ceb196.png)
 
 
 
 게임중 등장하는 단어들을 추가할수 있다.
 
-![image-20221216170123886](C:\Users\alfm7\AppData\Roaming\Typora\typora-user-images\image-20221216170123886.png)
+![image-20221216170123886](https://user-images.githubusercontent.com/109474668/208294451-4a2aa69b-c159-4da0-b3ff-c92d4a8eb55e.png)
+
 
 
 
