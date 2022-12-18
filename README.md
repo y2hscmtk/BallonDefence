@@ -4,7 +4,8 @@
 
 
 
-![image-20221215052409748](C:\Users\alfm7\AppData\Roaming\Typora\typora-user-images\image-20221215052409748.png)
+![image-20221215052409748](https://user-images.githubusercontent.com/109474668/208294221-b5afeccb-3f6a-430d-9555-7c2a84701c71.png)
+
 
 
 
