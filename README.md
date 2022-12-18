@@ -15,7 +15,8 @@
 
 
 
-![rule3](D:\Users\administrator\바탕화면\BalloonDefense\rule3.png)
+![rule3](https://user-images.githubusercontent.com/109474668/208294264-c11a016d-b047-4828-b959-dac0f3722095.png)
+
 
 
 
@@ -29,7 +30,7 @@
 
 상점의 무기는 현재 보유하고 있는 코인을 기준으로 무기를 구매할수있는지 없는지에 따라 보여지며, 체력회복 물약은 상시 판매된다.
 
-![image-20221216170240142](C:\Users\alfm7\AppData\Roaming\Typora\typora-user-images\image-20221216170240142.png)
+![image-20221216170240142](https://user-images.githubusercontent.com/109474668/208294280-15651c45-8892-4634-ad59-6c26264d8798.png)
 
 
 
@@ -39,7 +40,7 @@
 
 
 
-![scissors](D:\Users\administrator\바탕화면\BalloonDefense\scissors.png)
+![scissors](https://user-images.githubusercontent.com/109474668/208294302-e059e6d8-89a5-4fe7-86ed-24170bc65035.png)
 
 ​																	  가위 :  2의 공격력을 갖는다(파랑풍선도 한번에 처치 가능하다.) 1000원
 
@@ -47,7 +48,7 @@
 
 
 
-![chainsaw](D:\Users\administrator\바탕화면\BalloonDefense\chainsaw.png)
+![chainsaw](https://user-images.githubusercontent.com/109474668/208294323-8e1b8578-33b8-4a2b-b0f3-c59867adb9e3.png)
 
 
 
@@ -59,7 +60,7 @@
 
 
 
-![HealthPositon](D:\Users\administrator\바탕화면\BalloonDefense\HealthPositon.png)
+![HealthPositon](https://user-images.githubusercontent.com/109474668/208294329-b39ed62e-31f3-4ea4-94cf-be50192ba923.png)
 
 
 
@@ -73,27 +74,24 @@
 
 
 
-![redBalloon](D:\Users\administrator\바탕화면\객지 프로젝트 이미지\redBalloon.png)
+![redBalloon](https://user-images.githubusercontent.com/109474668/208294365-b636c5d7-b3ee-44d7-83a2-8fd250acefd0.png)
 
 빨강 풍선 : 가장 기본적인 풍선이다. 1의 체력을 갖는다. 연필(공격력:1)로 한번에 처치 가능하다.  처치시 150점의 경험치와 100코인을 획득한다.
 
 
-
-![blueBalloon](D:\Users\administrator\바탕화면\객지 프로젝트 이미지\blueBalloon.png)
+![blueBalloon](https://user-images.githubusercontent.com/109474668/208294368-b5659de1-fdfa-4d3f-ae94-2d1fefd3d7ba.png)
 
 파랑 풍선 : 두번의 공격으로 처치가능한 풍선이다. 2의 체력을 갖는다.  가위(공격력:2)로  한번에 처치 가능하다.   처치시 300점의 경험치와 200코인을 획득한다.
 
 
-
-![yellowBalloon](D:\Users\administrator\바탕화면\객지 프로젝트 이미지\yellowBalloon.png)
+![yellowBalloon](https://user-images.githubusercontent.com/109474668/208294367-1d23f756-365f-44b3-adba-84ff01829ecf.png)
 
 
 
 노랑 풍선 : 세번의 공격으로 처치가능한 풍선이다. 3의 체력을 갖는다. 톱(공격력:3)으로 한번에 처치 가능하다.  처치시 600점의 경험치와 300코인을 획득한다.
 
 
-
-![starBalloon](D:\Users\administrator\바탕화면\객지 프로젝트 이미지\starBalloon.png)
+![starBalloon](https://user-images.githubusercontent.com/109474668/208294366-166a5b7e-a808-4408-bda4-ad01ec32ab6f.png)
 
 
 
@@ -101,7 +99,7 @@
 
 
 
-![coinBalloon](D:\Users\administrator\바탕화면\객지 프로젝트 이미지\coinBalloon.png)
+![coinBalloon](https://user-images.githubusercontent.com/109474668/208294369-3433b3eb-7c4b-4ca9-ba04-bdc87de5394d.png)
 
 
 
@@ -127,7 +125,7 @@
 
 캐릭터는 캐릭터마다 특별한 능력을 보유하고 있다. 
 
-![image-20221216165529999](C:\Users\alfm7\AppData\Roaming\Typora\typora-user-images\image-20221216165529999.png)
+![image-20221216165529999](https://user-images.githubusercontent.com/109474668/208294404-275e42ba-54f3-4943-9662-007f2c4a4276.png)
 
 캐릭터의 능력은 다음과 같다.
 
@@ -145,13 +143,12 @@
 
 게임이 플레이 되는 모습
 
-![image-20221216165846312](C:\Users\alfm7\AppData\Roaming\Typora\typora-user-images\image-20221216165846312.png)
+![image-20221216165846312](https://user-images.githubusercontent.com/109474668/208294412-639dc124-2e1e-46c0-b091-c902ca43a151.png)
 
 
 
 게임이 오버된 모습 => 사용자로부터 이름을 입력받아 Score.txt에 저장한다.
-
-![image-20221216165902819](C:\Users\alfm7\AppData\Roaming\Typora\typora-user-images\image-20221216165902819.png)
+![image-20221216165902819](https://user-images.githubusercontent.com/109474668/208294431-5ac4f33c-08cb-41bd-8a44-f4d4a82971e9.png)
 
 
 
