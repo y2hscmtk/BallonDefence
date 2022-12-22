@@ -169,12 +169,6 @@
 ![image-20221216170123886](https://user-images.githubusercontent.com/109474668/208294451-4a2aa69b-c159-4da0-b3ff-c92d4a8eb55e.png)
 
 
-플레이 동영상
-
-![gamePlay](https://user-images.githubusercontent.com/109474668/209203862-d4488834-a2b8-40c2-860c-1dcfd7490036.gif)
-
-
-
 
 
 
