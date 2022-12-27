@@ -1,4 +1,4 @@
-# JAVA Project
+# JAVA Project - Word Game
 
 ##### : 풍선 디펜스(Balloon Defense)
 
