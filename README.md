@@ -1,7 +1,7 @@
 # JAVA Project - Word Game
 
 ##### : 풍선 디펜스(Balloon Defense)
-
+(프로젝트에 사용된 이미지를 개인 프로젝트에 사용하고 싶다면 메일,등으로 연락해주시길 바랍니다.)
 
 
 ![image-20221215052409748](https://user-images.githubusercontent.com/109474668/208294221-b5afeccb-3f6a-430d-9555-7c2a84701c71.png)
